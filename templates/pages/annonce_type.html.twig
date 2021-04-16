@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block title 'Annonces-72 - Petites annonces gratuites' %}
+
+{% block body %}
+
+	<div class="master-wrapper">
+
+		<div class="preloader">
+			<div class="preloader-img">
+				<span class="loading-animation animate-flicker"><img src="img/loading.GIF" alt="loading"/></span>
+			</div>
+		</div>
+
+		{% include('components/navbar.html.twig') %}
+
+		<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="img/bg/bg2.jpg" data-speed="0.7">
+            <div class="section-inner pad-top-200">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 mb30 wow text-center">
+                            <h2 class="section-heading">LOUE APPART 4 PERS</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+		{% include('components/annonce_type.html.twig') %}
+
+        {% include('components/contact.html.twig') %}
+
+		{% include('components/footer.html.twig') %}
+
+	</div>
+
+	{% include('components/navRight.html.twig') %}
+
+{% endblock %}

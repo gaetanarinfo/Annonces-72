@@ -1014,7 +1014,8 @@ section h3.section-subheading {
 
 .widget .media-body .muted {
     display: block;
-    font-size: 10px;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .widget .media-heading {
@@ -2416,4 +2417,8 @@ footer.white-wrapper .social-links li a {
 
 .demo-selector .masonry-portfolio-item {
     margin-bottom: 30px;
+}
+
+.glyphicon-star {
+    color: rgb(255, 110, 20);
 }
