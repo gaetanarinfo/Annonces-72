@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+
+{% block title 'Annonces-72 - Petites annonces gratuites' %}
+
+{% block body %}
+
+	<div class="master-wrapper">
+
+		<div class="preloader">
+			<div class="preloader-img">
+				<span class="loading-animation animate-flicker"><img src="img/loading.GIF" alt="loading"/></span>
+			</div>
+		</div>
+
+		{% include('components/navbar.html.twig') %}
+
+		{% include('components/header.html.twig') %}
+
+		<section id="welcome">
+			<div class="section-inner nopaddingbottom">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 mb100 wow animated" style="visibility: visible;">
+							<h2 class="section-heading">Bienvenue sur Annonces-72</h2>
+							<h3 class="section-subheading secondary-font">Trouvez la bonne affaire parmi les millions de petites annonces</h3>
+						</div>
+					</div>
+				</div>
+
+				{% include('components/annonces.html.twig') %}
+
+			</div>
+		</section>
+
+        {% include('components/dev.html.twig') %}
+
+        {% include('components/service.html.twig') %}
+
+        {% include('components/contact.html.twig') %}
+
+		{% include('components/footer.html.twig') %}
+
+	</div>
+
+	{% include('components/footer2.html.twig') %}
+
+{% endblock %}

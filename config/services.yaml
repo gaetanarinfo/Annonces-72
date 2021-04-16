@@ -1,0 +1,54 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'fr'
+    images_directory: '%kernel.project_dir%/public/media/galerie'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider: ~    
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Listener\ImageCacheSubscriber: 
+        tags: 
+        - { name: doctrine_event_subscriber }
+    App\Listener\ImageCacheSubscriberRent: 
+        tags: 
+        - { name: doctrine_event_subscriber2 }    
+    App\Listener\ImageCacheSubscriberUser: 
+        tags: 
+        - { name: doctrine_event_subscriber3 }        
+        
+    Twig\CacheExtension\CacheStrategyInterface:
+        class: Twig\CacheExtension\CacheStrategy\LifetimeCacheStrategy
+
+    Twig\CacheExtension\CacheProviderInterface:
+        class: Twig\CacheExtension\CacheProvider\PsrCacheAdapter
+
+    Twig\CacheExtension\Extension:  
+        tags:
+        - { name: twig.extension }

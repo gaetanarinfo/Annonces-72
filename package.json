@@ -1,0 +1,22 @@
+{
+    "devDependencies": {
+        "@symfony/webpack-encore": "^0.20.0",
+        "webpack-notifier": "^1.6.0"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production"
+    },
+    "dependencies": {
+        "babel-preset-es2017": "^6.24.1",
+        "leaflet": "^1.7.1",
+        "mapbox-gl": "^1.13.1",
+        "places.js": "^1.11.0",
+        "select2": "^4.0.6-rc.1",
+        "slick-carousel": "^1.8.1"
+    }
+}
