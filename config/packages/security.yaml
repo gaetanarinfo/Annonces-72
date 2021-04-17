@@ -39,25 +39,13 @@ security:
                 check_path: login         
 
     role_hierarchy:
-        ROLE_PRO: ROLE_ADMIN
         ROLE_ADMIN: ROLE_ADMIN
-        ROLE_SUPER_ADMIN: ROLE_ADMIN, ROLE_PRO
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin/utilisateur, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin/website/, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin/biens, roles: ROLE_PRO }
-        - { path: ^/admin/louer, roles: ROLE_PRO }
-        - { path: ^/admin/appartement-a, roles: ROLE_PRO }
-        - { path: ^/admin/appartement-b, roles: ROLE_PRO }
-        - { path: ^/admin/option, roles: ROLE_PRO }
-        - { path: ^/admin/option2, roles: ROLE_PRO }
-        - { path: ^/admin/option3, roles: ROLE_PRO }
-        - { path: ^/admin/option4, roles: ROLE_PRO }
-        - { path: ^/admin/blog, roles: ROLE_PRO }
-        - { path: ^/admin/mailbox, roles: ROLE_PRO }
+        # - { path: ^/admin/utilisateur, roles: ROLE_SUPER_ADMIN }
         - { path: ^/user, roles: ROLE_USER }
 
     encoders:

@@ -1,0 +1,107 @@
+{% extends "base.html.twig" %}
+
+{% block title 'Annonces-72 - Inscription' %}
+
+{% block body %}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="css/input-file.css">
+    {% endblock %}
+
+	<div class="master-wrapper">
+
+		<div class="preloader">
+			<div class="preloader-img">
+				<span class="loading-animation animate-flicker"><img src="img/loading.GIF" alt="loading"/></span>
+			</div>
+		</div>
+
+		{% include('components/navbar.html.twig') %}
+
+		<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="img/bg/bg2.jpg" data-speed="0.7">
+			<div class="section-inner pad-top-200">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 mb30 wow text-center">
+							<h2 class="section-heading">Inscription</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success text-center" style="width: 29% !important; margin: 50px auto 0 auto;">
+                <i class="fa fa-check text-success" aria-hidden="true"></i> {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+                <div class="alert alert-danger text-center" style="width: 29% !important; margin: 50px auto 0 auto;">
+                    <i class="fa fa-times text-danger" aria-hidden="true"></i> {{ message }}
+                </div>
+        {% endfor %}
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="login" style="max-width: 38.5em;">
+                        <div class="login-pan">
+                            <div class="text-center">
+                                <h3 style="margin-bottom: 3rem;">Bonjour !</h3>
+                                <h5 style="line-height: 26px;">Inscrivez-vous pour découvrir toutes nos fonctionnalités.</h5>
+                            </div>
+
+                            {{ form_start(form) }}
+                            <div class="form-group">
+                                {{ form_row(form.username) }}
+                            </div>
+                            <div class="form-group">    
+                                {{ form_row(form.email) }}
+                            </div>
+                            <div class="form-group">    
+                                {{ form_row(form.password.first) }}
+                            </div>
+                            <div class="form-group">    
+                                {{ form_row(form.password.second) }}
+                            </div>
+                            <div class="form-group">    
+                                {{ form_row(form.phone) }}
+                            </div>
+                            <div class="form-group">    
+                                {{ form_row(form.mobile) }}
+                            </div>
+                            <div class="form-group mt-5 mb-0">    
+                                {{ form_row(form.pictureFiles) }}
+                            </div>
+                            <div class="form-group text-center mb-0 mt-0">    
+                                {{ form_rest(form) }}
+                            </div>    
+                            <div class="text-center">
+                                <button class="btn btn-primary">S'inscrire</button>
+                            </div>    
+                            {{ form_end(form) }}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+		{% include('components/contact.html.twig') %}
+
+		{% include('components/footer.html.twig') %}
+
+	</div>
+
+	{% include('components/navRight.html.twig') %}
+
+    {% block javascripts %}
+        <script src="js/input-file.js"></script>
+        <script>
+            new InputFile({
+                // options
+            });
+        </script>
+    {% endblock %}    
+
+{% endblock %}

@@ -2,7 +2,7 @@ vich_uploader:
     db_driver: orm
 
     mappings:
-        # property_image:
-        #     uri_prefix: /media/properties
-        #     upload_destination: '%kernel.project_dir%/public/media/properties'
-        #     namer: Vich\UploaderBundle\Naming\UniqidNamer
+        user_image:
+            uri_prefix: /img/avatar
+            upload_destination: '%kernel.project_dir%/public/img/avatar'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer

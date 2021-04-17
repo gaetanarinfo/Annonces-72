@@ -50,12 +50,24 @@
 									<span class="glyphicon glyphicon-star"></span>
 								</div>
 
+                                <hr/>
+
+                                <div class="share">
+                                    <a class="btn btn-annonces" style="margin-right: 3px;"><i class="far fa-heart" aria-hidden="true"></i></a>
+                                    <a class="btn btn-annonces"><i class="fas fa-share-alt" aria-hidden="true"></i></a>
+                                </div>
+
+                                <hr/>
+
+                                <div class="share">
 								<a href="#" class="btn btn-primary btn-theme" style="margin-right: 3px;">Envoyer un message
 									<i class="far fa-comment-dots"></i>
 								</a>
 								<a href="#" class="btn btn-primary btn-theme">Voir le numéro
 									<i class="fas fa-phone"></i>
 								</a>
+
+                                </div>
 							</div>
 						</div>
 
@@ -67,6 +79,14 @@
 
 								<li class="reviews_tab">
 									<a data-toggle="tab" href="#tab-reviews">Commentaire(s) (0)</a>
+								</li>
+
+                                <li class="reviews_tab">
+									<a data-toggle="tab" href="#tab-localisation">Localisation</a>
+								</li>
+
+                                <li class="criteres_tab">
+									<a data-toggle="tab" href="#tab-criteres">Critères</a>
 								</li>
 							</ul>
 
@@ -82,6 +102,8 @@
 										1 terrasse avec une table en marbre et 4 assises pliables.<br>
 										1 salle d'eau avec wc et meuble salle de bain neufs.<br>
 										Résidence: Secondaire</p>
+
+                                        <a href="" class="btn btn-primary btn-theme">Signaler l'annonce</a>
 								</div>
 
 								<div class="tab-pane fade" id="tab-reviews">
@@ -135,29 +157,37 @@
 											<div id="comment-form" class="gap">
 												<div class="mb">
 													<h3 class="single-section-title">
-														<strong>Leave</strong>
-														A Review</h3>
+														<strong>LAISSER UN</strong>
+														COMMENTAIRE</h3>
 												</div>
 												<form class="form-horizontal" role="form">
 													<div class="form-group">
 														<div class="col-sm-6">
-															<input type="text" class="form-control" placeholder="Name">
+															<input type="text" class="form-control" placeholder="Nom">
 														</div>
 														<div class="col-sm-6">
-															<input type="email" class="form-control" placeholder="Email">
+															<input type="email" class="form-control" placeholder="Adresse email">
 														</div>
 													</div>
 													<div class="form-group">
 														<div class="col-sm-12">
-															<textarea rows="8" class="form-control" placeholder="Comment"></textarea>
+															<textarea rows="8" class="form-control" placeholder="Commentaire"></textarea>
 														</div>
 													</div>
-													<button type="submit" class="btn btn-theme">Submit Comment</button>
+													<button type="submit" class="btn btn-theme">Envoyer le commentaire</button>
 												</form>
 											</div>
 										</div>
 
 									</div>
+								</div>
+
+                                <div class="tab-pane" id="tab-localisation">
+									<p>Mapbox</p>
+								</div>
+
+                                <div class="tab-pane" id="tab-criteres">
+									<p>Critères</p>
 								</div>
 							</div>
 						</div>
@@ -244,7 +274,8 @@
 										<div class="media-heading">
 											<strong>Dave Evans</strong><br>
 											<small>Le 15 avril 2020 à 15h50</small><br>
-                                            <strong><i class="fa fa-shield" style="color: rgb(255, 110, 20)"></i> Profil recommandé</strong>
+                                            <strong><i class="fa fa-shield" style="color: rgb(255, 110, 20)"></i> Profil recommandé</strong><br>
+                                            <strong>N° SIREN : 800332413</strong>   
 											<div class="muted">
 												<ul class="list-unstyled">
 													<li>
@@ -256,6 +287,7 @@
 													</li>
 												</ul>
 											</div>
+                                            <a href="">Voir les 0 annonces</a>
 										</div>
 
 									</div>

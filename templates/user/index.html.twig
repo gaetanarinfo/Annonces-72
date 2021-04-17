@@ -1,0 +1,328 @@
+{% extends "base.html.twig" %}
+
+{% block title 'Annonces-72 - Mon profil' %}
+
+{% block body %}
+	{% block stylesheets %}
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" rel="stylesheet"/>
+        <link href="css/profil.css" rel="stylesheet"/ >
+    {% endblock %}
+
+	<div class="master-wrapper">
+
+		<div class="preloader">
+			<div class="preloader-img">
+				<span class="loading-animation animate-flicker"><img src="img/loading.GIF" alt="loading"/></span>
+			</div>
+		</div>
+
+		{% include('components/navbar.html.twig') %}
+
+		<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="img/bg/bg2.jpg" data-speed="0.7">
+			<div class="section-inner pad-top-200">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 mb30 wow text-center">
+							<h2 class="section-heading">Mon profil</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success text-center" style="width: 29% !important; margin: 50px auto 0 auto;">
+				<i class="fa fa-check text-success" aria-hidden="true"></i>
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-danger text-center" style="width: 29% !important; margin: 50px auto 0 auto;">
+				<i class="fa fa-times text-danger" aria-hidden="true"></i>
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<section>
+			<div class="container">
+				<div class="row">
+					<div class="img" style="    background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url(https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg);
+													    height: 350px;background-size: cover;"></div>
+					<div class="card social-prof">
+						<div class="card-body">
+							<div class="wrapper">
+								<img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" class="user-profile">
+								<h3>Jane Smith</h3>
+								<p>Web Developer</p>
+							</div>
+							<div class="row ">
+								<div class="col-lg-12">
+									<ul class=" nav nav-tabs justify-content-center s-nav">
+										<li>
+											<a href="#">Timeline</a>
+										</li>
+										<li>
+											<a class="active" href="#">About</a>
+										</li>
+										<li>
+											<a href="#">Friends</a>
+										</li>
+										<li>
+											<a href="#">Photos</a>
+										</li>
+										<li>
+											<a href="#">Videos</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="card">
+								<div class="card-body info-card social-about">
+									<h2 class="text-blue">About</h2>
+									<h4>
+										<strong>About Me</strong>
+									</h4>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+									</p>
+									<h4 class="mb-3">
+										<strong>Personal Info</strong>
+									</h4>
+									<div class="row">
+										<div class="col-6">
+											<div class="social-info">
+												<i class="fas fa-birthday-cake mr-2"></i>
+												<span>15/08/1991</span>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="social-info">
+												<i class="fas fa-map-marker-alt mr-2"></i>
+												<span>
+													New York</span>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-6">
+											<div class="social-info">
+												<i class="fas fas fa-users mr-2"></i>
+												<span>Female</span>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="social-info">
+												<i class="fas fa-briefcase mr-2"></i>
+												<span>UI/UX Designer</span>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-6">
+											<div class="social-info">
+												<i class="fas fas fa-mobile mr-2"></i>
+												<span>8392832983</span>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="social-info">
+												<i class="fas fas fa-envelope mr-2"></i>
+												<span>like @example.com</span>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="card info-card">
+								<div class="card-body">
+									<h2 class="text-blue">Skills</h2>
+									<div class="row">
+										<div class="col-lg-6">
+											<h4>HTML5</h4>
+											<div class="mb-3">
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<h4>Bootstrap Framework</h4>
+											<div class="mb-3">
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-6">
+											<h4>Vanilla Javascript</h4>
+											<div class="mb-3">
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<h4>Angular Js</h4>
+											<div class="mb-3">
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-6">
+											<h4>Adobe Photoshop</h4>
+											<div class="mb-3">
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<h4>Adobe Illustrator</h4>
+											<div class="mb-3">
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-6">
+											<h4>SASS/SCSS</h4>
+											<div class="mb-3">
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<h4>WORDPRESS
+											</h4>
+											<div class="mb-3">
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="card info-card">
+								<div class="card-body">
+									<h2 class="text-blue">Education</h2>
+									<div class="row">
+										<div class="col-lg-6">
+											<h4>
+												<strong>Pune University
+												</strong>
+											</h4>
+											<p>May 2009 to June 2011
+											</p>
+										</div>
+										<div class="col-lg-6">
+											<h4>
+												<strong>Course: Gamification</strong>
+											</h4>
+											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+											</p>
+										</div>
+										<div class="col-lg-6">
+											<h4>
+												<strong>St Xavier Highschool</strong>
+											</h4>
+											<p>Aug 2004 to June 2009
+											</p>
+										</div>
+										<div class="col-lg-6">
+											<h4>
+												<strong>Bachelor - Computer Science</strong>
+											</h4>
+											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="card info-card">
+								<div class="card-body">
+									<h2 class="text-blue">Work</h2>
+									<div class="row">
+										<div class="col-lg-6">
+											<h4>
+												<strong>Creative Arts - 2016-19</strong>
+											</h4>
+											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+											</p>
+										</div>
+										<div class="col-lg-6">
+											<h4>
+												<strong>Web Media - 2014-16</strong>
+											</h4>
+											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+											</p>
+										</div>
+										<div class="col-lg-6">
+											<h4>
+												<strong>Global Infosoft - 2012-14</strong>
+											</h4>
+											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+											</p>
+										</div>
+										<div class="col-lg-6">
+											<h4>
+												<strong>Freelancer - 2011-12</strong>
+											</h4>
+											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{% include('components/contact.html.twig') %}
+
+		{% include('components/footer.html.twig') %}
+
+	</div>
+
+	{% include('components/navRight.html.twig') %}
+
+{% endblock %}
