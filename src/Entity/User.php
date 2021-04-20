@@ -31,6 +31,12 @@ class User implements UserInterface,\Serializable
         1 => 'Female'
     ];
 
+    const STATUS = [
+        0 => 'Particulier',
+        1 => 'Professionnel'
+    ];
+
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -151,6 +157,31 @@ class User implements UserInterface,\Serializable
      */
     private $credits;
 
+    /**
+     * @ORM\Column(type="string", length=200, nullable=true)
+     */
+    private $biography;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $birthday;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $job;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, length=9)
+     */
+    private $siren;
+
 
      public function __construct()
      {
@@ -169,6 +200,8 @@ class User implements UserInterface,\Serializable
          $this->country = 'FR';
          $this->phone = '0200000000';
          $this->mobile = '0600000000'; 
+         $this->status = 0;
+         $this->siren = 0;
      }
 
     public function getId(): ?int
@@ -532,6 +565,78 @@ class User implements UserInterface,\Serializable
         $this->credits = $credits;
 
         return $this;
+    }
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography(?string $biography): self
+    {
+        $this->biography = $biography;
+
+        return $this;
+    }
+
+    public function getBirthday(): ?\DateTimeInterface
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(?\DateTimeInterface $birthday): self
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    public function getAge()
+    {
+        $dateInterval = $this->birthday->diff(new \DateTime());
+ 
+        return $dateInterval->y;
+    }
+
+    public function getJob(): ?string
+    {
+        return $this->job;
+    }
+
+    public function setJob(?string $job): self
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getSiren(): ?int
+    {
+        return $this->siren;
+    }
+
+    public function setSiren(int $siren): self
+    {
+        $this->siren = $siren;
+
+        return $this;
+    }
+
+    public function getStatusType(): string
+    {
+        return self::STATUS[$this->status];
     }
 
 }

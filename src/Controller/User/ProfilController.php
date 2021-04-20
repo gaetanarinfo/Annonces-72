@@ -4,6 +4,7 @@ namespace App\Controller\User;
 
 use App\Entity\Avatar;
 use App\Entity\User;
+use App\Form\UserType3;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,42 +41,42 @@ class ProfilController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/profil/edit", name="user.edit", methods="GET|POST")
-    //  * @param Request $request
-    //  * @return \Symfony\Component\HttpFoundation\Response
-    //  */
-    // public function edit(Request $request)
-    // {
-    //     $user = $this->getUser();
-    //     $form = $this->createForm(UserType3::class, $user);
-    //     $form->handleRequest($request);
+    /**
+     * @Route("/profil/edit", name="user.edit", methods="GET|POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function edit(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserType3::class, $user);
+        $form->handleRequest($request);
 
-    //     if($form->isSubmitted() && $form->isValid()) {
-    //             $user->setUpdatedAt(new \DateTime('now'));
-    //             $this->em->flush();
-    //             $this->addFlash('success', 'Profil modifié avec succès.');
-    //             return $this->redirectToRoute('profil');      
-    //     }
+        if($form->isSubmitted() && $form->isValid()) {
+                $user->setUpdatedAt(new \DateTime('now'));
+                $this->em->flush();
+                $this->addFlash('success', 'Profil modifié avec succès.');
+                return $this->redirectToRoute('profil');      
+        }
 
-    //     return $this->render('user/edit.html.twig', [
-    //         'form' => $form->createView()
-    //     ]);
-    // }
+        return $this->render('user/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 
-    // /**
-    //  * @Route("/profil/delete", name="user.delete", methods="GET|POST")
-    //  */
-    // public function delete(Request $request)
-    // {
-    //     $user = $this->getUser();
-    //     $session = new Session();
-    //     $session->invalidate();
-    //     $this->em->remove($user);
-    //     $this->em->flush();
-    //     $this->addFlash('success', 'Votre compte à été supprimé');
-    //     return $this->redirectToRoute('home');
-    // }
+    /**
+     * @Route("/profil/delete", name="user.delete", methods="GET|POST")
+     */
+    public function delete(Request $request)
+    {
+        $user = $this->getUser();
+        $session = new Session();
+        $session->invalidate();
+        $this->em->remove($user);
+        $this->em->flush();
+        $this->addFlash('success', 'Votre compte à été supprimé');
+        return $this->redirectToRoute('home');
+    }
 
     // /**
     // * @Route("/profil", name="user.avatar.delete")

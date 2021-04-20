@@ -1,4 +1,4 @@
-<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="img/bg/bg3.jpg" data-speed="0.7">
+<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="http://localhost:8000/img/bg/bg3.jpg" data-speed="0.7">
 	<div
 		id="contact-tabs" role="tabpanel">
 
@@ -19,14 +19,13 @@
 						<div class="container">
 							<div class="row">
 								<div class="col-sm-8 col-sm-offset-2">
-									<div id="message"></div>
-									<form class="main-contact-form wow animated" style="visibility: visible;">
-										<input type="text" class="form-control col-md-4" name="name" placeholder="Votre nom *" id="name" required="" data-validation-required-message="Please enter your name.">
-										<input type="text" class="form-control col-md-4" name="email" placeholder="Votre adresse email *" id="email" required="" data-validation-required-message="Please enter your email address.">
-										<input type="text" class="form-control col-md-4" name="website" placeholder="Votre sujet *" id="website" required="" data-validation-required-message="Please enter your web address.">
-										<textarea name="comments" class="form-control" id="comments" placeholder="Votre message *" required="" data-validation-required-message="Please enter a message."></textarea>
-										<input class="btn btn-primary mt30 btn-white pull-right" type="submit" name="submit" value="Envoyer">
-									</form>
+									{{ form_start(formContact, {'attr' : {'class' : 'main-contact-form wow animated'}}) }}
+										{{ form_widget(formContact.lastname) }}
+										{{ form_widget(formContact.email) }}
+										{{ form_widget(formContact.subject) }}
+										{{ form_widget(formContact.content) }}
+										<button class="btn btn-primary mt30 btn-white pull-right" type="submit">Envoyer</button>
+									{{ form_end(formContact) }}
 								</div>
 							</div>
 						</div>

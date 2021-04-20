@@ -1,188 +1,50 @@
 <div class="container">
 	<div class="row mb50">
-		<div class="col-md-4">
+		{% for annonce in annonces %}
+		<div class="col-md-4 mb-3">
 			<div class="hover-item mb30">
-				<img src="img/annonces/img1.jpg" class="img-responsive smoothie" alt="">
+
+				{% if annonce.pictures is empty %}
+					<img src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" alt="{{ annonce.author }}" class="img-responsive smoothie"/>
+				{% else %}
+					{% for picture in annonce.pictures %}
+						<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" alt="{{ annonce.author }}" class="img-responsive smoothie"/>
+					{% endfor %}
+				{% endif %}
+				
 				<div class="overlay-item-caption smoothie"></div>
 				<div class="hover-item-caption smoothie">
 					<div class="vertical-center smoothie">
-						<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
+						<a title="{{ annonce.title }}" href="{{ path('annonce.show', { 'id': annonce.id }) }}" class="smoothie btn btn-primary">Voir l'annonce</a>
 					</div>
 				</div>
 			</div>
 			<div class="item-excerpt">
-				<h4 class="pull-right">260 € / semaine</h4>
+				<h4 class="pull-right">{{ annonce.getFormattedPrice }} €</h4>
 				<h4>
-					<a href="#">LOUE APPART 4 PERS</a>
+					{{ annonce.title }}
 				</h4>
-				<p>Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus.</p>
-				<p>Mise en ligne par Machin72</p>
-				<div>
-					<ul class="list-unstyled">
+				<p>{{ annonce.smallContent }}</p>
+				<p>Mise en ligne par {{ annonce.author }}</p>
+				<div style="display: inline-block;">
+					{% if annonce.premium == 1 %}
+						<span><i class="fas fa-hand-sparkles text-success"></i> <b>Annonce Premium</b></span>
+					{% endif %}
+					<ul class="{% if annonce.premium == 1 %}ml-3{% endif %} list-unstyled" style="display: inline-block;">
 						<li>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
+							<span class="glyphicon glyphicon-star-empty"></span>
+							<span class="glyphicon glyphicon-star-empty"></span>
+							<span class="glyphicon glyphicon-star-empty"></span>
+							<span class="glyphicon glyphicon-star-empty"></span>
+							<span class="glyphicon glyphicon-star-empty"></span>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
-			<div class="hover-item mb30">
-				<img src="img/annonces/img2.jpg" class="img-responsive smoothie" alt="">
-				<div class="overlay-item-caption smoothie"></div>
-				<div class="hover-item-caption smoothie">
-					<div class="vertical-center smoothie">
-						<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
-					</div>
-				</div>
-			</div>
-			<div class="item-excerpt">
-				<h4 class="pull-right">260 € / semaine</h4>
-				<h4>
-					<a href="#">LOUE APPART 4 PERS</a>
-				</h4>
-				<p>Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus.</p>
-				<p>Mise en ligne par Machin72</p>
-				<div>
-					<ul class="list-unstyled">
-						<li>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="hover-item mb30">
-				<img src="img/annonces/img3.jpg" class="img-responsive smoothie" alt="">
-				<div class="overlay-item-caption smoothie"></div>
-				<div class="hover-item-caption smoothie">
-					<div class="vertical-center smoothie">
-						<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
-					</div>
-				</div>
-			</div>
-			<div class="item-excerpt">
-				<h4 class="pull-right">260 € / semaine</h4>
-				<h4>
-					<a href="#">LOUE APPART 4 PERS</a>
-				</h4>
-				<p>Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus.</p>
-				<p>Mise en ligne par Machin72</p>
-				<div>
-					<ul class="list-unstyled">
-						<li>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		{% endfor %}
 	</div>
-	<div class="row mb50">
-		<div class="col-md-4">
-			<div class="hover-item mb30">
-				<img src="img/annonces/img4.jpg" class="img-responsive smoothie" alt="">
-				<div class="overlay-item-caption smoothie"></div>
-				<div class="hover-item-caption smoothie">
-					<div class="vertical-center smoothie">
-						<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
-					</div>
-				</div>
-			</div>
-			<div class="item-excerpt">
-				<h4 class="pull-right">260 € / semaine</h4>
-				<h4>
-					<a href="#">LOUE APPART 4 PERS</a>
-				</h4>
-				<p>Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus.</p>
-				<p>Mise en ligne par Machin72</p>
-				<div>
-					<ul class="list-unstyled">
-						<li>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="hover-item mb30">
-				<img src="img/annonces/img5.jpg" class="img-responsive smoothie" alt="">
-				<div class="overlay-item-caption smoothie"></div>
-				<div class="hover-item-caption smoothie">
-					<div class="vertical-center smoothie">
-						<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
-					</div>
-				</div>
-			</div>
-			<div class="item-excerpt">
-				<h4 class="pull-right">260 € / semaine</h4>
-				<h4>
-					<a href="#">LOUE APPART 4 PERS</a>
-				</h4>
-				<p>Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus.</p>
-				<p>Mise en ligne par Machin72</p>
-				<div>
-					<ul class="list-unstyled">
-						<li>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="hover-item mb30">
-				<img src="img/annonces/img6.jpg" class="img-responsive smoothie" alt="">
-				<div class="overlay-item-caption smoothie"></div>
-				<div class="hover-item-caption smoothie">
-					<div class="vertical-center smoothie">
-						<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
-					</div>
-				</div>
-			</div>
-			<div class="item-excerpt">
-				<h4 class="pull-right">260 € / semaine</h4>
-				<h4>
-					<a href="#">LOUE APPART 4 PERS</a>
-				</h4>
-				<p>Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus.</p>
-				<p>Mise en ligne par Machin72</p>
-				<div>
-					<ul class="list-unstyled">
-						<li>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+
 	<hr>
 
 	<div class="row mb100">
@@ -195,7 +57,7 @@
 		</div>
 
 		<div class="col-md-6">
-			<img src="img/petite-annonce.png" class="img-responsive alignright wow fadeIn" data-wow-delay="0.5s" alt="" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeIn; width: 326px;">
+			<img src="http://localhost:8000/img/petite-annonce.png" class="img-responsive alignright wow fadeIn" data-wow-delay="0.5s" alt="" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeIn; width: 326px;">
 		</div>
 	</div>
 </div>

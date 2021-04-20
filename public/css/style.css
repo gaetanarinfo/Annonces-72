@@ -2423,6 +2423,10 @@ footer.white-wrapper .social-links li a {
     color: rgb(255, 110, 20);
 }
 
+.glyphicon-star-empty {
+    color: rgb(255, 110, 20);
+}
+
 .btn-annonces {
     display: inline-block;
     -webkit-box-align: center;
@@ -3028,6 +3032,10 @@ footer.white-wrapper .social-links li a {
     margin-left: 3rem!important
 }
 
+.m-auto {
+    margin: 0 auto;
+}
+
 .text-center {
     text-align: center!important
 }
@@ -3118,4 +3126,9 @@ footer.white-wrapper .social-links li a {
 
 .text-white-50 {
     color: hsla(0, 0%, 100%, .5)!important
+}
+
+.well {
+    min-height: 20px;
+    padding: 19px 19px 0 19px;
 }

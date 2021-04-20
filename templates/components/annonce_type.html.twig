@@ -1,3 +1,15 @@
+{% for message in app.flashes('success') %}
+	<div class="alert alert-success text-center" style="width: 29% !important; margin: 50px auto 0 auto;">
+		<i class="fa fa-check text-success" aria-hidden="true"></i> {{ message }}
+	</div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+		<div class="alert alert-danger text-center" style="width: 29% !important; margin: 50px auto 0 auto;">
+			<i class="fa fa-times text-danger" aria-hidden="true"></i> {{ message }}
+		</div>
+{% endfor %}
+
 <section>
 	<div class="section-inner">
 		<div class="container">
@@ -6,23 +18,28 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-6 mb50">
 							<div class="images">
-								<span class="onsale">
-									<i class="fas fa-hand-sparkles text-success"></i>
-									Annonces Premium</span>
-								<a class="lb-link" data-rel="product-gallery" href="img/annonces/img1.jpg" title="Image Title">
-									<img alt="Image Title" class="img-responsive" src="img/annonces/img1.jpg" title="Image Title">
-								</a>
+								{% if annonces.premium == 1 %}
+									<span class="onsale">
+										<i class="fas fa-hand-sparkles text-success"></i>
+										Annonce Premium</span>
+								{% endif %}
+
+								{% if annonces.pictures is empty %}
+									<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annonces.title }}">
+										<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" class="img-responsive" alt="{{ annonces.title }}">
+									</a>
+								{% else %}
+									<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annonces.title }}">
+										<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" class="img-responsive" alt="{{ blog.title }}"/>
+									</a>
+								{% endif %}
 
 								<div class="thumbnails mt">
-									<a class="lb-link" data-rel="product-gallery" href="img/annonces/img1.jpg" title="Image Title 2">
-										<img alt="image title" height="100" width="100" src="img/annonces/img1.jpg">
-									</a>
-									<a class="lb-link" data-rel="product-gallery" href="img/annonces/img1.jpg" title="Image Title 2">
-										<img alt="image title" height="100" width="100" src="img/annonces/img1.jpg">
-									</a>
-									<a class="lb-link" data-rel="product-gallery" href="img/annonces/img1.jpg" title="Image Title 2">
-										<img alt="image title" height="100" width="100" src="img/annonces/img1.jpg">
-									</a>
+									{% for picture in annonces.pictures %}
+										<a class="lb-link" data-rel="product-gallery" href="{{ vich_uploader_asset(annonces.pictures, 'imageFile') }}" title="Image Title 2">
+											<img alt="image title" height="100" width="100" src="{{ vich_uploader_asset(annonces.pictures, 'imageFile') }}">
+										</a>
+									{% endfor %}
 								</div>
 							</div>
 						</div>
@@ -33,14 +50,29 @@
 								<div>
 									<p class="price">
 										<ins>
-											<span class="amount">260 € / SEMAINE</span>
+											<span class="amount">{{ annonces.title }}</span>
 										</ins>
 									</p>
 								</div>
 
 								<div class="lead">
-									<p>Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla non arcu lacinia neque faucibus fringilla. Nulla non lectus sed nisl molestie malesuada. Proin in tellus sit amet nibh dignissim sagittis.</p>
+									<p>{{ annonces.smallcontent }}</p>
 								</div>
+
+								<hr/>
+
+								<div>
+									<p>
+										<i class="fas fa-angle-right"></i>
+										<b>{{ annonces.getCatType }}</b><br>
+										<span class="ml-5">
+											<i class="fas fa-angle-right"></i>
+											<b>{{ annonces.getCatType2 }}</span>
+										</b>
+									</p>
+								</div>
+
+								<hr/>
 
 								<div class="product-rating mb">
 									<span class="glyphicon glyphicon-star"></span>
@@ -50,24 +82,68 @@
 									<span class="glyphicon glyphicon-star"></span>
 								</div>
 
-                                <hr/>
+								<hr/>
 
-                                <div class="share">
-                                    <a class="btn btn-annonces" style="margin-right: 3px;"><i class="far fa-heart" aria-hidden="true"></i></a>
-                                    <a class="btn btn-annonces"><i class="fas fa-share-alt" aria-hidden="true"></i></a>
-                                </div>
+								<div class="share">
+									<a class="btn btn-annonces" style="margin-right: 3px;">
+										<i class="far fa-heart" aria-hidden="true"></i>
+									</a>
+									<a class="btn btn-annonces">
+										<i class="fas fa-share-alt" aria-hidden="true"></i>
+									</a>
+								</div>
 
-                                <hr/>
+								<hr/>
 
-                                <div class="share">
-								<a href="#" class="btn btn-primary btn-theme" style="margin-right: 3px;">Envoyer un message
-									<i class="far fa-comment-dots"></i>
-								</a>
-								<a href="#" class="btn btn-primary btn-theme">Voir le numéro
-									<i class="fas fa-phone"></i>
-								</a>
+								<div class="share">
+									<a href="#" class="btn btn-primary btn-theme" style="margin-right: 3px;">Envoyer un message
+										<i class="far fa-comment-dots"></i>
+									</a>
+									<a href="#" class="btn btn-primary btn-theme">Voir le numéro
+										<i class="fas fa-phone"></i>
+									</a>
 
-                                </div>
+								</div>
+							</div>
+						</div>
+
+						<div class="widget">
+							<h4 class="widget-title text-center">
+								<strong>Mise en ligne</strong>
+								Par</h4>
+							<div class="col-md-12" style="display: flex;justify-content: center;">
+
+								<div class="pull-left">
+
+									{% if user.pictures is empty %}
+										<img src="{{ '/img/avatar/default_profil.png' }}" alt="{{ annonces.author }}" class="avatar comment-avatar" style="border-radius: 50%;"/>
+									{% else %}
+										{% for picture in user.pictures %}
+											<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" alt="{{ annonces.author }}" class="avatar comment-avatar" style="border-radius: 50%;"/>
+										{% endfor %}
+									{% endif %}
+								</div>
+								<div class="media-body">
+									<div class="well">
+										<div class="media-heading">
+											<strong>{{ annonces.author }}</strong><br>
+											<small>{{ annonces.createdAt|format_datetime() }}</small><br>
+											<strong>
+												<i class="fa fa-shield" style="color: rgb(255, 110, 20)"></i>
+												Profil recommandé</strong><br>
+											{% if user.status != 0 %}
+												<strong>N° SIREN :
+													{{ user.siren }}</strong>
+											{% endif %}
+											<a href="">{{ count }}
+												annonces</a><br>
+											<small>
+												<i class="far fa-clock"></i>
+												Répond généralement dans les 6 heures</small>
+										</div>
+
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -78,80 +154,54 @@
 								</li>
 
 								<li class="reviews_tab">
-									<a data-toggle="tab" href="#tab-reviews">Commentaire(s) (0)</a>
+									<a data-toggle="tab" href="#tab-reviews">Commentaire(s) ({{ countComment }})</a>
 								</li>
 
-                                <li class="reviews_tab">
+								<li class="reviews_tab">
 									<a data-toggle="tab" href="#tab-localisation">Localisation</a>
 								</li>
 
-                                <li class="criteres_tab">
+								<li class="criteres_tab">
 									<a data-toggle="tab" href="#tab-criteres">Critères</a>
 								</li>
 							</ul>
 
+
 							<div class="tab-content mb">
 								<div class="tab-pane active" id="tab-description">
-									<p>Studio très bien situé au calme, accès direct au vieux port avec commerces, restaurants et arrêt de bus.<br>
-										Plages : Plagette, à 1 minute à pied, (sable blanc au pied d'une falaise volcanique). Au 3e étage avec ascenseur et sa place de parking sécurisée n°79. Terrasse avec vue dégagée sur parking et chenal. Exposition NO.<br>
-										Carrelage au sol neuf, coin cuisine neuf et bien équipé : plaque vitrocéramique, frigo, machine à laver, lave-vaisselle, micro-ondes, ...<br>
-										Salon:<br>
-										Banquette cliclac couchage 140/190cms.<br>
-										1 lit mezzanine 1 personne 90/190.<br>
-										1 Tv + radio, 1 table pliable et 3 assises.<br>
-										1 terrasse avec une table en marbre et 4 assises pliables.<br>
-										1 salle d'eau avec wc et meuble salle de bain neufs.<br>
-										Résidence: Secondaire</p>
+									<p>{{ annonces.largeContent|raw }}</p>
 
-                                        <a href="" class="btn btn-primary btn-theme">Signaler l'annonce</a>
+									<a href="" class="btn btn-primary btn-theme">Signaler l'annonce</a>
 								</div>
 
 								<div class="tab-pane fade" id="tab-reviews">
 									<div id="reviews">
 										<div id="comments">
 											<div id="comments-list" class="gap">
+												
+												{% for comments in comment %}
 												<div class="media">
 													<div class="pull-left">
-														<img class="avatar comment-avatar" src="img/avatar/default_profil.png" alt="">
+														{% if user.pictures is empty %}
+																<img src="{{ 'http://localhost:8000/img/avatar/default_profil.png' }}" width="60px" alt="{{ comments.author }}" class="avatar comment-avatar"/>
+															{% else %}
+																{% for picture in user.pictures %}
+																	<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" width="60px" alt="{{ comments.author }}" class="avatar comment-avatar"/>
+																{% endfor %}
+														{% endif %}
 													</div>
 													<div class="media-body">
 														<div class="well">
 															<div class="media-heading">
-																<strong>Dave Evans</strong>&nbsp;
-																<small>15 avril 2020 à 15h50</small>
+																<strong>{{ comments.author }}</strong>&nbsp;
+																<small>{{ comments.createdAt|format_datetime() }}</small>
 															</div>
-															<p>Was are delightful solicitude discovered collecting man day. Resolving neglected sir tolerably but existence conveying for. Day his put off unaffected literature partiality inhabiting.</p>
+															<p>{{ comments.content }}</p>
 														</div>
 													</div>
 												</div>
-												<div class="media">
-													<div class="pull-left">
-														<img class="avatar comment-avatar" src="img/avatar/default_profil.png" alt="">
-													</div>
-													<div class="media-body">
-														<div class="well">
-															<div class="media-heading">
-																<strong>Dave Evans</strong>&nbsp;
-																<small>15 avril 2020 à 15h50</small>
-															</div>
-															<p>Wicket longer admire do barton vanity itself do in it. Preferred to sportsmen it engrossed listening. Park gate sell they west hard for the. Abode stuff noisy manor blush yet the far. Up colonel so between removed so do.</p>
-														</div>
-													</div>
-												</div>
-												<div class="media">
-													<div class="pull-left">
-														<img class="avatar comment-avatar" src="img/avatar/default_profil.png" alt="">
-													</div>
-													<div class="media-body">
-														<div class="well">
-															<div class="media-heading">
-																<strong>Dave Evans</strong>&nbsp;
-																<small>15 avril 2020 à 15h50</small>
-															</div>
-															<p>Quitting informed concerns can men now. Projection to or up conviction uncommonly delightful continuing. In appetite ecstatic opinions hastened by handsome admitted.</p>
-														</div>
-													</div>
-												</div>
+												{% endfor %}
+												
 											</div>
 
 											<div id="comment-form" class="gap">
@@ -160,33 +210,25 @@
 														<strong>LAISSER UN</strong>
 														COMMENTAIRE</h3>
 												</div>
-												<form class="form-horizontal" role="form">
-													<div class="form-group">
-														<div class="col-sm-6">
-															<input type="text" class="form-control" placeholder="Nom">
-														</div>
-														<div class="col-sm-6">
-															<input type="email" class="form-control" placeholder="Adresse email">
-														</div>
-													</div>
+												{{ form_start(formComment, { 'attr' : { 'class' : 'form-horizontal'} }) }}
 													<div class="form-group">
 														<div class="col-sm-12">
-															<textarea rows="8" class="form-control" placeholder="Commentaire"></textarea>
+															{{ form_widget(formComment.content) }}
 														</div>
 													</div>
 													<button type="submit" class="btn btn-theme">Envoyer le commentaire</button>
-												</form>
+												{{ form_end(formComment) }}
 											</div>
 										</div>
 
 									</div>
 								</div>
 
-                                <div class="tab-pane" id="tab-localisation">
+								<div class="tab-pane" id="tab-localisation">
 									<p>Mapbox</p>
 								</div>
 
-                                <div class="tab-pane" id="tab-criteres">
+								<div class="tab-pane" id="tab-criteres">
 									<p>Critères</p>
 								</div>
 							</div>
@@ -199,60 +241,54 @@
 
 							<div class="row">
 								<ul class="owl-carousel-paged wow fadeIn list-unstyled" data-items="2" data-items-tablet="[768,2]" data-items-mobile="[479,1]">
-									<li class="nopadding-lr">
-										<div class="hover-item mb30">
-											<img src="img/annonces/img1.jpg" class="img-responsive smoothie" alt="">
-											<div class="overlay-item-caption smoothie"></div>
-											<div class="hover-item-caption smoothie">
-												<div class="vertical-center smoothie">
-													<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
+									{% for annonceSimi in annonceSimilaire %}
+										
+											<div class="hover-item mb30">
+
+												{% if annonceSimi.pictures is empty %}
+													<img src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" alt="{{ annonceSimi.author }}" class="img-responsive"/>
+												{% else %}
+													{% for picture in annonceSimi.pictures %}
+														<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" alt="{{ annonceSimi.author }}" class="img-responsive"/>
+													{% endfor %}
+												{% endif %}
+
+												<div class="overlay-item-caption smoothie"></div>
+												<div class="hover-item-caption smoothie">
+													<div class="vertical-center smoothie">
+														<a title="{{ annonceSimi.title }}" href="{{ path('annonce.show', { 'id': annonceSimi.id }) }}" class="smoothie btn btn-primary">Voir l'annonce</a>
+													</div>
 												</div>
 											</div>
-										</div>
-										<div class="item-excerpt">
-											<h4 class="pull-right">$24.99</h4>
-											<h4>
-												<a href="#">Slim-Fit Shirt</a>
-											</h4>
-											<p>Taste oh spoke about no solid of hills up shade. Occasion so bachelor humoured striking by attended doubtful be it.</p>
-										</div>
-									</li>
-									<li class="nopadding-lr">
-										<div class="hover-item mb30">
-											<img src="img/annonces/img1.jpg" class="img-responsive smoothie" alt="">
-											<div class="overlay-item-caption smoothie"></div>
-											<div class="hover-item-caption smoothie">
-												<div class="vertical-center smoothie">
-													<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
+											<div class="item-excerpt">
+												<h4 class="pull-right">{{ annonceSimi.getFormattedPrice }}
+													€</h4>
+												<h4>
+													{{ annonceSimi.title }}
+												</h4>
+												<p>{{ annonceSimi.smallContent }}</p>
+												<p>Mise en ligne par
+													{{ annonceSimi.author }}</p>
+												<div style="display: inline-block;">
+													{% if annonceSimi.premium == 1 %}
+														<span>
+															<i class="fas fa-hand-sparkles text-success"></i>
+															<b>Annonce Premium</b>
+														</span>
+													{% endif %}
+													<ul class="{% if annonceSimi.premium == 1 %}ml-3{% endif %} list-unstyled" style="display: inline-block;">
+														<li>
+															<span class="glyphicon glyphicon-star-empty"></span>
+															<span class="glyphicon glyphicon-star-empty"></span>
+															<span class="glyphicon glyphicon-star-empty"></span>
+															<span class="glyphicon glyphicon-star-empty"></span>
+															<span class="glyphicon glyphicon-star-empty"></span>
+														</li>
+													</ul>
 												</div>
 											</div>
-										</div>
-										<div class="item-excerpt">
-											<h4 class="pull-right">$24.99</h4>
-											<h4>
-												<a href="#">Slim-Fit Shirt</a>
-											</h4>
-											<p>Taste oh spoke about no solid of hills up shade. Occasion so bachelor humoured striking by attended doubtful be it.</p>
-										</div>
-									</li>
-									<li class="nopadding-lr">
-										<div class="hover-item mb30">
-											<img src="img/annonces/img1.jpg" class="img-responsive smoothie" alt="">
-											<div class="overlay-item-caption smoothie"></div>
-											<div class="hover-item-caption smoothie">
-												<div class="vertical-center smoothie">
-													<a href="#" class="smoothie btn btn-primary">Voir l'annonce</a>
-												</div>
-											</div>
-										</div>
-										<div class="item-excerpt">
-											<h4 class="pull-right">$24.99</h4>
-											<h4>
-												<a href="#">Slim-Fit Shirt</a>
-											</h4>
-											<p>Taste oh spoke about no solid of hills up shade. Occasion so bachelor humoured striking by attended doubtful be it.</p>
-										</div>
-									</li>
+								
+									{% endfor %}
 								</ul>
 							</div>
 						</div>
@@ -262,139 +298,41 @@
 					<div>
 						<div class="widget">
 							<h4 class="widget-title">
-								<strong>Mise en ligne</strong>
-								Par</h4>
-							<div>
-
-								<div class="pull-left">
-									<img class="avatar comment-avatar" style="border-radius: 50%;" src="img/avatar/default_profil.png" alt="">
-								</div>
-								<div class="media-body">
-									<div class="well">
-										<div class="media-heading">
-											<strong>Dave Evans</strong><br>
-											<small>Le 15 avril 2020 à 15h50</small><br>
-                                            <strong><i class="fa fa-shield" style="color: rgb(255, 110, 20)"></i> Profil recommandé</strong><br>
-                                            <strong>N° SIREN : 800332413</strong>   
-											<div class="muted">
-												<ul class="list-unstyled">
-													<li>
-														<span class="glyphicon glyphicon-star"></span>
-														<span class="glyphicon glyphicon-star"></span>
-														<span class="glyphicon glyphicon-star"></span>
-														<span class="glyphicon glyphicon-star"></span>
-														<span class="glyphicon glyphicon-star"></span>
-													</li>
-												</ul>
-											</div>
-                                            <a href="">Voir les 0 annonces</a>
-										</div>
-
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="widget">
-							<h4 class="widget-title">
 								<strong>Dernières</strong>
 								annonces</h4>
 							<div>
+								{% for annonce in annonceLatest %}
 								<div class="media">
 									<div class="pull-left">
-										<img class="widget-img" src="img/annonces/img1.jpg" width="60px" alt="">
+										{% if annonce.pictures is empty %}
+													<img src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" width="60px" alt="{{ annonce.author }}" class="widget-img"/>
+										{% else %}
+											{% for picture in annonce.pictures %}
+												<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" width="60px" alt="{{ annonce.author }}" class="widget-img"/>
+											{% endfor %}
+										{% endif %}
 									</div>
 									<div class="media-body">
 										<span class="media-heading">
-											<a href="#">LOUE APPART 4 PERS</a>
+											<a href="{{ path('annonce.show', { 'id': annonce.id }) }}">{{ annonce.title }}</a>
 										</span>
-										<small class="muted">260 € / SEMAINE</small>
-										<small class="muted">Par Seigneur Tom</small>
-										<small class="muted">Le 16 avril 2021 à 16h00</small>
+										<small class="muted">{{ annonce.getFormattedPrice }} €</small>
+										<small class="muted">Par {{ annonce.author }}</small>
+										<small class="muted">Le {{ annonce.createdAt|format_datetime() }}</small>
 										<div class="muted">
 											<ul class="list-unstyled">
 												<li>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
+													<span class="glyphicon glyphicon-star-empty"></span>
+													<span class="glyphicon glyphicon-star-empty"></span>
+													<span class="glyphicon glyphicon-star-empty"></span>
+													<span class="glyphicon glyphicon-star-empty"></span>
+													<span class="glyphicon glyphicon-star-empty"></span>
 												</li>
 											</ul>
 										</div>
 									</div>
 								</div>
-								<div class="media">
-									<div class="pull-left">
-										<img class="widget-img" src="img/annonces/img1.jpg" width="60px" alt="">
-									</div>
-									<div class="media-body">
-										<span class="media-heading">
-											<a href="#">LOUE APPART 4 PERS</a>
-										</span>
-										<small class="muted">260 € / SEMAINE</small>
-										<small class="muted">Par Seigneur Tom</small>
-										<small class="muted">Le 16 avril 2021 à 16h00</small>
-										<div class="muted">
-											<ul class="list-unstyled">
-												<li>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="media">
-									<div class="pull-left">
-										<img class="widget-img" src="img/annonces/img1.jpg" width="60px" alt="">
-									</div>
-									<div class="media-body">
-										<span class="media-heading">
-											<a href="#">LOUE APPART 4 PERS</a>
-										</span>
-										<small class="muted">260 € / SEMAINE</small>
-										<small class="muted">Par Seigneur Tom</small>
-										<small class="muted">Le 16 avril 2021 à 16h00</small>
-										<div class="muted">
-											<ul class="list-unstyled">
-												<li>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="media">
-									<div class="pull-left">
-										<img class="widget-img" src="img/annonces/img1.jpg" width="60px" alt="">
-									</div>
-									<div class="media-body">
-										<span class="media-heading">
-											<a href="#">LOUE APPART 4 PERS</a>
-										</span>
-										<small class="muted">260 € / SEMAINE</small>
-										<small class="muted">Par Seigneur Tom</small>
-										<small class="muted">Le 16 avril 2021 à 16h00</small>
-										<div class="muted">
-											<ul class="list-unstyled">
-												<li>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-													<span class="glyphicon glyphicon-star"></span>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
+								{% endfor %}
 							</div>
 						</div>
 					</div>

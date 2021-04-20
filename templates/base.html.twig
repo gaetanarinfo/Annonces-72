@@ -8,34 +8,35 @@
 		</title>
 		<meta name="description" content="Avec annonces-72, trouvez la bonne affaire, réalisez-la bonne vente pour votre voiture, immobilier, emploi, location de vacances, vêtements, mode, maison, meubles, jeux vidéo, etc., sur le site référent de petites annonces de particulier à particulier et professionnels">
 
-		<link rel="shortcut icon" href="img/ico/favicon.png">
-		<link rel="apple-touch-icon" sizes="144x144" href="img/ico/apple-touch-icon-144x144.png">
-		<link rel="apple-touch-icon" sizes="114x114" href="img/ico/apple-touch-icon-114x114.png">
-		<link rel="apple-touch-icon" sizes="72x72" href="img/ico/apple-touch-icon-72x72.png">
+		<link rel="shortcut icon" href="http://localhost:8000/img/ico/favicon.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="http://localhost:8000/img/ico/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="http://localhost:8000/img/ico/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="http://localhost:8000/img/ico/apple-touch-icon-72x72.png">
 		<link
-		rel="apple-touch-icon" href="img/ico/apple-touch-icon-57x57.png">
+		rel="apple-touch-icon" href="http://localhost:8000/img/ico/apple-touch-icon-57x57.png">
+
+		{% block stylesheets %}{% endblock %}
 
 		<!-- Bootstrap Core CSS -->
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/animate.css" rel="stylesheet">
+		<link href="http://localhost:8000/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://localhost:8000/css/animate.css" rel="stylesheet">
 		<link
-		href="css/plugins.css" rel="stylesheet">
+		href="http://localhost:8000/css/plugins.css" rel="stylesheet">
 
 		<!-- Custom CSS -->
 		<link
-		href="css/style.css" rel="stylesheet">
+		href="http://localhost:8000/css/style.css" rel="stylesheet">
 
 		<!-- Custom Fonts -->
-		<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-		<link href="css/pe-icons.css" rel="stylesheet"> 
-		{% block stylesheets %}{% endblock %}
+		<link href="http://localhost:8000/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<link href="http://localhost:8000/css/pe-icons.css" rel="stylesheet"> 
 		</head>
 		<body id="page-top" class="index"> {% block body %}{% endblock %}
-			<script src="js/9d1d83a1dd.js" crossorigin="anonymous"></script>
-			<script src="js/jquery.js"></script>
-			<script src="js/bootstrap.min.js"></script>
-			<script src="js/plugins.js"></script>
-			<script src="js/init.js"></script>
+			<script src="http://localhost:8000/js/9d1d83a1dd.js" crossorigin="anonymous"></script>
+			<script src="http://localhost:8000/js/jquery.js"></script>
+			<script src="http://localhost:8000/js/bootstrap.min.js"></script>
+			<script src="http://localhost:8000/js/plugins.js"></script>
+			<script src="http://localhost:8000/js/init.js"></script>
 
 			<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 			<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -47,7 +48,7 @@
 				<script type="text/javascript"> $(document).ready(function () {
 'use strict';
 jQuery('#headerwrap').backstretch([
-"img/bg/bg1.jpg", "img/bg/bg2.jpg", "img/bg/bg3.jpg", "img/bg/bg4.jpg", "img/bg/bg5.jpg"
+"http://localhost:8000/img/bg/bg1.jpg", "http://localhost:8000/img/bg/bg2.jpg", "http://localhost:8000/img/bg/bg3.jpg", "http://localhost:8000/img/bg/bg4.jpg", "http://localhost:8000/img/bg/bg5.jpg"
 ], {
 duration: 8000,
 fade: 500

@@ -33,8 +33,8 @@ class RecoverNotification
         list($nom_jour, $jour, $mois, $annee) = explode('/', date("w/d/n/Y"));
         $heure = date('H:i:s');
 
-        $message = (new \Swift_Message('Mot de passe oublié - AgenceWeb '))
-            ->setFrom('noreply@agence-web.fr')
+        $message = (new \Swift_Message('Mot de passe oublié - Annonces-72 '))
+            ->setFrom('no-reply@annonces-72.fr')
             ->setTo($user->getEmail())
             ->setBody($this->renderer->render('emails/recover_password.html.twig', [
                 'recover' => $user,
