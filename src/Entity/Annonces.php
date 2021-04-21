@@ -443,4 +443,5 @@ class Annonces
     {
         return number_format($this->price, 0, '', ' ');
     }
+
 }

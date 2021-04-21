@@ -30,7 +30,7 @@
 									</a>
 								{% else %}
 									<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annonces.title }}">
-										<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" class="img-responsive" alt="{{ blog.title }}"/>
+										<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" class="img-responsive" alt="{{ annonces.title }}"/>
 									</a>
 								{% endif %}
 
@@ -74,20 +74,126 @@
 
 								<hr/>
 
-								<div class="product-rating mb">
-									<span class="glyphicon glyphicon-star"></span>
-									<span class="glyphicon glyphicon-star"></span>
-									<span class="glyphicon glyphicon-star"></span>
-									<span class="glyphicon glyphicon-star"></span>
-									<span class="glyphicon glyphicon-star"></span>
+								{% if is_granted('ROLE_USER') %}
+								<div class="product-rating" style="margin-bottom: -3px;">
+									{% if voteId %}
+										{% if voteCount < 20 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<a id="vote-stars1" href="{{ path('annonce.starsVote1', { 'id': annonces.id }) }}"><span class="glyphicon glyphicon-star-empty" id="stars1"></span></a>
+									{% endif %}
+									{% if voteId %}
+										{% if voteCount < 40 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<a id="vote-stars2" href="{{ path('annonce.starsVote2', { 'id': annonces.id }) }}"><span class="glyphicon glyphicon-star-empty" id="stars2"></span></a>
+									{% endif %}
+									{% if voteId %}
+										{% if voteCount < 60 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<a id="vote-stars3" href="{{ path('annonce.starsVote3', { 'id': annonces.id }) }}"><span class="glyphicon glyphicon-star-empty" id="stars3"></span></a>
+									{% endif %}
+									{% if voteId %}
+										{% if voteCount < 80 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<a id="vote-stars4" href="{{ path('annonce.starsVote4', { 'id': annonces.id }) }}"><span class="glyphicon glyphicon-star-empty" id="stars4"></span></a>
+									{% endif %}
+									{% if voteId %}
+										{% if voteCount < 100 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<a id="vote-stars5" href="{{ path('annonce.starsVote5', { 'id': annonces.id }) }}"><span class="glyphicon glyphicon-star-empty" id="stars5"></span></a>
+									{% endif %}
+
 								</div>
+								{% else %}
+								<div class="product-rating" style="margin-bottom: -3px;">
+									{% if voteId %}
+										{% if voteCount < 20 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<span class="glyphicon glyphicon-star-empty" id="stars1"></span>
+									{% endif %}
+									{% if voteId %}
+										{% if voteCount < 40 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<span class="glyphicon glyphicon-star-empty" id="stars2"></span>
+									{% endif %}
+									{% if voteId %}
+										{% if voteCount < 60 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<span class="glyphicon glyphicon-star-empty" id="stars3"></span>
+									{% endif %}
+									{% if voteId %}
+										{% if voteCount < 80 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<span class="glyphicon glyphicon-star-empty" id="stars4"></span>
+									{% endif %}
+									{% if voteId %}
+										{% if voteCount < 100 %}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-star"></span>
+										{% endif %}
+									{% else %}
+										<span class="glyphicon glyphicon-star-empty" id="stars5"></span>
+									{% endif %}
+
+								</div>
+								{% endif %}
 
 								<hr/>
 
 								<div class="share">
-									<a class="btn btn-annonces" style="margin-right: 3px;">
-										<i class="far fa-heart" aria-hidden="true"></i>
-									</a>
+										{% if is_granted('ROLE_USER') %}
+											{% if likeId %}
+												<a class="btn btn-annonces" style="margin-right: 3px;">
+													<i class="far fa-heart" aria-hidden="true"></i>
+												</a>
+											{% else %}	
+												<a href="{{ path('annonce.like', { 'id': annonces.id }) }}" class="btn btn-annonces" style="margin-right: 3px;">
+													<i class="far fa-heart" aria-hidden="true"></i>
+												</a>
+											{% endif %}
+										{% else %}
+												<a href="{{ path('login') }}" class="btn btn-annonces" style="margin-right: 3px;">
+													<i class="far fa-heart" aria-hidden="true"></i>
+												</a>
+										{% endif %}
+									
+
 									<a class="btn btn-annonces">
 										<i class="fas fa-share-alt" aria-hidden="true"></i>
 									</a>
@@ -96,7 +202,7 @@
 								<hr/>
 
 								<div class="share">
-									<a href="#" class="btn btn-primary btn-theme" style="margin-right: 3px;">Envoyer un message
+									<a href="#" class="btn btn-primary btn-theme mr-5">Envoyer un message
 										<i class="far fa-comment-dots"></i>
 									</a>
 									<a href="#" class="btn btn-primary btn-theme">Voir le numéro
@@ -276,15 +382,6 @@
 															<b>Annonce Premium</b>
 														</span>
 													{% endif %}
-													<ul class="{% if annonceSimi.premium == 1 %}ml-3{% endif %} list-unstyled" style="display: inline-block;">
-														<li>
-															<span class="glyphicon glyphicon-star-empty"></span>
-															<span class="glyphicon glyphicon-star-empty"></span>
-															<span class="glyphicon glyphicon-star-empty"></span>
-															<span class="glyphicon glyphicon-star-empty"></span>
-															<span class="glyphicon glyphicon-star-empty"></span>
-														</li>
-													</ul>
 												</div>
 											</div>
 								
@@ -319,19 +416,9 @@
 										<small class="muted">{{ annonce.getFormattedPrice }} €</small>
 										<small class="muted">Par {{ annonce.author }}</small>
 										<small class="muted">Le {{ annonce.createdAt|format_datetime() }}</small>
-										<div class="muted">
-											<ul class="list-unstyled">
-												<li>
-													<span class="glyphicon glyphicon-star-empty"></span>
-													<span class="glyphicon glyphicon-star-empty"></span>
-													<span class="glyphicon glyphicon-star-empty"></span>
-													<span class="glyphicon glyphicon-star-empty"></span>
-													<span class="glyphicon glyphicon-star-empty"></span>
-												</li>
-											</ul>
-										</div>
 									</div>
 								</div>
+								<hr>
 								{% endfor %}
 							</div>
 						</div>

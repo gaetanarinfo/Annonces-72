@@ -3132,3 +3132,7 @@ footer.white-wrapper .social-links li a {
     min-height: 20px;
     padding: 19px 19px 0 19px;
 }
+
+.form-control {
+    color: #1d1c1c;
+}

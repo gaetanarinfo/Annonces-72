@@ -3,14 +3,24 @@
 namespace App\Controller\User;
 
 use App\Entity\Avatar;
+use App\Entity\Contact;
+use App\Entity\Credits;
 use App\Entity\User;
+use App\Form\ContactType;
 use App\Form\UserType3;
+use App\Notification\ContactNotification;
+use App\Repository\AnnoncesRepository;
+use App\Repository\CreditsRepository;
+use App\Repository\LikeAnnoncesRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class ProfilController extends AbstractController
 {
@@ -32,12 +42,36 @@ class ProfilController extends AbstractController
      * @Route("/profil", name="profil", methods="GET|POST")
     */
 
-    public function index()
+    public function index(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike)
     {
-        $username = $this->getUser('username')->getUsername();
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annonces = $repositoryAnnonces->findLatest();
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        $userLike = $repositoryLike->find($this->getUser()->getId());
+        
+        if($userLike == null)
+        {   
+            $annoncesLike = 0;
+        }else{
+            $annoncesLike = $repositoryAnnonces->find($userLike->getAnnoncesId());
+        }
 
         return $this->render('user/index.html.twig', [
-
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces,
+            'annoncesLike' => $annoncesLike
         ]);
     }
 
@@ -46,11 +80,25 @@ class ProfilController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request)
+    public function edit(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType3::class, $user);
         $form->handleRequest($request);
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annonces = $repositoryAnnonces->findLatest();
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
 
         if($form->isSubmitted() && $form->isValid()) {
                 $user->setUpdatedAt(new \DateTime('now'));
@@ -60,7 +108,9 @@ class ProfilController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces
         ]);
     }
 
@@ -127,6 +177,271 @@ class ProfilController extends AbstractController
     //         }
     //     }
     // }
+
+    /**
+     * @Route("/profil/annonces", name="user.annonces", methods="GET|POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function annonces(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annonces = $repositoryAnnonces->findLatest();
+        $annoncesUser = $repositoryAnnonces->findBy(array('author' => $this->getUser()->getUsername()));
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('profil');
+
+        }
+
+        return $this->render('user/annonces.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces,
+            'annoncesUser' => $annoncesUser
+        ]);
+    }
+
+    /**
+     * @Route("/profil/credit", name="user.credit", methods="GET|POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function credit(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CreditsRepository $creditsRepository)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('profil');
+
+        }
+
+        $transaction = $creditsRepository->findBy(array('userId' => $this->getUser()->getId()));
+
+        $annonces = $repositoryAnnonces->findLatest();
+
+        return $this->render('user/credit.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces,
+            'transaction' => $transaction
+        ]);
+    }
+
+    /**
+     * @Route("/profil/credit/create/10/{token}", name="user.credit.create.10", methods="GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param DeleteMemberResponder     $responder
+     * @param Request                   $request
+     * 
+     * @return Response
+     *
+     * @throws InvalidCsrfTokenException
+     */
+    public function creditCreate10(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CsrfTokenManagerInterface $csrfTokenManager)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('profil');
+
+        }
+
+        $token = new CsrfToken('token_paypal_10', $request->attributes->get('token'));
+ 
+        // Action is stopped since token is not allowed!
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException('CSRF Token est non valide');
+        }else{
+
+            $credit = new Credits;
+            $credit->setAmount(10);
+            $credit->setDescription('Acheter pour 10 euros de crédits');
+            $credit->setStatus('validé');
+            $credit->setUserId($this->getUser()->getId());
+            $credit->setIdTrans(uniqid());
+            $credits = $this->getUser()->getCredits();
+            $this->getUser()->setCredits($credits + 10);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($credit);
+            $entityManager->flush();
+            $this->addFlash('success', 'Achat éffectué avec succès.');
+
+        }
+
+        return $this->redirectToRoute('profil');
+    }
+
+     /**
+     * @Route("/profil/credit/create/25/{token}", name="user.credit.create.25", methods="GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param DeleteMemberResponder     $responder
+     * @param Request                   $request
+     * 
+     * @return Response
+     *
+     * @throws InvalidCsrfTokenException
+     */
+    public function creditCreate25(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CsrfTokenManagerInterface $csrfTokenManager)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('profil');
+
+        }
+
+        $token = new CsrfToken('token_paypal_25', $request->attributes->get('token'));
+ 
+        // Action is stopped since token is not allowed!
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException('CSRF Token est non valide');
+        }else{
+
+            $credit = new Credits;
+            $credit->setAmount(25);
+            $credit->setDescription('Acheter pour 25 euros de crédits');
+            $credit->setStatus('validé');
+            $credit->setUserId($this->getUser()->getId());
+            $credit->setIdTrans(uniqid());
+            $credits = $this->getUser()->getCredits();
+            $this->getUser()->setCredits($credits + 10);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($credit);
+            $entityManager->flush();
+            $this->addFlash('success', 'Achat éffectué avec succès.');
+
+        }
+
+        return $this->redirectToRoute('profil');
+    }
+
+    /**
+     * @Route("/profil/credit/create/50/{token}", name="user.credit.create.50", methods="GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param DeleteMemberResponder     $responder
+     * @param Request                   $request
+     * 
+     * @return Response
+     *
+     * @throws InvalidCsrfTokenException
+     */
+    public function creditCreate50(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CsrfTokenManagerInterface $csrfTokenManager)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('profil');
+
+        }
+
+        $token = new CsrfToken('token_paypal_50', $request->attributes->get('token'));
+ 
+        // Action is stopped since token is not allowed!
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException('CSRF Token est non valide');
+        }else{
+
+            $credit = new Credits;
+            $credit->setAmount(50);
+            $credit->setDescription('Acheter pour 50 euros de crédits');
+            $credit->setStatus('validé');
+            $credit->setUserId($this->getUser()->getId());
+            $credit->setIdTrans(uniqid());
+            $credits = $this->getUser()->getCredits();
+            $this->getUser()->setCredits($credits + 50);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($credit);
+            $entityManager->flush();
+            $this->addFlash('success', 'Achat éffectué avec succès.');
+
+        }
+
+        return $this->redirectToRoute('profil');
+    }
+
+     /**
+     * @Route("/profil/credit/create/150/{token}", name="user.credit.create.150", methods="GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param DeleteMemberResponder     $responder
+     * @param Request                   $request
+     * 
+     * @return Response
+     *
+     * @throws InvalidCsrfTokenException
+     */
+    public function creditCreate150(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CsrfTokenManagerInterface $csrfTokenManager)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('profil');
+
+        }
+
+        $token = new CsrfToken('token_paypal_150', $request->attributes->get('token'));
+ 
+        // Action is stopped since token is not allowed!
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException('CSRF Token est non valide');
+        }else{
+
+            $credit = new Credits;
+            $credit->setAmount(150);
+            $credit->setDescription('Acheter pour 150 euros de crédits');
+            $credit->setStatus('validé');
+            $credit->setUserId($this->getUser()->getId());
+            $credit->setIdTrans(uniqid());
+            $credits = $this->getUser()->getCredits();
+            $this->getUser()->setCredits($credits + 150);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($credit);
+            $entityManager->flush();
+            $this->addFlash('success', 'Achat éffectué avec succès.');
+
+        }
+
+        return $this->redirectToRoute('profil');
+    }
 
 }
 

@@ -51,6 +51,10 @@ class User implements UserInterface,\Serializable
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(
+     * pattern = "/^(?=.*[0-9])(?=.*[A-Z]).{8,20}$/",
+     * match=true,
+     * message="Your password must be at least eight characters long, including upper and lower case letters, a number, and a symbol.")
      */
     private $password;
 
@@ -198,10 +202,11 @@ class User implements UserInterface,\Serializable
          $this->gender = 0;
          $this->city = 'Aucune ville';
          $this->country = 'FR';
-         $this->phone = '0200000000';
-         $this->mobile = '0600000000'; 
          $this->status = 0;
          $this->siren = 0;
+         $this->vote = new ArrayCollection();
+         $this->credits = 0;
+         $this->birthday = new \DateTime();
      }
 
     public function getId(): ?int

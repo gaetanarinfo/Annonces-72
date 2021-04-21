@@ -6,21 +6,32 @@ use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType3 extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        
         $builder
+            ->add('status', CheckboxType::class, [
+
+                'required' => true
+            ])
+            ->add('siren', TextType::class, [
+                'required' => true
+            ])
             ->add('lastname', TextType::class, [
 
                 'required' => false,
@@ -33,6 +44,12 @@ class UserType3 extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Firstname'
+                ]
+            ])
+            ->add('password', PasswordType::class, [
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Password'
                 ]
             ])
             ->add('gender', ChoiceType::class, [

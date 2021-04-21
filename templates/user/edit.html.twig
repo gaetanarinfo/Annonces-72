@@ -28,14 +28,14 @@
 		</section>
 
 		{% for message in app.flashes('success') %}
-			<div class="alert alert-success text-center" style="width: 29% !important; margin: 27px auto 0 auto">
+			<div class="alert alert-success text-center" style="width: 29% !important; margin: 27px auto 50px auto">
 				<i class="fa fa-check text-success" aria-hidden="true"></i>
 				{{ message }}
 			</div>
 		{% endfor %}
 
 		{% for message in app.flashes('error') %}
-			<div class="alert alert-danger text-center" style="width: 29% !important; margin: 27px auto 0 auto">
+			<div class="alert alert-danger text-center" style="width: 29% !important; margin: 27px auto 50px auto">
 				<i class="fa fa-times text-danger" aria-hidden="true"></i>
 				{{ message }}
 			</div>
@@ -49,7 +49,7 @@
 						<div class="card-body">
 							<div class="wrapper">
 								{% if app.user.pictures is empty %}
-									<img src="{{ '/images/default_profil.png' }}" alt="{{ app.user.username }}" class="rounded-circle user-profil" alt=""/>
+									<img src="{{ 'http://localhost:8000/img/avatar/default_profil.png' }}" alt="{{ app.user.username }}" class="rounded-circle user-profil" alt=""/>
 								{% else %}
 									{% for picture in app.user.pictures %}
 										<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" alt="{{ app.user.username }}" class="rounded-circle user-profil" alt=""/>
@@ -70,10 +70,10 @@
 											<a class="active" href="{{ path('user.edit') }}">Mes paramètres</a>
 										</li>
 										<li>
-											<a href="#">Mes annonces</a>
+											<a href="{{ path('user.annonces') }}">Mes annonces</a>
 										</li>
 										<li>
-											<a href="#">Mes crédits</a>
+											<a href="{{ path('user.credit') }}">Mes crédits</a>
 										</li>
 									</ul>
 								</div>
@@ -89,12 +89,27 @@
 									<div class="row ml-1">
 										<div class="col-6">
 											<div class="social-info">
+												{{ form_row(form.status) }}
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="social-info">
+												{{ form_row(form.siren) }}
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="social-info">
 												{{ form_row(form.lastname) }}
 											</div>
 										</div>
 										<div class="col-6">
 											<div class="social-info">
 												{{ form_row(form.firstname) }}
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="social-info">
+												{{ form_row(form.password) }}
 											</div>
 										</div>
 										<div class="col-6">

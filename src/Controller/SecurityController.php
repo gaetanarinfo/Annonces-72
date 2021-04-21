@@ -1,12 +1,16 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Entity\User;
+use App\Form\ContactType;
 use App\Form\RegisterType;
 use App\Form\RecoverType;
 use App\Form\RecoverNewType;
+use App\Notification\ContactNotification;
 use App\Notification\RecoverNotification;
 use App\Notification\RegisterNotification;
+use App\Repository\AnnoncesRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,11 +39,28 @@ class SecurityController extends AbstractController
      * @Route("/login", name="login")
      * @Security("not is_granted('ROLE_USER')")
      */
-    public function login(AuthenticationUtils $authentificationUtils, SessionInterface $session)
+    public function login(AuthenticationUtils $authentificationUtils, SessionInterface $session, ContactNotification $notif, Request $request, AnnoncesRepository $repositoryAnnonces)
     {
         $error = $authentificationUtils->getLastAuthenticationError();
         $lastUsername = $authentificationUtils->getLastUsername();
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annonces = $repositoryAnnonces->findLatest();
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
         return $this->render('security/login.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces,
             'last_username' => $lastUsername,
             'error' => $error
         ]);
@@ -50,7 +71,7 @@ class SecurityController extends AbstractController
      * @Security("not is_granted('ROLE_USER')")
      * @var UserPasswordEncoderInterface
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RegisterNotification $register, SessionInterface $session)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RegisterNotification $register, SessionInterface $session, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
     {
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
@@ -77,9 +98,25 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('register');
         }
 
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annonces = $repositoryAnnonces->findLatest();
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
         return $this->render('security/register.html.twig', [
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces
         ]);
 
     }
@@ -107,7 +144,7 @@ class SecurityController extends AbstractController
      * @Security("not is_granted('ROLE_USER')")
      * @Route("/password_recover", name="password_recover")
      */
-    public function passwordRecover(Request $request, RecoverNotification $recover, SessionInterface $session)
+    public function passwordRecover(Request $request, RecoverNotification $recover, SessionInterface $session, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
     {
         
         $user = new User();
@@ -130,9 +167,25 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('password_recover');
         }
 
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annonces = $repositoryAnnonces->findLatest();
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
         return $this->render('security/password_recover.html.twig', [
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces
         ]);
     }
 
@@ -157,7 +210,7 @@ class SecurityController extends AbstractController
      * @Route("/passwordNew", name="passwordNew")
     * @var UserPasswordEncoderInterface
      */
-    public function passwordNew(Request $request, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session)
+    public function passwordNew(Request $request, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
     {
         $user = new User();
         $form = $this->createForm(RecoverNewType::class, $user);
@@ -190,9 +243,25 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annonces = $repositoryAnnonces->findLatest();
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
         return $this->render('security/passwordNew.html.twig', [
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces
         ]);
 
     }

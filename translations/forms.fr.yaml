@@ -53,3 +53,6 @@ Month: Mois
 Day: Jour
 Selected value: Sélectionnez une valeur
 Job: Travail
+Your password must be at least eight characters long, including upper and lower case letters, a number, and a symbol.: Votre mot de passe doit comporter au moins huit caractères, dont des lettres majuscules et minuscules, un chiffre et un symbole.
+Status: Particulier / Professionnel
+Siren: Numéro de siren (Pour les profesionnels uniquement)

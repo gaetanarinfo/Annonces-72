@@ -1,0 +1,266 @@
+{% extends "base.html.twig" %}
+
+{% block title 'Annonces-72 - Mes crédits' %}
+
+{% block body %}
+	<link href="http://localhost:8000/css/profil.css" rel="stylesheet">
+
+	<div class="master-wrapper">
+
+		<div class="preloader">
+			<div class="preloader-img">
+				<span class="loading-animation animate-flicker"><img src="http://localhost:8000/img/loading.GIF" alt="loading"/></span>
+			</div>
+		</div>
+
+		{% include('components/navbar.html.twig') %}
+
+		<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="http://localhost:8000/img/bg/bg2.jpg" data-speed="0.7">
+			<div class="section-inner pad-top-200">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 mb30 wow text-center">
+							<h2 class="section-heading">Mes crédits</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success text-center" style="width: 29% !important; margin: 50px auto 50px auto;">
+				<i class="fa fa-check text-success" aria-hidden="true"></i>
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-danger text-center" style="width: 29% !important; margin: 50px auto 50px auto;">
+				<i class="fa fa-times text-danger" aria-hidden="true"></i>
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<section>
+			<div class="container mt-5">
+				<div class="row">
+					<div class="img" style="background-image: url(http://localhost:8000/img/bg/user_profil.jpg);height: 350px;background-size: cover;"></div>
+					<div class="card social-prof">
+						<div class="card-body">
+							<div class="wrapper">
+								{% if app.user.pictures is empty %}
+									<img src="{{ 'http://localhost:8000/img/avatar/default_profil.png' }}" alt="{{ app.user.username }}" class="rounded-circle user-profil" alt=""/>
+								{% else %}
+									{% for picture in app.user.pictures %}
+										<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" alt="{{ app.user.username }}" class="rounded-circle user-profil" alt=""/>
+									{% endfor %}
+								{% endif %}
+								<h3 class="mt-0 mb-3">{{ app.user.lastname }}
+									-
+									{{ app.user.firstname }}</h3>
+								<p>{{ app.user.username }}</p>
+							</div>
+							<div class="row ">
+								<div class="col-lg-12">
+									<ul class=" nav nav-tabs justify-content-center s-nav">
+										<li>
+											<a href="{{ path('profil') }}">Mon profil</a>
+										</li>
+										<li>
+											<a href="{{ path('user.edit') }}">Mes paramètres</a>
+										</li>
+										<li>
+											<a href="{{ path('user.annonces') }}">Mes annonces</a>
+										</li>
+										<li>
+											<a href="{{ path('user.credit') }}" class="active">Mes crédits</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="container row m-auto">
+						<div class="col-lg-6">
+							<div class="card info-card">
+								<div class="card-body">
+									<h2 class="text-blue">Acheter des crédits</h2>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="mt-2 mb-4 text-center">
+												<h4><i class="fas fa-coins mr-2 text-warning" aria-hidden="true"></i>
+												<strong>Acheter pour 10 euros de crédits</strong></h4>
+											</div>
+											<div id="smart-button-container" class="mt-4">
+												<div style="text-align: center;">
+													<div style="margin-bottom: 1.25rem;">
+														<p></p>
+														<select id="item-options" class="form-control">
+															<option value="10 crédits" price="10">10 crédits - 10 EUR</option>
+															<option value="25 crédits" price="25">25 crédits - 25 EUR</option>
+															<option value="50 crédits" price="50">50 crédits - 50 EUR</option>
+															<option value="150 crédits" price="150">150 crédits - 150 EUR</option>
+														</select>
+														<select style="visibility: hidden" id="quantitySelect"></select>
+													</div>
+													<div id="paypal-button-container"></div>
+												</div>
+											</div>
+											<script src="https://www.paypal.com/sdk/js?client-id=AV4qzI2CIHQXfnIiz2c4KnhJGEl7NSxuF_Vf6XknxAtya93sz1eUXzL-tTVttGRKRHbQvpNOZukRkdSO&currency=EUR" data-sdk-integration-source="button-factory"></script>
+											<script>
+												function initPayPalButton() {
+												        var shipping = 0;
+												        var itemOptions = document.querySelector("#smart-button-container #item-options");
+												    var quantity = parseInt();
+												    var quantitySelect = document.querySelector("#smart-button-container #quantitySelect");
+												    if (!isNaN(quantity)) {
+												      quantitySelect.style.visibility = "visible";
+												    }
+												    var orderDescription = '';
+												    if(orderDescription === '') {
+												      orderDescription = 'Item';
+												    }
+												    paypal.Buttons({
+												      style: {
+												        shape: 'rect',
+												        color: 'blue',
+												        layout: 'vertical',
+												        label: 'buynow',
+												        
+												      },
+												      createOrder: function(data, actions) {
+												        var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
+												        var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
+												        var tax = (0 === 0) ? 0 : (selectedItemPrice * (parseFloat(0)/100));
+												        if(quantitySelect.options.length > 0) {
+												          quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
+												        } else {
+												          quantity = 1;
+												        }
+												
+												        tax *= quantity;
+												        tax = Math.round(tax * 100) / 100;
+												        var priceTotal = quantity * selectedItemPrice + parseFloat(shipping) + tax;
+												        priceTotal = Math.round(priceTotal * 100) / 100;
+												        var itemTotalValue = Math.round((selectedItemPrice * quantity) * 100) / 100;
+												
+												        return actions.order.create({
+												          purchase_units: [{
+												            description: orderDescription,
+												            amount: {
+												              currency_code: 'EUR',
+												              value: priceTotal,
+												              breakdown: {
+												                item_total: {
+												                  currency_code: 'EUR',
+												                  value: itemTotalValue,
+												                },
+												                shipping: {
+												                  currency_code: 'EUR',
+												                  value: shipping,
+												                },
+												                tax_total: {
+												                  currency_code: 'EUR',
+												                  value: tax,
+												                }
+												              }
+												            },
+												            items: [{
+												              name: selectedItemDescription,
+												              unit_amount: {
+												                currency_code: 'EUR',
+												                value: selectedItemPrice,
+												              },
+												              quantity: quantity
+												            }]
+												          }]
+												        });
+												      },
+												      onApprove: function (data, actions) {
+														return actions.order.capture().then(function (details) {
+														console.log('Détail : ', details.purchase_units[0].amount.value)
+														console.log('Détail - Payer Email : ', details.payer.email_address)
+														console.log('Détail - Payer Name : ', details.payer.name.given_name)
+														console.log('Détail - Status : ', details.status)
+														console.log('Détail - Create Date : ', details.create_time)
+														console.log('Détail - Paiement Prix : ', details.purchase_units[0].amount.value)
+														console.log('Détail - Paiement Description : ', details.purchase_units[0].description)
+
+														if (details.status == "COMPLETED") {
+															if(details.purchase_units[0].amount.value == "10.00")
+															{
+																document.location = '{{ path("user.credit.create.10", {'token': csrf_token('token_paypal_10')}) }}';
+															}else if(details.purchase_units[0].amount.value == "25.00")
+															{
+																document.location = '{{ path("user.credit.create.25", {'token': csrf_token('token_paypal_25')}) }}';
+															}else if(details.purchase_units[0].amount.value == "50.00")
+															{
+																document.location = '{{ path("user.credit.create.50", {'token': csrf_token('token_paypal_50')}) }}';
+															}else if(details.purchase_units[0].amount.value == "150.00")
+															{
+																document.location = '{{ path("user.credit.create.150", {'token': csrf_token('token_paypal_150')}) }}';
+															}
+														}
+														});
+														},
+
+														onError: function (err) {
+														alert('Une erreur est survenue ' + details.payer.name.given_name + '! Merci de recommencer');
+														},
+												    }).render('#paypal-button-container');
+												  }
+												  initPayPalButton();
+											</script>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-6">
+							<div class="card info-card">
+								<div class="card-body">
+									<h2 class="text-blue">Mes transactions</h2>
+									<div class="row">
+										<div class="table-responsive">
+											<table class="table table-striped table-hover table-borderless table-sm table-light border-light">
+												<thead>
+													<tr>
+														<th scope="col">Transaction</th>
+														<th scope="col">Article</th>
+														<th scope="col">Prix</th>
+														<th scope="col">Date d'achat</th>
+													</tr>
+												</thead>
+												<tbody>
+													{% for transactions in transaction %}
+														<tr>
+															<th scope="row">{{ transactions.idTrans }}</th>
+															<td>{{ transactions.description }}</td>
+															<td>{{ transactions.amount }}
+																€</td>
+															<td>{{ transactions.createdAt|format_datetime() }}</td>
+														</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{% include('components/contact.html.twig') %}
+
+		{% include('components/footer.html.twig') %}
+
+	</div>
+
+	{% include('components/navRight.html.twig') %}
+
+{% endblock %}
