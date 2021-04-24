@@ -43,10 +43,12 @@ security:
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # Note: Onlyf the *irst* access control that matches will be used
     access_control:
         # - { path: ^/admin/utilisateur, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/profil/edit, roles: ROLE_USER }
+        - { path: /deposer-une-annonce, roles: ROLE_USER }
 
     encoders:
         App\Entity\User:

@@ -59,6 +59,7 @@
 									-
 									{{ app.user.firstname }}</h3>
 								<p>{{ app.user.username }}</p>
+								<hr>
 							</div>
 							<div class="row ">
 								<div class="col-lg-12">
@@ -89,9 +90,19 @@
 										<div class="col-md-12">
 											<div class="mt-2 mb-4 text-center">
 												<h4><i class="fas fa-coins mr-2 text-warning" aria-hidden="true"></i>
-												<strong>Acheter pour 10 euros de crédits</strong></h4>
+												<strong>Acheter des crédits</strong></h4>
+												<p>Maitrisez votre budget et gagnez du temps : payez vos dépôts d'annonce et vos options facilement grâce aux crédits !
+Les crédits ne sont pas utilisables pour les règlements effectués via le service de paiement sécurisé annonces-72.</p>
 											</div>
-											<div id="smart-button-container" class="mt-4">
+
+											<div>
+												<label for="validate" style="align-items: center;" class="mr-2">
+												<input id="CGV" type="checkbox" value="0" name="validate"> 
+													Je reconnais avoir lu et accepté les <a href="" title="Conditions Générales de Vente">Conditions Générales de Vente</a> et renonce à mon droit de rétractation. En validant ma commande j’accepte le commencement immédiat de la prestation.
+												</label>
+											</div>
+
+											<div id="smart-button-container" class="mt-4" style="display: none;">
 												<div style="text-align: center;">
 													<div style="margin-bottom: 1.25rem;">
 														<p></p>
@@ -102,6 +113,7 @@
 															<option value="150 crédits" price="150">150 crédits - 150 EUR</option>
 														</select>
 														<select style="visibility: hidden" id="quantitySelect"></select>
+														<p class="mt-3 mb-5">Les montants des crédits sont indiqués en TTC.</p>
 													</div>
 													<div id="paypal-button-container"></div>
 												</div>
@@ -178,13 +190,6 @@
 												      },
 												      onApprove: function (data, actions) {
 														return actions.order.capture().then(function (details) {
-														console.log('Détail : ', details.purchase_units[0].amount.value)
-														console.log('Détail - Payer Email : ', details.payer.email_address)
-														console.log('Détail - Payer Name : ', details.payer.name.given_name)
-														console.log('Détail - Status : ', details.status)
-														console.log('Détail - Create Date : ', details.create_time)
-														console.log('Détail - Paiement Prix : ', details.purchase_units[0].amount.value)
-														console.log('Détail - Paiement Description : ', details.purchase_units[0].description)
 
 														if (details.status == "COMPLETED") {
 															if(details.purchase_units[0].amount.value == "10.00")
@@ -211,6 +216,13 @@
 												  }
 												  initPayPalButton();
 											</script>
+
+											<div class="mt-2 mb-4 text-center">
+												<h4>
+													<i class="fas fa-coins mr-2 text-warning"></i> <strong>Mes crédits <span class="text-success">{{ app.user.credits }}</span></strong></h2>
+												</h4>
+											</div>
+											
 										</div>
 
 									</div>
@@ -262,5 +274,18 @@
 	</div>
 
 	{% include('components/navRight.html.twig') %}
+
+	<script>
+		const checkbox = document.getElementById('CGV');
+		const methodePaiement = document.getElementById('smart-button-container');
+
+		checkbox.addEventListener('change', (event) => {
+		if (event.currentTarget.checked) {
+			methodePaiement.style = 'display: block;';
+		} else {
+			methodePaiement.style = 'display: none;';
+		}
+		})
+	</script>
 
 {% endblock %}

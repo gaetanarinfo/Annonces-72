@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Picture;
 use App\Entity\Annonces;
+use App\Entity\AnnoncesSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,13 +33,36 @@ class AnnoncesRepository extends ServiceEntityRepository
     /**
      * @return PaginationInterface
      */
-    public function paginateAllVisible(int $page): PaginationInterface
+    public function paginateAllVisible(AnnoncesSearch $search, int $page): PaginationInterface
     {
         $query = $this->findVisibleQuery('p');
 
+        if ($search->getCategory()) {
+            $query = $query
+                ->where('p.category LIKE :cat')
+                ->setParameter('cat', $search->getCategory());
+        }
+
+        if ($search->getSousCategory()) {
+            $query = $query
+                ->where('p.sousCategory LIKE :cat')
+                ->setParameter('cat', $search->getSousCategory());
+        }
+
+        if ($search->getTitle()) {
+            $query = $query
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->orX(
+                            $query->expr()->like('p.title', ':query'),
+                            $query->expr()->like('p.smallContent', ':query')
+                        )))
+                ->setParameter('query', '%' . $search->getTitle() . '%');
+        }  
+
         $annonces = $this->paginator->paginate(
             $query
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('p.createdAt', 'DESC')
             ->getQuery(),
             $page,
             12
@@ -151,5 +175,21 @@ class AnnoncesRepository extends ServiceEntityRepository
             ->getResult();
         $this->hydratePicture($annonces);
         return $annonces;
+    }
+
+    /**
+     * @return Annonces[]
+     */
+    public function findCountAll()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+        ->select('count(p.id)')
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        $this->hydratePicture($qb);
+
     }
 }

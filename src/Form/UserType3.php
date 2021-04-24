@@ -26,8 +26,7 @@ class UserType3 extends AbstractType
         
         $builder
             ->add('status', CheckboxType::class, [
-
-                'required' => true
+                'required' => false
             ])
             ->add('siren', TextType::class, [
                 'required' => true
@@ -44,12 +43,6 @@ class UserType3 extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Firstname'
-                ]
-            ])
-            ->add('password', PasswordType::class, [
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Password'
                 ]
             ])
             ->add('gender', ChoiceType::class, [

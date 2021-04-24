@@ -3136,3 +3136,13 @@ footer.white-wrapper .social-links li a {
 .form-control {
     color: #1d1c1c;
 }
+
+.lb-img {
+    transition: all 500ms;
+}
+
+.lb-img:hover {
+    opacity: 0.7;
+    box-shadow: 0 0 8px rgb(41 40 40 / 57%);
+    border-radius: 3px;
+}

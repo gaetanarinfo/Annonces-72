@@ -23,7 +23,8 @@ class Picture
     /**
      * @var File|null
      * @Assert\Image(
-     *     mimeTypes="image/jpeg"
+     *     mimeTypes="image/*",
+     *     maxSize = "1024k"
      * )
      * @Vich\UploadableField(mapping="annonces_image", fileNameProperty="filename")
      */

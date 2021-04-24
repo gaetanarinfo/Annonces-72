@@ -1,9 +1,5 @@
-<div class="container">
-	<div class="row mb50">
-
-		<div class="col-md-12 mb-4">
-			<a href="{{ path('annonces') }}" class="btn btn-primary btn-theme">Voir nos {{ annoncesCount }} annonce(s)</a>
-		</div>
+<div class="container mt-5">
+	<div class="row mb20">
 
 		{% for annonce in annonces %}
 		<div class="col-md-4 mb-3" style="min-height: 465px;">
@@ -18,7 +14,7 @@
 				<div class="overlay-item-caption smoothie"></div>
 				<div class="hover-item-caption smoothie">
 					<div class="vertical-center smoothie">
-						<a title="{{ annonce.title }}" href="{{ path('annonce.show', { 'id': annonce.id }) }}" class="smoothie btn btn-primary" style="max-width: ">Voir l'annonce</a>
+						<a title="{{ annonce.title }}" href="{{ path('annonce.show', { 'id': annonce.id }) }}" class="smoothie btn btn-primary">Voir l'annonce</a>
 					</div>
 				</div>
 			</div>
@@ -37,6 +33,12 @@
 			</div>
 		</div>
 		{% endfor %}
+
+		<div class="row mt-4">
+            <div class="col-12 col-md-12 col-xl-12" style="display: flex;justify-content: space-around;">
+                {{ knp_pagination_render(annonces) }}
+            </div>
+        </div>
 	</div>
 
 	<hr>

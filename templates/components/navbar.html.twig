@@ -51,13 +51,13 @@
                             <a href="{{ path('home') }}">Accueil <i class="fas fa-home"></i></a>
                         </li>
                         <li>
-                            <a href="#">Déposer une annonce <i class="far fa-plus-square"></i></a>
+                            <a href="{{ path('annonce.create') }}">Déposer une annonce <i class="far fa-plus-square"></i></a>
                         </li>
                         <li>
                             <a href="#">Mes recherches <i class="far fa-bell"></i></a>
                         </li>
                         <li>
-                            <a href="#">Favoris <i class="far fa-heart"></i></a>
+                            <a href="{{ path('user.favoris') }}">Favoris <i class="far fa-heart"></i></a>
                         </li>
                         <li>
                             <a href="#">Messages <i class="far fa-comment-dots"></i></a>
@@ -92,7 +92,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-plus"></i></a>
                             <ul class="dropdown-menu text-center">
                                 <li>
-                                    <a href="{{ path('logout') }}" class="font-weight-bold"><i class="fas fa-coins mr-2 text-warning"></i>Mon solde <span class="text-success">({{ app.user.credits }})</span></a>
+                                    <a href="http://localhost:8000/profil/credit" class="font-weight-bold"><i class="fas fa-coins mr-2 text-warning"></i>Mon solde <span class="text-success">{{ app.user.credits }}</span></a>
                                 </li>
                                 <li>
                                     <a href="{{ path('profil') }}" class="font-weight-bold"><i class="fas fa-user-edit mr-2 text-info"></i>Gérer mon profil</a>

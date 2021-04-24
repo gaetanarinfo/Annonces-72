@@ -26,6 +26,7 @@ class HomeController extends AbstractController
         $formContact->handleRequest($request);
 
         $annonces = $repositoryAnnonces->findLatest();
+        $annoncesCount = $repositoryAnnonces->findCountAll();
 
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
@@ -38,7 +39,8 @@ class HomeController extends AbstractController
         return $this->render('pages/home.html.twig', [
             'formContact' => $formContact->createView(),
             'annonces' => $annonces,
-            'annonceLatest' => $annonces
+            'annonceLatest' => $annonces,
+            'annoncesCount' => $annoncesCount
         ]);
 
     }

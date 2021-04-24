@@ -35,11 +35,14 @@ class RegisterType extends AbstractType
                 'type' => PasswordType::class,
                 'label' => false,
                 'first_options'
-                 => array('label' => false, 'attr' => [
-                    'placeholder' => 'Password'
+                 => array('label' => false, 
+                 'attr' => [
+                    'placeholder' => 'Password',
+                    'maxlength' => '25'
                 ]),
                 'second_options' => array('label' => false, 'attr' => [
-                    'placeholder' => 'Repeat Password'
+                    'placeholder' => 'Repeat Password',
+                    'maxlength' => '25'
                 ])))
             ->add('phone', TextType::class, [
                 'label' => false,

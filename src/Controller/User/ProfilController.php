@@ -5,6 +5,7 @@ namespace App\Controller\User;
 use App\Entity\Avatar;
 use App\Entity\Contact;
 use App\Entity\Credits;
+use App\Entity\LikeAnnonces;
 use App\Entity\User;
 use App\Form\ContactType;
 use App\Form\UserType3;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -59,13 +61,13 @@ class ProfilController extends AbstractController
 
         }
 
-        $userLike = $repositoryLike->find($this->getUser()->getId());
-        
-        if($userLike == null)
+        $userLike = $repositoryLike->findBy(array('userId' => $this->getUser()->getId()));
+
+        if($userLike != null)
         {   
-            $annoncesLike = 0;
+            $annoncesLike = $repositoryAnnonces->findBy(array('id' => $userLike));
         }else{
-            $annoncesLike = $repositoryAnnonces->find($userLike->getAnnoncesId());
+            $annoncesLike = 0;
         }
 
         return $this->render('user/index.html.twig', [
@@ -80,7 +82,7 @@ class ProfilController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
+    public function edit(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType3::class, $user);
@@ -94,6 +96,8 @@ class ProfilController extends AbstractController
 
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
+            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
             $notif->notify($contact);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
@@ -104,7 +108,7 @@ class ProfilController extends AbstractController
                 $user->setUpdatedAt(new \DateTime('now'));
                 $this->em->flush();
                 $this->addFlash('success', 'Profil modifié avec succès.');
-                return $this->redirectToRoute('profil');      
+                return $this->redirectToRoute('user.edit');      
         }
 
         return $this->render('user/edit.html.twig', [
@@ -197,7 +201,7 @@ class ProfilController extends AbstractController
            
             $notif->notify($contact);
             $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('profil');
+            return $this->redirectToRoute('home');
 
         }
 
@@ -261,7 +265,7 @@ class ProfilController extends AbstractController
            
             $notif->notify($contact);
             $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('profil');
+            return $this->redirectToRoute('user.credit');
 
         }
 
@@ -312,7 +316,7 @@ class ProfilController extends AbstractController
            
             $notif->notify($contact);
             $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('profil');
+            return $this->redirectToRoute('user.credit');
 
         }
 
@@ -338,7 +342,7 @@ class ProfilController extends AbstractController
 
         }
 
-        return $this->redirectToRoute('profil');
+        return $this->redirectToRoute('user.credit');
     }
 
     /**
@@ -363,7 +367,7 @@ class ProfilController extends AbstractController
            
             $notif->notify($contact);
             $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('profil');
+            return $this->redirectToRoute('user.credit');
 
         }
 
@@ -389,7 +393,7 @@ class ProfilController extends AbstractController
 
         }
 
-        return $this->redirectToRoute('profil');
+        return $this->redirectToRoute('user.credit');
     }
 
      /**
@@ -414,7 +418,7 @@ class ProfilController extends AbstractController
            
             $notif->notify($contact);
             $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('profil');
+            return $this->redirectToRoute('user.credit');
 
         }
 
@@ -440,7 +444,57 @@ class ProfilController extends AbstractController
 
         }
 
-        return $this->redirectToRoute('profil');
+        return $this->redirectToRoute('user.credit');
+    }
+
+    /**
+     * @Route("/profil/favoris", name="user.favoris", methods="GET|POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function favoris(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('user.favoris');
+
+        }
+
+        $userLike = $repositoryLike->findBy(array('userId' => $this->getUser()->getId()));
+
+        if($userLike != null)
+        {   
+            $annoncesLike = $repositoryAnnonces->findBy(array('id' => $userLike));
+        }else{
+            $annoncesLike = 0;
+        }
+
+        $annonces = $repositoryAnnonces->findLatest();
+
+        return $this->render('user/favoris.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annonces,
+            'annoncesLike' => $annoncesLike
+        ]);
+    }
+
+    /**
+    * @Route("/profil/favoris/{id}", name="user.favoris.delete", methods="GET|POST")
+    */
+    public function deleteFavoris(LikeAnnonces $annonces, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($annonces);
+        $em->flush();
+        $this->addFlash('success', 'Annonce supprimé des favoris');
+        return $this->redirectToRoute('user.favoris');
     }
 
 }

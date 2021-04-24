@@ -6,6 +6,7 @@ use App\Repository\AnnoncesRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -130,12 +131,24 @@ class Annonces
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=100)
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 100,
+     *      minMessage = "10 caractères minimum",
+     *      maxMessage = "100 caractères maximum"
+     *      )
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=120)
+     * @Assert\Length(
+     *      min = 50,
+     *      max = 120,
+     *      minMessage = "50 caractères minimum",
+     *      maxMessage = "120 caractères maximum"
+     *      )
      */
     private $smallContent;
 
@@ -182,7 +195,7 @@ class Annonces
 
     /**
      * @Assert\All({
-     *   @Assert\Image(mimeTypes="image/jpeg")
+     *   @Assert\Image(mimeTypes="image/*")
      * })
      */
     private $pictureFiles;
@@ -199,8 +212,30 @@ class Annonces
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 2,
+     *      max = 1000000,
+     *      minMessage = "Le prix n'est pas assez élevé",
+     *      maxMessage = "Le prix dépasse"
+     *      )
      */
     private $price;
+
+    public function __construct()
+    {
+        $this->title = "";
+        $this->author = "";
+        $this->smallContent = "";
+        $this->largeContent = "";
+        $this->category = 0;
+        $this->sousCategory = 0;
+        $this->premium = 0;
+        $this->criteres = "";
+        $this->price = 0;
+        $this->pictures = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+    }
+
 
     public function getId(): ?int
     {
@@ -304,7 +339,7 @@ class Annonces
     }
 
     /**
-     * @return Collection|Picture[]
+     * @return Collection|PictureAppartementA[]
      */
     public function getPictures(): Collection
     {
@@ -355,7 +390,7 @@ class Annonces
 
     /**
      * @param mixed $pictureFiles
-     * @return Property
+     * @return AppartementA
      */
     public function setPictureFiles($pictureFiles): self
     {

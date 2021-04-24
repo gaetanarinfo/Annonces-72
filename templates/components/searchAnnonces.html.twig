@@ -1,0 +1,39 @@
+<div class="container mt-5 text-center">
+
+	<h4 class="text-center">Affiner les résultats :
+	</h4>
+
+	<hr class="mb-4"/>
+
+	{{ form_start(searchForm) }}
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-row">
+				<div class="col-md-4">
+					{{ form_row(searchForm.title) }}
+				</div>
+
+				<div class="col-md-4">
+					{{ form_row(searchForm.category, { 'attr': { 'onchange': 'Category(this.value)' } }) }}
+				</div>
+
+				<div class="col-md-4">
+					{{ form_row(searchForm.sousCategory) }}
+				</div>
+			</div>
+		</div>
+		<div style="justify-content: center;">
+			<div class="form-row">
+				<div class="col">
+					<div class="form-group text-center">
+						<button class="btn btn-primary btn-theme">Rechercher</button>
+						<a onclick="window.location.reload();" class="btn btn-primary btn-theme ml-2">Remettre à zéro</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ form_end(searchForm) }}
+
+	<hr class="mb-4"/>
+</div>

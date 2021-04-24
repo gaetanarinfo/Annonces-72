@@ -26,18 +26,18 @@
 
 								{% if annonces.pictures is empty %}
 									<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annonces.title }}">
-										<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" class="img-responsive" alt="{{ annonces.title }}">
+										<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" class="img-responsive lb-img" alt="{{ annonces.title }}">
 									</a>
 								{% else %}
-									<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annonces.title }}">
-										<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" class="img-responsive" alt="{{ annonces.title }}"/>
+									<a class="lb-link" data-rel="product-gallery" href="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" title="{{ annonces.title }}">
+										<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" class="img-responsive lb-img" alt="{{ annonces.title }}"/>
 									</a>
 								{% endif %}
 
 								<div class="thumbnails mt">
 									{% for picture in annonces.pictures %}
-										<a class="lb-link" data-rel="product-gallery" href="{{ vich_uploader_asset(annonces.pictures, 'imageFile') }}" title="Image Title 2">
-											<img alt="image title" height="100" width="100" src="{{ vich_uploader_asset(annonces.pictures, 'imageFile') }}">
+										<a class="lb-link" data-rel="product-gallery" href="{{ vich_uploader_asset(picture, 'imageFile') }}" title="Image Title 2">
+											<img class="lb-img" alt="{{ annonces.title }}" width="120px" src="{{ vich_uploader_asset(picture, 'imageFile') }}">
 										</a>
 									{% endfor %}
 								</div>
@@ -354,9 +354,7 @@
 												{% if annonceSimi.pictures is empty %}
 													<img src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" alt="{{ annonceSimi.author }}" class="img-responsive"/>
 												{% else %}
-													{% for picture in annonceSimi.pictures %}
-														<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" alt="{{ annonceSimi.author }}" class="img-responsive"/>
-													{% endfor %}
+														<img src="{{ vich_uploader_asset(annonceSimi.pictures[0], 'imageFile') }}" alt="{{ annonceSimi.author }}" class="img-responsive"/>
 												{% endif %}
 
 												<div class="overlay-item-caption smoothie"></div>
@@ -369,7 +367,7 @@
 											<div class="item-excerpt">
 												<h4 class="pull-right">{{ annonceSimi.getFormattedPrice }}
 													€</h4>
-												<h4>
+												<h4 style="width: 340px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
 													{{ annonceSimi.title }}
 												</h4>
 												<p>{{ annonceSimi.smallContent }}</p>
@@ -404,14 +402,12 @@
 										{% if annonce.pictures is empty %}
 													<img src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" width="60px" alt="{{ annonce.author }}" class="widget-img"/>
 										{% else %}
-											{% for picture in annonce.pictures %}
-												<img src="{{ vich_uploader_asset(picture, 'imageFile') }}" width="60px" alt="{{ annonce.author }}" class="widget-img"/>
-											{% endfor %}
+											<img src="{{ vich_uploader_asset(annonce.pictures[0], 'imageFile') }}" width="60px" alt="{{ annonce.author }}" class="widget-img"/>
 										{% endif %}
 									</div>
 									<div class="media-body">
 										<span class="media-heading">
-											<a href="{{ path('annonce.show', { 'id': annonce.id }) }}">{{ annonce.title }}</a>
+											<a href="{{ path('annonce.show', { 'id': annonce.id }) }}"><p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin-bottom: -10px;">{{ annonce.title }}</p></a>
 										</span>
 										<small class="muted">{{ annonce.getFormattedPrice }} €</small>
 										<small class="muted">Par {{ annonce.author }}</small>

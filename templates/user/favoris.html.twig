@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title 'Annonces-72 - Mon profil' %}
+{% block title 'Annonces-72 - Mes favoris' %}
 
 {% block body %}
 	<link href="http://localhost:8000/css/profil.css" rel="stylesheet">
@@ -20,7 +20,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12 mb30 wow text-center">
-							<h2 class="section-heading">Mon profil</h2>
+							<h2 class="section-heading">Mes favoris</h2>
 						</div>
 					</div>
 				</div>
@@ -65,7 +65,7 @@
 								<div class="col-lg-12">
 									<ul class=" nav nav-tabs justify-content-center s-nav">
 										<li>
-											<a class="active" href="{{ path('profil') }}">Mon profil</a>
+											<a href="{{ path('profil') }}">Mon profil</a>
 										</li>
 										<li>
 											<a href="{{ path('user.edit') }}">Mes paramètres</a>
@@ -77,7 +77,7 @@
 											<a href="{{ path('user.credit') }}">Mes crédits</a>
 										</li>
 										<li>
-											<a href="{{ path('user.favoris') }}">Mes favoris</a>
+											<a class="active" href="{{ path('user.favoris') }}">Mes favoris</a>
 										</li>
 									</ul>
 								</div>
@@ -85,77 +85,8 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-lg-6">
-							<div class="card">
-								<div class="card-body info-card social-about">
-									<h2 class="text-blue">Mon profil</h2>
-									<h4>
-										<strong>Biographie</strong>
-									</h4>
-									<p>{{ app.user.biography }}
-									</p>
-									<h4 class="mb-3">
-										<strong>Informations personnelles</strong>
-									</h4>
-									<div class="row ml-1">
-										<div class="col-6">
-											<div class="social-info">
-												<i class="fas fa-birthday-cake mr-2"></i>
-												<span>{{ app.user.getAge() }}
-													an(s) -
-													{{ app.user.birthday|format_date() }}</span>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="social-info">
-												<i class="fas fa-map-marker-alt mr-2"></i>
-												<span>{{ app.user.address }},
-													{{ app.user.postalCode }},
-													{{ app.user.city }},
-													{{ app.user.country }}</span>
-											</div>
-										</div>
-									</div>
-									<div class="row ml-1">
-										<div class="col-6">
-											<div class="social-info">
-												<i class="fas fas fa-users mr-2"></i>
-												<span>
-													{% if app.user.gender == 0 %}Homme{% elseif app.user.gender == 1 %}Femme
-													{% endif %}
-												</span>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="social-info">
-												<i class="fas fa-briefcase mr-2"></i>
-												<span>{{ app.user.job }}</span>
-											</div>
-										</div>
-									</div>
-									<div class="row ml-1">
-										<div class="col-6">
-											<div class="social-info">
-												<i class="fas fas fa-mobile mr-2"></i>
-												<span>{{ app.user.phone }}
-													{% if app.user.mobile != null %}- 0{{ app.user.mobile }}
-													{% endif %}
-												</span>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="social-info">
-												<i class="fas fas fa-envelope mr-2"></i>
-												<span>{{ app.user.email }}</span>
-											</div>
-										</div>
-									</div>
-
-								</div>
-							</div>
-						</div>
-						
-							<div class="col-lg-6">
+						<div class="container row m-auto">
+							<div class="col-lg-12">
 								<div class="card info-card">
 									<div class="card-body">
 										<h2 class="text-blue">Mes annonces en favoris</h2>
@@ -167,7 +98,6 @@
 										
 											<hr>
 										</div>
-
 										<div class="row">
 											{% for annoncesUsers in annoncesLike %}
 											<div class="col-lg-6 m-auto">
@@ -195,7 +125,7 @@
                                                 <p>Crée le {{ annoncesUsers.createdAt|format_datetime() }}</p>
 												<p class="mt-3">{{ annoncesUsers.smallContent }}
 												</p>
-
+												
 												<div class="text-center mb-3">
 													<a href="#" class="btn btn-primary btn-theme mr-5">Envoyer un message
 														<i class="far fa-comment-dots text-success"></i>
@@ -211,7 +141,7 @@
 									</div>
 								</div>
 							</div>
-						
+						</div>
 					</div>
 				</div>
 			</div>

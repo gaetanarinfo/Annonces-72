@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Annonces;
+use App\Entity\AnnoncesSearch;
 use App\Entity\Comment;
 use App\Entity\Contact;
 use App\Entity\LikeAnnonces;
 use App\Entity\User;
 use App\Entity\VoteAnnonces;
+use App\Form\AnnoncesSearchType;
+use App\Form\AnnoncesType;
 use App\Form\CommentType;
 use App\Form\ContactType;
 use App\Notification\ContactNotification;
@@ -16,6 +19,7 @@ use App\Repository\CommentRepository;
 use App\Repository\LikeAnnoncesRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoteAnnoncesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +27,52 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AnnoncesController extends AbstractController
 {
+
+    private $repositoryAnnonces;
+
+    /**
+     * @var AnnoncesRepository
+     * @var EntityManagerInterface
+     */
+
+    public function __construct(AnnoncesRepository $repositoryAnnonces, EntityManagerInterface $em)
+    {
+        $this->repositoryAnnonces = $repositoryAnnonces;
+        $this->em = $em;
+    }
+
+
+    /**
+     * @Route("/annonces", name="annonces")
+     * @return Responce
+    */
+    public function index (Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces):Response{
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        $search = new AnnoncesSearch();
+        $searchForm = $this->createForm(AnnoncesSearchType::class, $search);
+        $searchForm->handleRequest($request);
+
+        return $this->render('pages/annoncesAll.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $this->repositoryAnnonces->findLatest(),
+            'annonces' => $this->repositoryAnnonces->paginateAllVisible($search, $request->query->getInt('page', 1)),
+            'searchForm' => $searchForm->createView()
+        ]);
+
+    }
 
     /**
      * @Route("/annonce/{id}", name="annonce.show") requirements={"id": [0-9\-]""}
@@ -501,6 +551,50 @@ class AnnoncesController extends AbstractController
             return $this->redirectToRoute('annonce.show', [ 'id' => $annonces->getId() ]);
 
         return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/deposer-une-annonce", name="annonce.create")
+     * @return Responce
+    */
+    public function create (Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annonces = new Annonces();
+        $formAnnonces = $this->createForm(AnnoncesType::class, $annonces);
+        $formAnnonces->handleRequest($request);
+
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        if ($formAnnonces->isSubmitted() && $formAnnonces->isValid()) {
+
+            $annonces->setAuthor($this->getUser()->getUsername());
+            $annonces->setPremium(0);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonces);
+            $entityManager->flush();
+            return $this->redirectToRoute('annonce.create');
+
+        }
+
+
+        return $this->render('pages/createAnnonce.html.twig', [
+            'formContact' => $formContact->createView(),
+            'formAnnonces' => $formAnnonces->createView(),
+            'annonceLatest' => $this->repositoryAnnonces->findLatest()
+        ]);
+
     }
 
 }
