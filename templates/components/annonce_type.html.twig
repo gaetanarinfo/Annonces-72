@@ -205,9 +205,11 @@
 									<a href="#" class="btn btn-primary btn-theme mr-5">Envoyer un message
 										<i class="far fa-comment-dots"></i>
 									</a>
-									<a href="#" class="btn btn-primary btn-theme">Voir le numéro
+									<a id="phone" class="btn btn-primary btn-theme">Voir le numéro
 										<i class="fas fa-phone"></i>
 									</a>
+
+									<h5 id="phones" style="display: none;letter-spacing: 4px;color: #b32e2e;text-align: center;text-shadow: 0px 1px 1px #b32e2e;" class="mt-4"><b><i class="fa fa-phone" aria-hidden="true"></i> 0{{ annonces.phone }}</b></h5>
 
 								</div>
 							</div>
@@ -424,3 +426,14 @@
 		</div>
 	</div>
 </section>
+
+<script>
+
+const phone = document.getElementById('phone'),
+	phones = document.getElementById('phones');
+
+phone.addEventListener('click', () => {
+	phones.style = "display: block;letter-spacing: 4px;color: #b32e2e;text-align: center;text-shadow: 0px 1px 1px #b32e2e;";
+})
+
+</script>
