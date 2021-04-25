@@ -74,6 +74,16 @@
 
 								<hr/>
 
+								<div>
+									<p><b><i class="fas fa-map-signs text-success mr-1"></i> Localisation :</b></p>
+										<p><b><i class="fas fa-angle-right text-success ml-5 mr-1"></i> {{ annonces.address }}</b></p>
+										<p><b><i class="fas fa-angle-right text-danger ml-5 mr-1"></i> {{ annonces.postalCode }}</b></p>
+										<p><b><i class="fas fa-angle-right text-primary ml-5 mr-1"></i> {{ annonces.city }}</b></p>
+										<p><b><i class="fas fa-angle-right text-warning ml-5 mr-1"></i> {{ annonces.country }}</b></p>
+								</div>
+
+								<hr/>
+
 								{% if is_granted('ROLE_USER') %}
 								<div class="product-rating" style="margin-bottom: -3px;">
 									{% if voteId %}
@@ -269,9 +279,6 @@
 									<a data-toggle="tab" href="#tab-localisation">Localisation</a>
 								</li>
 
-								<li class="criteres_tab">
-									<a data-toggle="tab" href="#tab-criteres">Critères</a>
-								</li>
 							</ul>
 
 
@@ -332,13 +339,10 @@
 									</div>
 								</div>
 
-								<div class="tab-pane" id="tab-localisation">
-									<p>Mapbox</p>
+								<div class="tab-pane" id="tab-localisation" style="max-width: 100%;">
+									<div id="map" style="max-width: 883px;height: 400px;" data-lat="{{ annonces.lat }}" data-lng="{{ annonces.lng }}"></div>
 								</div>
-
-								<div class="tab-pane" id="tab-criteres">
-									<p>Critères</p>
-								</div>
+							
 							</div>
 						</div>
 

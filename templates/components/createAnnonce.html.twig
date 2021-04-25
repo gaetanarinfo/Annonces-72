@@ -46,7 +46,35 @@
 
 					<div class="col-md-6">
 						<div class="social-info">
-							
+							{{ form_row(formAnnonces.address) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1">
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.postalCode) }}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.city) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1">
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.country) }}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="social-info">
+
 						</div>
 					</div>
 				</div>
@@ -77,14 +105,6 @@
 					<div class="col-md-12">
 						<div class="social-info">
 							{{ form_row(formAnnonces.largeContent, {'attr' : { 'style' : 'height:135px;'}}) }}
-						</div>
-					</div>
-				</div>
-
-                <div class="row ml-1">
-					<div class="col-md-12">
-						<div class="social-info">
-							{{ form_row(formAnnonces.criteres, {'attr' : { 'style' : 'height:135px;'}}) }}
 						</div>
 					</div>
 				</div>

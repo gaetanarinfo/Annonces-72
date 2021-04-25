@@ -177,12 +177,7 @@ class Annonces
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updateAt;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $criteres;
-
+    
     /**
      * @var Picture|null
      */
@@ -283,7 +278,7 @@ class Annonces
         $this->category = 0;
         $this->sousCategory = 0;
         $this->premium = 0;
-        $this->criteres = "";
+        $this->isValid = 0;
         $this->price = 0;
         $this->pictures = new ArrayCollection();
         $this->createdAt = new \DateTime();
@@ -375,18 +370,6 @@ class Annonces
     public function setUpdateAt(?\DateTimeInterface $updateAt): self
     {
         $this->updateAt = $updateAt;
-
-        return $this;
-    }
-
-    public function getCriteres(): ?string
-    {
-        return $this->criteres;
-    }
-
-    public function setCriteres(string $criteres): self
-    {
-        $this->criteres = $criteres;
 
         return $this;
     }

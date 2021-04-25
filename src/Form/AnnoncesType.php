@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Annonces;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -20,15 +21,38 @@ class AnnoncesType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'required' => true,
-                'label' => 'Quel est le titre de l’annonce ?'
+                'label' => 'Quel est le titre de l\'annonce ?'
+            ])
+
+            ->add('address', TextType::class, [
+                'required' => true,
+                'label' => 'Quel est l\'adresse ?'
+            ])
+            ->add('postalCode', NumberType::class, [
+                'required' => true,
+                'label' => 'Quel est le code postal ?',
+                'attr' => [
+                    'maxlength' => '5'
+                ]
+            ])
+            ->add('city', TextType::class, [
+                'required' => true,
+                'label' => 'Quel est la ville ?'
+            ])
+            ->add('country', CountryType::class, [
+                'required' => true,
+                'label' => 'Quel est le pays ?'
             ])
             ->add('price', NumberType::class, [
                 'required' => true,
-                'label' => 'Quel est le prix de l’annonce ?',
+                'label' => 'Quel est le prix de l\'annonce ?',
+                'attr' => [
+                    'maxlength' => '7'
+                ]
             ])
             ->add('phone', NumberType::class, [
                 'required' => true,
-                'label' => 'Quel est votre numéro ?',
+                'label' => 'Quel est votre numéro de téléphone ?',
                 'attr' => [
                     'maxlength' => '10'
                 ]
@@ -50,10 +74,6 @@ class AnnoncesType extends AbstractType
             ->add('largeContent', TextareaType::class, [
                 'required' => true,
                 'label' => 'Choisissez une grande description ?'
-            ])
-            ->add('criteres', TextareaType::class, [
-                'required' => true,
-                'label' => 'Choisissez des critères ?'
             ])
             ->add('pictureFiles', FileType::class, [
                 'required' => true,
