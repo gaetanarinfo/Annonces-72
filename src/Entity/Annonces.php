@@ -221,6 +221,28 @@ class Annonces
      */
     private $price;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isValid;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $createdAtPremium;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $terminedAtPremium;
+
+    /**
+     * @var string
+     * @ORM\Column(name="phone", type="string", length=10)
+     * @Assert\NotBlank()
+     */
+    private $phone;
+
     public function __construct()
     {
         $this->title = "";
@@ -477,6 +499,54 @@ class Annonces
     public function getFormattedPrice(): string
     {
         return number_format($this->price, 0, '', ' ');
+    }
+
+    public function getIsValid(): ?bool
+    {
+        return $this->isValid;
+    }
+
+    public function setIsValid(bool $isValid): self
+    {
+        $this->isValid = $isValid;
+
+        return $this;
+    }
+
+    public function getCreatedAtPremium(): ?\DateTimeInterface
+    {
+        return $this->createdAtPremium;
+    }
+
+    public function setCreatedAtPremium(?\DateTimeInterface $createdAtPremium): self
+    {
+        $this->createdAtPremium = $createdAtPremium;
+
+        return $this;
+    }
+
+    public function getTerminedAtPremium(): ?\DateTimeInterface
+    {
+        return $this->terminedAtPremium;
+    }
+
+    public function setTerminedAtPremium(?\DateTimeInterface $terminedAtPremium): self
+    {
+        $this->terminedAtPremium = $terminedAtPremium;
+
+        return $this;
+    }
+
+    public function getPhone(): ?int
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(int $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
     }
 
 }

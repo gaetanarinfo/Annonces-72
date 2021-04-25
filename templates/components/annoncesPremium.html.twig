@@ -2,10 +2,18 @@
 	<div class="row mb50">
 
 		<div class="col-md-12 mb-4">
-			<a href="{{ path('annonces') }}" class="btn btn-primary btn-theme">Voir nos {{ annoncesCount }} annonce(s)</a>
+			<h3><i class="far fa-star text-success"></i>  Nos annonces en avant-première</h3>
 		</div>
 
-		{% for annonce in annonces %}
+		<div class="col-md-12 mb-4">
+			{% if annoncesCountPremium != 0 %}
+				<a href="{{ path('annonce.premium') }}" class="btn btn-primary btn-theme mr-3"><i class="fas fa-hand-sparkles text-success"></i> Voir nos {{ annoncesCountPremium }} annonce(s) premium</a>
+			{% else %}
+				<h5><i class="fas fa-hand-sparkles text-success"></i> Aucune annonce premium pour le moment</h5>
+			{% endif %}
+		</div>
+
+		{% for annonce in annoncesPremium %}
 		<div class="col-md-4 mb-3" style="min-height: 465px;">
 			<div class="hover-item">
 
@@ -40,18 +48,4 @@
 	</div>
 
 	<hr>
-
-	<div class="row mb100">
-		<div class="col-md-6">
-			<p class="lead">Avec annonces-72, trouvez la bonne affaire sur le site référent de petites annonces de particulier à particulier et de professionnels. Avec des millions de petites annonces, trouvez la bonne occasion dans nos catégories voiture, immobilier, emploi, vacances, mode, maison, jeux vidéo, etc…</p>
-			<p>Déposez une annonce gratuite en toute simplicité pour vendre, rechercher, donner vos biens de seconde main ou promouvoir vos services. Achetez en toute sécurité avec notre système de paiement en ligne et de livraison pour les annonces éligibles.</p>
-			<p class="mt30">
-				<a href="{{ path('annonce.create') }}" class="btn btn-primary btn-theme page-scroll">Déposer une annonce maintenant</a>
-			</p>
-		</div>
-
-		<div class="col-md-6">
-			<img src="http://localhost:8000/img/petite-annonce.png" class="img-responsive alignright wow fadeIn" data-wow-delay="0.5s" alt="" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeIn; width: 326px;">
-		</div>
-	</div>
 </div>

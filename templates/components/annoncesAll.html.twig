@@ -24,7 +24,7 @@
 					{{ annonce.title }}
 				</h4>
 				<p>{{ annonce.smallContent|raw }}</p>
-				<p>Mise en ligne par {{ annonce.author }}</p>
+				<p>Mise en ligne par <b>{{ annonce.author }}</b></p>
 				<div style="display: inline-block;">
 					{% if annonce.premium == 1 %}
 						<span><i class="fas fa-hand-sparkles text-success"></i> <b>Annonce Premium</b></span>

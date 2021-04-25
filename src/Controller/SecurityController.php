@@ -48,7 +48,7 @@ class SecurityController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        $annonces = $repositoryAnnonces->findLatest();
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', [
             'formContact' => $formContact->createView(),
-            'annonceLatest' => $annonces,
+            'annonceLatest' => $annoncesPremium,
             'last_username' => $lastUsername,
             'error' => $error
         ]);
@@ -102,7 +102,7 @@ class SecurityController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        $annonces = $repositoryAnnonces->findLatest();
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
@@ -116,7 +116,7 @@ class SecurityController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
             'formContact' => $formContact->createView(),
-            'annonceLatest' => $annonces
+            'annonceLatest' => $annoncesPremium
         ]);
 
     }

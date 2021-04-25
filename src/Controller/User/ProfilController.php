@@ -2,6 +2,7 @@
 
 namespace App\Controller\User;
 
+use App\Entity\Annonces;
 use App\Entity\Avatar;
 use App\Entity\Contact;
 use App\Entity\Credits;
@@ -51,7 +52,7 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        $annonces = $repositoryAnnonces->findLatest();
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
@@ -72,7 +73,7 @@ class ProfilController extends AbstractController
 
         return $this->render('user/index.html.twig', [
             'formContact' => $formContact->createView(),
-            'annonceLatest' => $annonces,
+            'annonceLatest' => $annoncesPremium,
             'annoncesLike' => $annoncesLike
         ]);
     }
@@ -194,7 +195,7 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        $annonces = $repositoryAnnonces->findLatest();
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
         $annoncesUser = $repositoryAnnonces->findBy(array('author' => $this->getUser()->getUsername()));
 
         if ($formContact->isSubmitted() && $formContact->isValid()) {
@@ -207,7 +208,7 @@ class ProfilController extends AbstractController
 
         return $this->render('user/annonces.html.twig', [
             'formContact' => $formContact->createView(),
-            'annonceLatest' => $annonces,
+            'annonceLatest' => $annoncesPremium,
             'annoncesUser' => $annoncesUser
         ]);
     }
@@ -234,11 +235,11 @@ class ProfilController extends AbstractController
 
         $transaction = $creditsRepository->findBy(array('userId' => $this->getUser()->getId()));
 
-        $annonces = $repositoryAnnonces->findLatest();
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
         return $this->render('user/credit.html.twig', [
             'formContact' => $formContact->createView(),
-            'annonceLatest' => $annonces,
+            'annonceLatest' => $annoncesPremium,
             'transaction' => $transaction
         ]);
     }
@@ -287,7 +288,7 @@ class ProfilController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($credit);
             $entityManager->flush();
-            $this->addFlash('success', 'Achat éffectué avec succès.');
+            $this->addFlash('success', 'Achat éffectué avec succès');
 
         }
 
@@ -338,7 +339,7 @@ class ProfilController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($credit);
             $entityManager->flush();
-            $this->addFlash('success', 'Achat éffectué avec succès.');
+            $this->addFlash('success', 'Achat éffectué avec succès');
 
         }
 
@@ -389,7 +390,7 @@ class ProfilController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($credit);
             $entityManager->flush();
-            $this->addFlash('success', 'Achat éffectué avec succès.');
+            $this->addFlash('success', 'Achat éffectué avec succès');
 
         }
 
@@ -440,7 +441,7 @@ class ProfilController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($credit);
             $entityManager->flush();
-            $this->addFlash('success', 'Achat éffectué avec succès.');
+            $this->addFlash('success', 'Achat éffectué avec succès');
 
         }
 
@@ -476,11 +477,11 @@ class ProfilController extends AbstractController
             $annoncesLike = 0;
         }
 
-        $annonces = $repositoryAnnonces->findLatest();
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
         return $this->render('user/favoris.html.twig', [
             'formContact' => $formContact->createView(),
-            'annonceLatest' => $annonces,
+            'annonceLatest' => $annoncesPremium,
             'annoncesLike' => $annoncesLike
         ]);
     }
@@ -495,6 +496,18 @@ class ProfilController extends AbstractController
         $em->flush();
         $this->addFlash('success', 'Annonce supprimé des favoris');
         return $this->redirectToRoute('user.favoris');
+    }
+
+    /**
+    * @Route("/profil/annonces/delete/{id}", name="user.annonce.delete")
+    */
+    public function deleteImage(Annonces $annonce, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($annonce);
+        $em->flush();
+        $this->addFlash('success', 'Annonce supprimé avec succès');
+        return $this->redirectToRoute('user.annonces');
     }
 
 }

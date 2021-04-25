@@ -75,6 +75,38 @@ class AnnoncesController extends AbstractController
     }
 
     /**
+     * @Route("/annonces-premium", name="annonce.premium")
+     * @return Responce
+    */
+    public function index2 (Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces):Response{
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        $search = new AnnoncesSearch();
+        $searchForm = $this->createForm(AnnoncesSearchType::class, $search);
+        $searchForm->handleRequest($request);
+
+        return $this->render('pages/annoncesAll.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $this->repositoryAnnonces->findLatest(),
+            'annonces' => $this->repositoryAnnonces->paginateAllVisiblePremium($search, $request->query->getInt('page', 1)),
+            'searchForm' => $searchForm->createView()
+        ]);
+
+    }
+
+    /**
      * @Route("/annonce/{id}", name="annonce.show") requirements={"id": [0-9\-]""}
      * @return Responce
     */
@@ -584,6 +616,7 @@ class AnnoncesController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($annonces);
             $entityManager->flush();
+            $this->addFlash('success', 'Votre annonce est en attente de validation');
             return $this->redirectToRoute('annonce.create');
 
         }

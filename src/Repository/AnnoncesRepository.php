@@ -12,7 +12,7 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
- * @method Annonces|null find(Annonces[]$id, $lockMode = null, $lockVersion = null)
+ * @method Annonces|null find($id, $lockMode = null, $lockVersion = null)
  * @method Annonces|null findOneBy(array $criteria, array $orderBy = null)
  * @method Annonces[]    findAll()
  * @method Annonces[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -40,13 +40,19 @@ class AnnoncesRepository extends ServiceEntityRepository
         if ($search->getCategory()) {
             $query = $query
                 ->where('p.category LIKE :cat')
-                ->setParameter('cat', $search->getCategory());
+                ->andWhere('p.isValid = :valid')
+                ->setParameter('cat', $search->getCategory())
+                ->setParameter(':valid', 1)
+                ;
         }
 
         if ($search->getSousCategory()) {
             $query = $query
                 ->where('p.sousCategory LIKE :cat')
-                ->setParameter('cat', $search->getSousCategory());
+                ->andWhere('p.isValid = :valid')
+                ->setParameter('cat', $search->getSousCategory())
+                ->setParameter(':valid', 1)
+                ;
         }
 
         if ($search->getTitle()) {
@@ -57,11 +63,16 @@ class AnnoncesRepository extends ServiceEntityRepository
                             $query->expr()->like('p.title', ':query'),
                             $query->expr()->like('p.smallContent', ':query')
                         )))
-                ->setParameter('query', '%' . $search->getTitle() . '%');
+                ->andWhere('p.isValid = :valid')        
+                ->setParameter('query', '%' . $search->getTitle() . '%')
+                ->setParameter(':valid', 1)
+                ;
         }  
 
         $annonces = $this->paginator->paginate(
             $query
+            ->where('p.isValid = :valid')
+            ->setParameter(':valid', 1)
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery(),
             $page,
@@ -83,6 +94,8 @@ class AnnoncesRepository extends ServiceEntityRepository
 
         $annonces = $this->paginator->paginate(
             $query
+            ->where('p.isValid = :valid')
+            ->setParameter(':valid', 1)
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery(),
             $page,
@@ -101,6 +114,26 @@ class AnnoncesRepository extends ServiceEntityRepository
     public function findLatest(): array
     {
         $annonces = $this->findVisibleQuery('p')
+            ->where('p.isValid = :valid')
+            ->setParameter(':valid', 1)
+            ->setMaxResults(6)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+        $this->hydratePicture($annonces);
+        return $annonces;
+    }
+
+    /**
+     * @return Annonces[]
+     */
+    public function findLatestNonPremium(): array
+    {
+        $annonces = $this->findVisibleQuery('p')
+            ->where('p.isValid = :valid')
+            ->andWhere('p.premium = :premium')
+            ->setParameter(':valid', 1)
+            ->setParameter(':premium', 0)
             ->setMaxResults(6)
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
@@ -133,6 +166,8 @@ class AnnoncesRepository extends ServiceEntityRepository
     public function findAllAnnonces(string $username): array
     {
         $annonces = $this->findVisibleQuery('p')
+            ->where('p.isValid = :valid')
+            ->setParameter(':valid', 1)
             ->orderBy('p.id', 'DESC')
             ->where('p.createdBy = :username')
             ->setParameter('username', $username)
@@ -153,6 +188,8 @@ class AnnoncesRepository extends ServiceEntityRepository
         return $qb
         ->select('count(p.id)')
         ->where('p.author = :username')
+        ->andWhere('p.isValid = :valid')
+        ->setParameter(':valid', 1)
         ->setParameter(':username', $username)
         ->getQuery()
         ->getSingleScalarResult();
@@ -168,7 +205,9 @@ class AnnoncesRepository extends ServiceEntityRepository
     {
         $annonces = $this->findVisibleQuery('p')
             ->where('p.category = :cat')
+            ->andWhere('p.isValid = :valid')
             ->setParameter('cat', $cat)
+            ->setParameter(':valid', 1)
             ->setMaxResults(4)
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
@@ -186,10 +225,107 @@ class AnnoncesRepository extends ServiceEntityRepository
 
         return $qb
         ->select('count(p.id)')
+        ->where('p.isValid = :valid')
+        ->setParameter(':valid', 1)
         ->getQuery()
         ->getSingleScalarResult();
 
         $this->hydratePicture($qb);
 
+    }
+
+    /**
+     * @return Annonces[]
+     */
+    public function findCountAllPremium()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+        ->select('count(p.id)')
+        ->where('p.isValid = :valid')
+        ->andWhere('p.premium = :premium')
+        ->setParameter(':valid', 1)
+        ->setParameter('premium', 1)
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        $this->hydratePicture($qb);
+
+    }
+
+    /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisiblePremium(AnnoncesSearch $search, int $page): PaginationInterface
+    {
+        $query = $this->findVisibleQuery('p');
+
+        if ($search->getCategory()) {
+            $query = $query
+                ->where('p.category LIKE :cat')
+                ->setParameter('cat', $search->getCategory())
+                ->andWhere('p.premium = :premium')
+                ->setParameter(':premium', 1)
+                ;
+        }
+
+        if ($search->getSousCategory()) {
+            $query = $query
+                ->where('p.sousCategory LIKE :cat')
+                ->andWhere('p.premium = :premium')
+                ->setParameter('cat', $search->getSousCategory())
+                ->setParameter(':premium', 1)
+                ;
+        }
+
+        if ($search->getTitle()) {
+            $query = $query
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->orX(
+                            $query->expr()->like('p.title', ':query'),
+                            $query->expr()->like('p.smallContent', ':query')
+                        )))
+                ->andWhere('p.premium = :premium')
+                ->setParameter('query', '%' . $search->getTitle() . '%')
+                ->setParameter(':premium', 1)
+                ;
+        }  
+
+        $annonces = $this->paginator->paginate(
+            $query
+            ->where('p.isValid = :valid')
+            ->andWhere('p.premium = :premium')
+            ->setParameter(':valid', 1)
+            ->setParameter('premium', 1)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery(),
+            $page,
+            12
+        );
+
+
+        $this->hydratePicture($annonces);
+
+        return $annonces;
+    }
+
+    /**
+     * @return Annonces[]
+     */
+    public function findLatestPremium(): array
+    {
+        $annonces = $this->findVisibleQuery('p')
+            ->where('p.isValid = :valid')
+            ->andWhere('p.premium = :premium')
+            ->setParameter(':valid', 1)
+            ->setParameter(':premium', 1)
+            ->setMaxResults(6)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+        $this->hydratePicture($annonces);
+        return $annonces;
     }
 }

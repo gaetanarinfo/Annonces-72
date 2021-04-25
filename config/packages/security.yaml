@@ -48,6 +48,7 @@ security:
         # - { path: ^/admin/utilisateur, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profil, roles: ROLE_USER }
         - { path: ^/profil/edit, roles: ROLE_USER }
+        - { path: /premium, roles: ROLE_USER }
         - { path: /deposer-une-annonce, roles: ROLE_USER }
 
     encoders:

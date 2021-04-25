@@ -19,11 +19,18 @@ class AnnoncesType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'required' => true,
-                'label' => 'Quel est le titre de l’annonce ?',
+                'label' => 'Quel est le titre de l’annonce ?'
             ])
             ->add('price', NumberType::class, [
                 'required' => true,
                 'label' => 'Quel est le prix de l’annonce ?',
+            ])
+            ->add('phone', NumberType::class, [
+                'required' => true,
+                'label' => 'Quel est votre numéro ?',
+                'attr' => [
+                    'maxlength' => '10'
+                ]
             ])
             ->add('category', ChoiceType::class, [
                 'required' => true,

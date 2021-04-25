@@ -427,7 +427,7 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
     border-color: #333;
-    background-color: #333
+    background-color: #fff
 }
 
 .btn-default,
