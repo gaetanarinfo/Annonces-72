@@ -2,9 +2,11 @@
 
 namespace App\Twig;
 
+use App\Repository\MailboxRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class Globals {
+class Globals extends AbstractController {
 
     /**
      *
@@ -33,7 +35,5 @@ class Globals {
         ];
 
     }
-
-
     
 }

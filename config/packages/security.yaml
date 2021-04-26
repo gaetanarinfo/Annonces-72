@@ -21,7 +21,7 @@ security:
                 secret:   '%kernel.secret%'
                 lifetime: 604800 # 1 week in seconds
                 token_provider: 'Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider'
-                path:     /
+                path: /
                 # by default, the feature is enabled by checking a
                 # checkbox in the login form (see below), uncomment the
                 # following line to always enable it.
@@ -36,7 +36,10 @@ security:
             # switch_user: true
 
             form_login: 
-                check_path: login         
+                login_path: login
+                check_path: login
+                default_target_path: profil
+                always_use_default_target_path: true      
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_ADMIN

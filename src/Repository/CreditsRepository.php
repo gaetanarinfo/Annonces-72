@@ -4,7 +4,10 @@ namespace App\Repository;
 
 use App\Entity\Credits;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @method Credits|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,37 +17,40 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CreditsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
+
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Credits::class);
+        $this->paginator = $paginator;
     }
 
-    // /**
-    //  * @return Credits[] Returns an array of Credits objects
-    //  */
-    /*
-    public function findByExampleField($value)
+        /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisible(string $userId, int $page): PaginationInterface
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->findVisibleQuery('p');
 
-    /*
-    public function findOneBySomeField($value): ?Credits
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $credits = $this->paginator->paginate(
+            $query
+            ->where('p.id = :user')
+            ->setParameter('user', $userId)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery(),
+            $page,
+            12
+        );
+
+        return $credits;
     }
-    */
+
+    private function findVisibleQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p');
+    }
+
 }

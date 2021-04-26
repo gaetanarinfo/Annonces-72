@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title 'Annonces-72 - Mes favoris' %}
+{% block title 'Annonces-72 - Boîte de réception' %}
 
 {% block body %}
 	<link href="http://localhost:8000/css/profil.css" rel="stylesheet">
@@ -15,12 +15,12 @@
 
 		{% include('components/navbar.html.twig') %}
 
-		<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="http://localhost:8000/img/bg/bg2.jpg" data-speed="0.7">
+		<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="http://localhost:8000/img/bg/bg5.jpg" data-speed="0.7">
 			<div class="section-inner pad-top-200">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12 mb30 wow text-center">
-							<h2 class="section-heading">Mes favoris</h2>
+							<h2 class="section-heading">Boîte de réception</h2>
 						</div>
 					</div>
 				</div>
@@ -77,10 +77,10 @@
 											<a href="{{ path('user.credit') }}">Mes crédits</a>
 										</li>
 										<li>
-											<a class="active" href="{{ path('user.favoris') }}">Mes favoris</a>
+											<a href="{{ path('user.favoris') }}">Mes favoris</a>
 										</li>
 										<li>
-											<a href="{{ path('user.mailbox') }}">Boîte de réception <b>({{ countMail }})</b></a>
+											<a class="active" href="{{ path('user.mailbox') }}">Boîte de réception <b>({{ countMail }})</b></a>
 										</li>
 									</ul>
 								</div>
@@ -92,54 +92,58 @@
 							<div class="col-lg-12">
 								<div class="card info-card">
 									<div class="card-body">
-										<h2 class="text-blue">Mes annonces en favoris</h2>
+										<h2 class="text-blue">Boîte de réception</h2>
 
 										<div>
-											<h4><strong>Retrouvez vos annonces sauvegardées sur tous vos appareils</strong></h4>
+											<h4>
+												<strong>Retrouvez vos messages ici et sur tous vos appareils</strong>
+											</h4>
 
-											<p>Si l’annonce n’est plus active sur le site, elle disparaîtra automatiquement de votre sélection.</p>
-										
 											<hr>
 										</div>
 										<div class="row">
-											{% for annoncesUsers in annoncesLike %}
-											<div class="col-lg-6 m-auto">
-												<h4 class="mb-3">
-													<a href="{{ path('annonce.show', { 'id': annoncesUsers.id }) }}" style="max-width: 348px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin-top: 1.5rem!important;">
-														<strong>{{ annoncesUsers.title }}</strong>
-													</a>
-												</h4>
-												{% if annoncesUsers.pictures is empty %}
-													<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annoncesUsers.title }}">
-														<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" class="img-responsive" alt="{{ annoncesUsers.title }}">
-													</a>
-												{% else %}
-													<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annoncesUsers.title }}">
-														<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" class="img-responsive" alt="{{ annonces.title }}"/>
-													</a>
-												{% endif %}
-												<p class="mt-3">
-													{% if annoncesUsers.premium == 1 %}
-														<span>
-															<i class="fas fa-hand-sparkles text-success"></i>
-															<strong>Annonce Premium</strong></span>
-													{% endif %}
-												</p>
-                                                <p>Crée le {{ annoncesUsers.createdAt|format_datetime() }}</p>
-												<p class="mt-3">{{ annoncesUsers.smallContent }}
-												</p>
-												
-												<div class="text-center mb-3">
-													<a href="#" class="btn btn-primary btn-theme mr-5">Envoyer un message
-														<i class="far fa-comment-dots text-success"></i>
-													</a>
+											<div class="table-responsive">
+												<table class="table table-striped table-hover table-borderless table-sm table-light border-light">
+													<thead>
+														<tr>
+															<th scope="col" class="text-center">Auteur du message</th>
+															<th scope="col" class="text-center">Sujet du message</th>
+															<th scope="col" class="text-center">Date de réception</th>
+															<th scope="col" class="text-center">Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														{% for mailboxs in mailbox %}
+															<tr>
+																<td scope="row" class="text-center">
+																	<img src="http://localhost:8000/img/mail.png" alt="{{ mailboxs.author }}" height="22" alt="" loading="lazy"/>
+																	<span class="ml-2">{{ mailboxs.author }}</span>
+																</td>
+																<td class="text-center">{{ mailboxs.subject }}</td>
+																<td class="text-center">{{ mailboxs.createdAt|format_datetime() }}</td>
+																<td class="text-center">
+																	<a href="{{ path('user.mailbox.read', { 'id': mailboxs.id }) }}" data-toggle="tooltip" data-placement="top" title="Marquer comme lu" class="btn btn-warning" style="width: 22px;height: 22px;font-size: 10px;padding: 4px;">
+																		<i class="fas fa-check" style="color: #fff;"></i>
+																	</a>
+																	<a href="{{ path('user.mailbox.view', { 'id': mailboxs.id }) }}" data-toggle="tooltip" data-placement="top" title="Lire le message" class="btn btn-success" style="width: 22px;height: 22px;font-size: 10px;padding: 4px;">
+																		<i class="fas fa-glasses" style="color: #fff;"></i>
+																	</a>
+																	<a href="{{ path('user.mailbox.read', { 'id': mailboxs.id }) }}" data-toggle="tooltip" data-placement="top" title="Supprimer le message" class="btn btn-danger" style="width: 22px;height: 22px;font-size: 10px;padding: 4px;">
+																		<i class="fas fa-times" style="color: #fff;"></i>
+																	</a>
+																</td>
+															</tr>
+														{% endfor %}
+													</tbody>
+												</table>
+											</div>
 
-													<a href="{{ path('user.favoris.delete', { 'id': annoncesUsers.id }) }}" class="btn btn-primary btn-theme mr-5">Supprimer l'annonce
-														<i class="fa fa-trash text-danger"></i>
-													</a>
+											<div class="row mt-4">
+												<div class="col-12 col-md-12 col-xl-12" style="display: flex;justify-content: space-around;">
+													{{ knp_pagination_render(mailbox) }}
 												</div>
 											</div>
-										{% endfor %}
+
 										</div>
 									</div>
 								</div>

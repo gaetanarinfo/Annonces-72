@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Page non trouvée
+{% block title %}Annonces-72 - Page non trouvée
 {% endblock %}
 
 {% block body %}
@@ -8,7 +8,7 @@
 
 		<div class="preloader">
 			<div class="preloader-img">
-				<span class="loading-animation animate-flicker"><img src="img/loading.GIF" alt="loading"/></span>
+				<span class="loading-animation animate-flicker"><img src="http://localhost:8000/img/loading.GIF" alt="loading"/></span>
 			</div>
 		</div>
 
@@ -16,129 +16,16 @@
 		<header id="headerwrap" class="fullheight dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="img/bg/bg5.jpg" data-speed="0.7">
 			<div class="container vertical-center">
 				<div class="intro-text vertical-center text-left smoothie">
-					<div class="intro-heading wow fadeIn heading-font" data-wow-delay="0.2s">404</div>
+					<div class="intro-heading wow fadeIn heading-font" data-wow-delay="0.2s">Erreur 404</div>
 					<div class="intro-sub-heading wow fadeIn secondary-font" data-wow-delay="0.4s">
-						<span class="rotate">The requested URL, isnt here im afraid.</span>
+						<span class="rotate">L'URL demandée n'est pas ici, recommencer encore !</span>
 					</div>
 				</div>
 			</div>
 		</header>
 
-		<div id="footer-wrapper">
-			<section class="dark-wrapper">
-				<div class="section-inner">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-4">
-								<div class="widget about-us-widget">
-									<h4 class="widget-title">
-										<strong>Global</strong>
-										Coverage</h4>
-									<p>Professionally monetize team building materials for 24/7 results. Holisticly transition corporate platforms vis-a-vis cutting-edge experiences. Dynamically strategize ubiquitous applications for premier initiatives. Interactively seize resource sucking niche markets.</p>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="widget">
-									<h4 class="widget-title">
-										<strong>Latest</strong>
-										Articles</h4>
-									<div>
-										<div class="media">
-											<div class="pull-left">
-												<img class="widget-img" src="img/widget/widget1.jpg" alt="">
-											</div>
-											<div class="media-body">
-												<span class="media-heading">
-													<a href="#">Blog Post A</a>
-												</span>
-												<small class="muted">Posted 14 April 2019</small>
-											</div>
-										</div>
-										<div class="media">
-											<div class="pull-left">
-												<img class="widget-img" src="img/widget/widget2.jpg" alt="">
-											</div>
-											<div class="media-body">
-												<span class="media-heading">
-													<a href="#">Blog Post B</a>
-												</span>
-												<small class="muted">Posted 14 April 2019</small>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="widget">
-									<h4 class="widget-title">Popular Tags</h4>
-									<div class="tagcloud">
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Local</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Business</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Media</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Photogtraphy</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Aid</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Fashion</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">News</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Cars</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Global Affairs</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Music</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">Downloads</a>
-										<a href="#" class="tag-link btn btn-theme btn-white btn-xs smoothie" title="3 topics">MP3</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+		{% include('components/footer.html.twig') %}
 
-			<footer class="white-wrapper">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12 text-center">
-							<ul class="list-inline social-links wow">
-								<li>
-									<a href="#">
-										<i class="fa fa-twitter"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-pinterest"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-dribbble"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-facebook"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-behance"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa fa-linkedin"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-
-						<hr class="thin-hr"/>
-
-						<div class="col-md-12 text-center wow">
-							<span class="copyright">Copyright 2019. Designed by DISTINCTIVE THEMES</span>
-						</div>
-					</div>
-				</div>
-			</footer>
-		</div>
 	</div>
 
 {% endblock %}

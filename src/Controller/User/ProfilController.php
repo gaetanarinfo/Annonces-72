@@ -7,6 +7,7 @@ use App\Entity\Avatar;
 use App\Entity\Contact;
 use App\Entity\Credits;
 use App\Entity\LikeAnnonces;
+use App\Entity\Mailbox;
 use App\Entity\User;
 use App\Form\ContactType;
 use App\Form\UserType3;
@@ -14,6 +15,7 @@ use App\Notification\ContactNotification;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CreditsRepository;
 use App\Repository\LikeAnnoncesRepository;
+use App\Repository\MailboxRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,8 +46,7 @@ class ProfilController extends AbstractController
     /**
      * @Route("/profil", name="profil", methods="GET|POST")
     */
-
-    public function index(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike)
+    public function index(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike, MailboxRepository $repositoryMailbox)
     {
 
         $contact = new Contact();
@@ -71,10 +72,13 @@ class ProfilController extends AbstractController
             $annoncesLike = 0;
         }
 
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
         return $this->render('user/index.html.twig', [
             'formContact' => $formContact->createView(),
             'annonceLatest' => $annoncesPremium,
-            'annoncesLike' => $annoncesLike
+            'annoncesLike' => $annoncesLike,
+            'countMail' => $countMail
         ]);
     }
 
@@ -83,7 +87,7 @@ class ProfilController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, UserPasswordEncoderInterface $passwordEncoder)
+    public function edit(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, UserPasswordEncoderInterface $passwordEncoder, MailboxRepository $repositoryMailbox)
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType3::class, $user);
@@ -112,10 +116,13 @@ class ProfilController extends AbstractController
                 return $this->redirectToRoute('user.edit');      
         }
 
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
             'formContact' => $formContact->createView(),
-            'annonceLatest' => $annonces
+            'annonceLatest' => $annonces,
+            'countMail' => $countMail
         ]);
     }
 
@@ -188,7 +195,7 @@ class ProfilController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function annonces(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
+    public function annonces(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, MailboxRepository $repositoryMailbox)
     {
 
         $contact = new Contact();
@@ -206,10 +213,13 @@ class ProfilController extends AbstractController
 
         }
 
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
         return $this->render('user/annonces.html.twig', [
             'formContact' => $formContact->createView(),
             'annonceLatest' => $annoncesPremium,
-            'annoncesUser' => $annoncesUser
+            'annoncesUser' => $annoncesUser,
+            'countMail' => $countMail
         ]);
     }
 
@@ -218,7 +228,7 @@ class ProfilController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function credit(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CreditsRepository $creditsRepository)
+    public function credit(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CreditsRepository $creditsRepository, MailboxRepository $repositoryMailbox)
     {
 
         $contact = new Contact();
@@ -233,14 +243,14 @@ class ProfilController extends AbstractController
 
         }
 
-        $transaction = $creditsRepository->findBy(array('userId' => $this->getUser()->getId()));
-
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
 
         return $this->render('user/credit.html.twig', [
             'formContact' => $formContact->createView(),
             'annonceLatest' => $annoncesPremium,
-            'transaction' => $transaction
+            'countMail' => $countMail,
+            'transaction' => $creditsRepository->paginateAllVisible($this->getUser()->getId(), $request->query->getInt('page', 1)),
         ]);
     }
 
@@ -453,7 +463,7 @@ class ProfilController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function favoris(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike)
+    public function favoris(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike, MailboxRepository $repositoryMailbox)
     {
 
         $contact = new Contact();
@@ -479,10 +489,13 @@ class ProfilController extends AbstractController
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
         return $this->render('user/favoris.html.twig', [
             'formContact' => $formContact->createView(),
             'annonceLatest' => $annoncesPremium,
-            'annoncesLike' => $annoncesLike
+            'annoncesLike' => $annoncesLike,
+            'countMail' => $countMail
         ]);
     }
 
@@ -508,6 +521,130 @@ class ProfilController extends AbstractController
         $em->flush();
         $this->addFlash('success', 'Annonce supprimé avec succès');
         return $this->redirectToRoute('user.annonces');
+    }
+
+    /**
+     * @Route("/profil/boite-de-reception", name="user.mailbox", methods="GET|POST")
+    */
+    public function mailbox(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike, MailboxRepository $repositoryMailbox)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        $userLike = $repositoryLike->findBy(array('userId' => $this->getUser()->getId()));
+
+        if($userLike != null)
+        {   
+            $annoncesLike = $repositoryAnnonces->findBy(array('id' => $userLike));
+        }else{
+            $annoncesLike = 0;
+        }
+
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
+        return $this->render('user/mailbox.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annoncesPremium,
+            'annoncesLike' => $annoncesLike,
+            'mailbox' => $repositoryMailbox->paginateAllVisible($this->getUser()->getUsername(), $request->query->getInt('page', 1)),
+            'countMail' => $countMail
+        ]);
+    }
+
+    /**
+     * @Route("/profil/boite-de-reception/read/{id}", name="user.mailbox.read", methods="GET|POST")
+    */
+    public function mailboxRead(Mailbox $mailbox, Request $request)
+    {
+
+        if($mailbox->getRecipient() == $this->getUser()->getUsername())
+        {
+
+            $mailbox->setIsRead(1);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($mailbox);
+            $entityManager->flush();
+            $this->addFlash('success', 'Message archivé avec succès');
+        }
+
+        return $this->redirectToRoute('user.mailbox');
+    }
+
+    /**
+     * @Route("/profil/boite-de-reception/delete/{id}", name="user.mailbox.delete", methods="GET|POST")
+    */
+    public function mailboxDelete(Mailbox $mailbox, Request $request)
+    {
+
+        if($mailbox->getRecipient() == $this->getUser()->getUsername())
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($mailbox);
+            $entityManager->flush();
+            $this->addFlash('success', 'Message supprimé avec succès');
+        }
+
+        return $this->redirectToRoute('user.mailbox');
+    }
+
+    /**
+     * @Route("/profil/boite-de-reception/message/{id}", name="user.mailbox.view", methods="GET|POST")
+    */
+    public function mailboxView(Mailbox $mailbox, Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike, MailboxRepository $repositoryMailbox)
+    {
+
+        // if($mailbox->getRecipient() == $this->getUser()->getUsername())
+        // {
+        //     $entityManager = $this->getDoctrine()->getManager();
+        //     $entityManager->remove($mailbox);
+        //     $entityManager->flush();
+        //     $this->addFlash('success', 'Message supprimé avec succès');
+        // }
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        $userLike = $repositoryLike->findBy(array('userId' => $this->getUser()->getId()));
+
+        if($userLike != null)
+        {   
+            $annoncesLike = $repositoryAnnonces->findBy(array('id' => $userLike));
+        }else{
+            $annoncesLike = 0;
+        }
+
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
+        return $this->render('user/mailboxView.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annoncesPremium,
+            'annoncesLike' => $annoncesLike,
+            'mailbox' => $mailbox,
+            'countMail' => $countMail
+        ]);
     }
 
 }

@@ -9,6 +9,7 @@ use App\Entity\Contact;
 use App\Entity\LikeAnnonces;
 use App\Entity\User;
 use App\Entity\VoteAnnonces;
+use App\Entity\VoteUser;
 use App\Form\AnnoncesSearchType;
 use App\Form\AnnoncesType;
 use App\Form\CommentType;
@@ -19,6 +20,7 @@ use App\Repository\CommentRepository;
 use App\Repository\LikeAnnoncesRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoteAnnoncesRepository;
+use App\Repository\VoteUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -110,7 +112,7 @@ class AnnoncesController extends AbstractController
      * @Route("/annonce/{id}", name="annonce.show") requirements={"id": [0-9\-]""}
      * @return Responce
     */
-    public function show (Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, LikeAnnoncesRepository $repositoryLike):Response{
+    public function show (Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, LikeAnnoncesRepository $repositoryLike, VoteUserRepository $repositoryVoteUser):Response{
 
         $author = $annonces->getAuthor();
         $authorId = $this->getUser();
@@ -163,14 +165,19 @@ class AnnoncesController extends AbstractController
         if($authorId == null)
         {
             $voteId = 0;
+            $voteuserId = 0;
             $likeId = 0;
         }else{
             $voteId = $repositoryVote->findUserVote($authorId->getId());
-            $likeId = $repositoryLike->findUserLike($annonces->getId());
+
+            $voteuserId = $repositoryVoteUser->findUserVote($authorId->getId());
+
+            $likeId = $repositoryLike->findUserLike($this->getUser()->getId());
 
         }
 
         $voteCount = $repositoryVote->findCount($annonces->getId());
+        $voteuserCount = $repositoryVoteUser->findCount($annonces->getId());
 
         return $this->render('pages/annonce_type.html.twig', [
             'formContact' => $formContact->createView(),
@@ -184,6 +191,8 @@ class AnnoncesController extends AbstractController
             'formComment' => $formComment->createView(),
             'voteId' => $voteId,
             'voteCount' => $voteCount,
+            'voteuserId' => $voteuserId,
+            'voteuserCount' => $voteuserCount,
             'likeId' => $likeId,
         ]);
 
@@ -629,5 +638,342 @@ class AnnoncesController extends AbstractController
         ]);
 
     }
+
+     /**
+     * @Route("/annonce/vote/stars/user/1/{id}", name="annonce.starsVote1b") requirements={"id": [0-9\-]""}
+     * @return Responce
+    */
+    public function starsVoteb(Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, UserRepository $repositoryUser)
+    {
+        $author = $annonces->getAuthor();
+
+        $countAnnonces = $repositoryAnnonces->findCount($author);
+        $annonceSimilaire = $repositoryAnnonces->findSimilaire($annonces->getCategory());
+        $annonceLatest = $repositoryAnnonces->findLatest();
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $comment = new Comment();
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
+        $comments = $repositoryComment->findLatest($annonces->getId());
+        $countComment = $repositoryComment->findCount($annonces->getId());
+
+        $user = $repository->findOneBy(array('username' => $author));
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $comment->setAuthor($author);
+            $comment->setAnnonceId($annonces->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre commentaire à été poster');
+            return $this->render('pages/annonce_type.html.twig', [
+                'formContact' => $formContact->createView(),
+                'annonces' => $annonces,
+                'user' => $user,
+                'count' => $countAnnonces,
+                'annonceSimilaire' => $annonceSimilaire,
+                'annonceLatest' => $annonceLatest,
+                'countComment' => $countComment,
+                'comment' => $comments,
+                'formComment' => $formComment->createView()
+            ]);  
+        }
+
+            $vote = new VoteUser();
+            $userId = $repositoryUser->findOneBy(array('username' => $annonces->getAuthor()));
+
+           
+            $this->addFlash('success', 'Votre vote à été pris en compte');
+            $vote->setUserId($this->getUser()->getId());
+            $vote->setUserId2($userId->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($vote);
+            $entityManager->flush();
+            return $this->redirectToRoute('annonce.show', [ 'id' => $annonces->getId() ]);
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/annonce/vote/stars/user/2/{id}", name="annonce.starsVote2b") requirements={"id": [0-9\-]""}
+     * @return Responce
+    */
+    public function starsVote2b(Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, UserRepository $repositoryUser)
+    {
+        $author = $annonces->getAuthor();
+
+        $countAnnonces = $repositoryAnnonces->findCount($author);
+        $annonceSimilaire = $repositoryAnnonces->findSimilaire($annonces->getCategory());
+        $annonceLatest = $repositoryAnnonces->findLatest();
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $comment = new Comment();
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
+        $comments = $repositoryComment->findLatest($annonces->getId());
+        $countComment = $repositoryComment->findCount($annonces->getId());
+
+        $user = $repository->findOneBy(array('username' => $author));
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $comment->setAuthor($author);
+            $comment->setAnnonceId($annonces->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre commentaire à été poster');
+            return $this->render('pages/annonce_type.html.twig', [
+                'formContact' => $formContact->createView(),
+                'annonces' => $annonces,
+                'user' => $user,
+                'count' => $countAnnonces,
+                'annonceSimilaire' => $annonceSimilaire,
+                'annonceLatest' => $annonceLatest,
+                'countComment' => $countComment,
+                'comment' => $comments,
+                'formComment' => $formComment->createView()
+            ]);  
+        }
+
+            $vote = new VoteUser();
+            $userId = $repositoryUser->findOneBy(array('username' => $annonces->getAuthor()));
+
+           
+            $this->addFlash('success', 'Votre vote à été pris en compte');
+            $vote->setUserId($this->getUser()->getId());
+            $vote->setUserId2($userId->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($vote);
+            $entityManager->flush();
+            return $this->redirectToRoute('annonce.show', [ 'id' => $annonces->getId() ]);
+
+        return $this->redirectToRoute('home');
+    }
+
+     /**
+     * @Route("/annonce/vote/stars/user/3/{id}", name="annonce.starsVote3b") requirements={"id": [0-9\-]""}
+     * @return Responce
+    */
+    public function starsVote3b(Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, UserRepository $repositoryUser)
+    {
+        $author = $annonces->getAuthor();
+
+        $countAnnonces = $repositoryAnnonces->findCount($author);
+        $annonceSimilaire = $repositoryAnnonces->findSimilaire($annonces->getCategory());
+        $annonceLatest = $repositoryAnnonces->findLatest();
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $comment = new Comment();
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
+        $comments = $repositoryComment->findLatest($annonces->getId());
+        $countComment = $repositoryComment->findCount($annonces->getId());
+
+        $user = $repository->findOneBy(array('username' => $author));
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $comment->setAuthor($author);
+            $comment->setAnnonceId($annonces->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre commentaire à été poster');
+            return $this->render('pages/annonce_type.html.twig', [
+                'formContact' => $formContact->createView(),
+                'annonces' => $annonces,
+                'user' => $user,
+                'count' => $countAnnonces,
+                'annonceSimilaire' => $annonceSimilaire,
+                'annonceLatest' => $annonceLatest,
+                'countComment' => $countComment,
+                'comment' => $comments,
+                'formComment' => $formComment->createView()
+            ]);  
+        }
+
+            $vote = new VoteUser();
+            $userId = $repositoryUser->findOneBy(array('username' => $annonces->getAuthor()));
+
+           
+            $this->addFlash('success', 'Votre vote à été pris en compte');
+            $vote->setUserId($this->getUser()->getId());
+            $vote->setUserId2($userId->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($vote);
+            $entityManager->flush();
+            return $this->redirectToRoute('annonce.show', [ 'id' => $annonces->getId() ]);
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/annonce/vote/stars/user/4/{id}", name="annonce.starsVote4b") requirements={"id": [0-9\-]""}
+     * @return Responce
+    */
+    public function starsVote4b(Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, UserRepository $repositoryUser)
+    {
+        $author = $annonces->getAuthor();
+
+        $countAnnonces = $repositoryAnnonces->findCount($author);
+        $annonceSimilaire = $repositoryAnnonces->findSimilaire($annonces->getCategory());
+        $annonceLatest = $repositoryAnnonces->findLatest();
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $comment = new Comment();
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
+        $comments = $repositoryComment->findLatest($annonces->getId());
+        $countComment = $repositoryComment->findCount($annonces->getId());
+
+        $user = $repository->findOneBy(array('username' => $author));
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $comment->setAuthor($author);
+            $comment->setAnnonceId($annonces->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre commentaire à été poster');
+            return $this->render('pages/annonce_type.html.twig', [
+                'formContact' => $formContact->createView(),
+                'annonces' => $annonces,
+                'user' => $user,
+                'count' => $countAnnonces,
+                'annonceSimilaire' => $annonceSimilaire,
+                'annonceLatest' => $annonceLatest,
+                'countComment' => $countComment,
+                'comment' => $comments,
+                'formComment' => $formComment->createView()
+            ]);  
+        }
+
+            $vote = new VoteUser();
+            $userId = $repositoryUser->findOneBy(array('username' => $annonces->getAuthor()));
+
+           
+            $this->addFlash('success', 'Votre vote à été pris en compte');
+            $vote->setUserId($this->getUser()->getId());
+            $vote->setUserId2($userId->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($vote);
+            $entityManager->flush();
+            return $this->redirectToRoute('annonce.show', [ 'id' => $annonces->getId() ]);
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/annonce/vote/stars/user/5/{id}", name="annonce.starsVote5b") requirements={"id": [0-9\-]""}
+     * @return Responce
+    */
+    public function starsVote5b(Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, UserRepository $repositoryUser)
+    {
+        $author = $annonces->getAuthor();
+
+        $countAnnonces = $repositoryAnnonces->findCount($author);
+        $annonceSimilaire = $repositoryAnnonces->findSimilaire($annonces->getCategory());
+        $annonceLatest = $repositoryAnnonces->findLatest();
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $comment = new Comment();
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
+        $comments = $repositoryComment->findLatest($annonces->getId());
+        $countComment = $repositoryComment->findCount($annonces->getId());
+
+        $user = $repository->findOneBy(array('username' => $author));
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $comment->setAuthor($author);
+            $comment->setAnnonceId($annonces->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre commentaire à été poster');
+            return $this->render('pages/annonce_type.html.twig', [
+                'formContact' => $formContact->createView(),
+                'annonces' => $annonces,
+                'user' => $user,
+                'count' => $countAnnonces,
+                'annonceSimilaire' => $annonceSimilaire,
+                'annonceLatest' => $annonceLatest,
+                'countComment' => $countComment,
+                'comment' => $comments,
+                'formComment' => $formComment->createView()
+            ]);  
+        }
+
+            $vote = new VoteUser();
+            $userId = $repositoryUser->findOneBy(array('username' => $annonces->getAuthor()));
+
+           
+            $this->addFlash('success', 'Votre vote à été pris en compte');
+            $vote->setUserId($this->getUser()->getId());
+            $vote->setUserId2($userId->getId());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($vote);
+            $entityManager->flush();
+            return $this->redirectToRoute('annonce.show', [ 'id' => $annonces->getId() ]);
+
+        return $this->redirectToRoute('home');
+    }
+
+
 
 }

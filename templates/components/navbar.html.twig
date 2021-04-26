@@ -67,7 +67,7 @@
                                 <a class="nav-link" href="">
                                 {% if app.user.pictures is empty %}
                                     <img
-                                    src="{{ 'http://localhost:8000/images/default_profil.png' }}"
+                                    src="{{ 'http://localhost:8000/img/avatar/default_profil.png' }}"
                                     alt="{{ app.user.username }}"
                                     class="rounded-circle"
                                     height="22"
@@ -84,7 +84,8 @@
                                         alt=""
                                         loading="lazy"
                                     />
-                                {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
                                 <strong class="d-none d-sm-block ml-2">{{ app.user.username }}</strong>
                                 </a>
                             </li>
@@ -102,7 +103,7 @@
                                 </li>
                             </ul>
                         </li>
-                    {% endif %}
+  
                         {% else %}
                             <li>
                                 <a href="{{ path('login') }}"><i class="far fa-user"></i></a>

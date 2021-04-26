@@ -31,7 +31,16 @@
 		<link href="http://localhost:8000/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 		<link href="http://localhost:8000/css/pe-icons.css" rel="stylesheet"> 
 		</head>
-		<body id="page-top" class="index"> {% block body %}{% endblock %}
+		<body id="page-top" class="index"> 
+		
+		{% block body %}{% endblock %}
+
+		 <button type="button" class="btn btn-success btn-floating btn-lg" id="back-to-top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+		{{ include('components/cookie.html.twig') }}
+		
 			<script src="http://localhost:8000/js/9d1d83a1dd.js" crossorigin="anonymous"></script>
 			<script src="http://localhost:8000/js/jquery.js"></script>
 			<script src="http://localhost:8000/js/bootstrap.min.js"></script>

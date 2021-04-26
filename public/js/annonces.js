@@ -355,3 +355,80 @@ $(function() {
         }
     });
 });
+
+// Vote user //
+
+$('#vote-stars1b').mouseover(function() {
+    $("#stars1b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star')
+});
+
+$('#vote-stars1b').mouseout(function() {
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star-empty')
+});
+
+$('#vote-stars2b').mouseover(function() {
+    $("#stars1b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars2b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars2b").attr('class', 'glyphicon glyphicon-star')
+});
+
+$('#vote-stars2b').mouseout(function() {
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars2b").attr('class', 'glyphicon glyphicon-star-empty')
+});
+
+$('#vote-stars3b').mouseover(function() {
+    $("#stars1b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars2b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars2b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars3b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars3b").attr('class', 'glyphicon glyphicon-star')
+});
+
+$('#vote-stars3b').mouseout(function() {
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars2b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars3b").attr('class', 'glyphicon glyphicon-star-empty')
+});
+
+$('#vote-stars4b').mouseover(function() {
+    $("#stars1b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars2b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars2b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars3b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars3b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars4b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars4b").attr('class', 'glyphicon glyphicon-star')
+});
+
+$('#vote-stars4b').mouseout(function() {
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars2b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars3b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars4b").attr('class', 'glyphicon glyphicon-star-empty')
+});
+
+$('#vote-stars5b').mouseover(function() {
+    $("#stars1b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars2b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars2b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars3b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars3b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars4b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars4b").attr('class', 'glyphicon glyphicon-star')
+    $("#stars5b").removeAttr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars5b").attr('class', 'glyphicon glyphicon-star')
+});
+
+$('#vote-stars5b').mouseout(function() {
+    $("#stars1b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars2b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars3b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars4b").attr('class', 'glyphicon glyphicon-star-empty')
+    $("#stars5b").attr('class', 'glyphicon glyphicon-star-empty')
+});

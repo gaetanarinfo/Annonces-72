@@ -76,6 +76,9 @@
 										<li>
 											<a href="{{ path('user.credit') }}" class="active">Mes crédits</a>
 										</li>
+										<li>
+											<a href="{{ path('user.mailbox') }}">Boîte de réception <b>({{ countMail }})</b></a>
+										</li>
 									</ul>
 								</div>
 							</div>
@@ -258,6 +261,13 @@ Les crédits ne sont pas utilisables pour les règlements effectués via le serv
 												</tbody>
 											</table>
 										</div>
+
+										<div class="row mt-4">
+												<div class="col-12 col-md-12 col-xl-12" style="display: flex;justify-content: space-around;">
+													{{ knp_pagination_render(transaction) }}
+												</div>
+											</div>
+
 									</div>
 								</div>
 							</div>
