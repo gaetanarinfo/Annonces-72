@@ -359,10 +359,6 @@
                 "redis",
                 "xcache"
             ],
-            "support": {
-                "issues": "https://github.com/doctrine/cache/issues",
-                "source": "https://github.com/doctrine/cache/tree/1.11.0"
-            },
             "funding": [
                 {
                     "url": "https://www.doctrine-project.org/sponsorship.html",
@@ -625,10 +621,6 @@
                 "sqlserver",
                 "sqlsrv"
             ],
-            "support": {
-                "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/2.13.1"
-            },
             "funding": [
                 {
                     "url": "https://www.doctrine-project.org/sponsorship.html",
@@ -1304,10 +1296,6 @@
                 "dbal",
                 "migrations"
             ],
-            "support": {
-                "issues": "https://github.com/doctrine/migrations/issues",
-                "source": "https://github.com/doctrine/migrations/tree/3.1.2"
-            },
             "funding": [
                 {
                     "url": "https://www.doctrine-project.org/sponsorship.html",
@@ -2269,14 +2257,6 @@
                 "laminas",
                 "laminasframework"
             ],
-            "support": {
-                "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.laminas.dev/laminas-code/",
-                "forum": "https://discourse.laminas.dev",
-                "issues": "https://github.com/laminas/laminas-code/issues",
-                "rss": "https://github.com/laminas/laminas-code/releases.atom",
-                "source": "https://github.com/laminas/laminas-code"
-            },
             "funding": [
                 {
                     "url": "https://funding.communitybridge.org/projects/laminas-project",
@@ -3326,9 +3306,6 @@
                 "interoperability",
                 "standards"
             ],
-            "support": {
-                "source": "https://github.com/symfony/cache-contracts/tree/v2.4.0"
-            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -4636,9 +4613,6 @@
                 "interoperability",
                 "standards"
             ],
-            "support": {
-                "source": "https://github.com/symfony/http-client-contracts/tree/v2.4.0"
-            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7022,9 +6996,6 @@
                 "interoperability",
                 "standards"
             ],
-            "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/v2.4.0"
-            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7413,9 +7384,6 @@
                 "interoperability",
                 "standards"
             ],
-            "support": {
-                "source": "https://github.com/symfony/translation-contracts/tree/v2.4.0"
-            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7991,16 +7959,16 @@
         },
         {
             "name": "symfony/webpack-encore-bundle",
-            "version": "v1.11.1",
+            "version": "v1.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/webpack-encore-bundle.git",
-                "reference": "395b60a549ded8e7f77f0d551815d7555e2d9eb0"
+                "reference": "f282fb17ffa4839ba491eb7e3f5ffdd40c86f969"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/webpack-encore-bundle/zipball/395b60a549ded8e7f77f0d551815d7555e2d9eb0",
-                "reference": "395b60a549ded8e7f77f0d551815d7555e2d9eb0",
+                "url": "https://api.github.com/repos/symfony/webpack-encore-bundle/zipball/f282fb17ffa4839ba491eb7e3f5ffdd40c86f969",
+                "reference": "f282fb17ffa4839ba491eb7e3f5ffdd40c86f969",
                 "shasum": ""
             },
             "require": {
@@ -8040,10 +8008,6 @@
                 }
             ],
             "description": "Integration with your Symfony app & Webpack Encore!",
-            "support": {
-                "issues": "https://github.com/symfony/webpack-encore-bundle/issues",
-                "source": "https://github.com/symfony/webpack-encore-bundle/tree/v1.11.1"
-            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -8058,7 +8022,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-17T13:45:51+00:00"
+            "time": "2021-04-26T12:48:17+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -8571,10 +8535,6 @@
                 "file uploads",
                 "upload"
             ],
-            "support": {
-                "issues": "https://github.com/dustin10/VichUploaderBundle/issues",
-                "source": "https://github.com/dustin10/VichUploaderBundle/tree/1.17.1"
-            },
             "time": "2021-04-19T07:57:49+00:00"
         },
         {
@@ -9113,9 +9073,6 @@
             ],
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v2.4.0"
-            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -9535,5 +9492,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }
