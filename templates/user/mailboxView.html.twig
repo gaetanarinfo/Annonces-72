@@ -109,7 +109,7 @@
 											<div class="row">
 
 												<div class="mb-3" style="text-align: right;">
-													<a href="" data-toggle="tooltip" data-placement="top" title="Répondre au message" class="btn btn-success" style="width: 144px;height: 22px;font-size: 10px;padding: 4px;font-weight: 600;">
+													<a id="reply-to" data-toggle="tooltip" data-placement="top" title="Répondre au message" class="btn btn-success" style="width: 144px;height: 22px;font-size: 10px;padding: 4px;font-weight: 600;">
 														<i class="fas fa-reply" style="color: #fff;"></i>
 														Répondre au message
 													</a>
@@ -130,15 +130,16 @@
 													</div>
 												</div>
 
-												<div id="reply" class="col-md-12 m-auto">
+												<div id="reply" class="col-md-12 m-auto" style="display:none;">
 
 													{{ form_start(formMailbox) }}
-													{{ form_row(formMailbox.content) }}
-													{{ form_end(formMailbox) }}
+													{{ form_row(formMailbox.content) }}	
 
 													<div class="col-6 text-center mb-3">
 														<button type="submit" class="btn btn-primary">Envoyer le message</button>
 													</div>
+
+													{{ form_end(formMailbox) }}
 												</div>
 											</div>
 										</div>
@@ -156,5 +157,18 @@
 			</div>
 
 			{% include('components/navRight.html.twig') %}
+
+			<script>
+				const content = document.getElementById('mailbox_content');
+				content.value = '';
+
+				const mailbox_author = document.getElementById('mailbox_author'),
+					mailbox_recipient = document.getElementById('mailbox_recipient'),
+					mailbox_subject = document.getElementById('mailbox_subject');
+
+				mailbox_author.value = `{{ app.user.username }}`;
+				mailbox_recipient.value = `{{ mailbox.author }}`;
+				mailbox_subject.value = `Réponse de {{ mailbox.author }}`;
+			</script>
 
 		{% endblock %}
