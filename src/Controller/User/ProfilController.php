@@ -614,11 +614,13 @@ class ProfilController extends AbstractController
         //     $this->addFlash('success', 'Message supprimé avec succès');
         // }
 
+        $mailboX = new Mailbox();
+
         $contact = new Contact();
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        $formMailbox = $this->createForm(MailboxType::class, $mailbox);
+        $formMailbox = $this->createForm(MailboxType::class, $mailboX);
         $formMailbox->handleRequest($request);
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
@@ -633,6 +635,9 @@ class ProfilController extends AbstractController
 
         if ($formMailbox->isSubmitted() && $formMailbox->isValid()) {
            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($mailboX);
+            $entityManager->flush();
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('user.mailbox');
 
