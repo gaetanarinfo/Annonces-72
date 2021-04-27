@@ -10,6 +10,7 @@ use App\Entity\LikeAnnonces;
 use App\Entity\Mailbox;
 use App\Entity\User;
 use App\Form\ContactType;
+use App\Form\MailboxType;
 use App\Form\UserType3;
 use App\Notification\ContactNotification;
 use App\Repository\AnnoncesRepository;
@@ -617,13 +618,23 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
+        $formMailbox = $this->createForm(MailboxType::class, $mailbox);
+        $formMailbox->handleRequest($request);
+
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
             $notif->notify($contact);
             $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('user.mailbox');
+
+        }
+
+        if ($formMailbox->isSubmitted() && $formMailbox->isValid()) {
+           
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('user.mailbox');
 
         }
 
@@ -640,6 +651,7 @@ class ProfilController extends AbstractController
 
         return $this->render('user/mailboxView.html.twig', [
             'formContact' => $formContact->createView(),
+            'formMailbox' => $formMailbox->createView(),
             'annonceLatest' => $annoncesPremium,
             'annoncesLike' => $annoncesLike,
             'mailbox' => $mailbox,
