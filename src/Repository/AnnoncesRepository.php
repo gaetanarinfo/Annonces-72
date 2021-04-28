@@ -328,4 +328,29 @@ class AnnoncesRepository extends ServiceEntityRepository
         $this->hydratePicture($annonces);
         return $annonces;
     }
+
+    /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisibleUser(string $username, int $page): PaginationInterface
+    {
+        $query = $this->findVisibleQuery('p');
+
+        $annonces = $this->paginator->paginate(
+            $query
+            ->where('p.isValid = :valid')
+            ->andWhere('p.author = :author')
+            ->setParameter(':valid', 1)
+            ->setParameter(':author', $username)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery(),
+            $page,
+            12
+        );
+
+
+        $this->hydratePicture($annonces);
+
+        return $annonces;
+    }
 }

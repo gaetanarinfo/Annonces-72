@@ -18,6 +18,7 @@ use App\Notification\ContactNotification;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CommentRepository;
 use App\Repository\LikeAnnoncesRepository;
+use App\Repository\MailboxRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoteAnnoncesRepository;
 use App\Repository\VoteUserRepository;
@@ -598,12 +599,14 @@ class AnnoncesController extends AbstractController
      * @Route("/deposer-une-annonce", name="annonce.create")
      * @return Responce
     */
-    public function create (Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
+    public function create(Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, MailboxRepository $repositoryMailbox)
     {
 
         $contact = new Contact();
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
+
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
 
         $annonces = new Annonces();
         $formAnnonces = $this->createForm(AnnoncesType::class, $annonces);
@@ -625,16 +628,20 @@ class AnnoncesController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($annonces);
             $entityManager->flush();
-            $this->addFlash('success', 'Votre annonce est en attente de validation');
-            return $this->redirectToRoute('annonce.create');
+            
+            return $this->render('user/confirmAnnonce.html.twig', [
+                'formContact' => $formContact->createView(),
+                'annonceLatest' => $this->repositoryAnnonces->findLatest(),
+                'countMail' => $countMail
+            ]);
 
         }
-
 
         return $this->render('pages/createAnnonce.html.twig', [
             'formContact' => $formContact->createView(),
             'formAnnonces' => $formAnnonces->createView(),
-            'annonceLatest' => $this->repositoryAnnonces->findLatest()
+            'annonceLatest' => $this->repositoryAnnonces->findLatest(),
+            'countMail' => $countMail  
         ]);
 
     }

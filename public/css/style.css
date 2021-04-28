@@ -3323,3 +3323,11 @@ footer.white-wrapper .social-links li a {
 .tooltip {
     font-weight: bold !important;
 }
+
+.card-annonce {
+    padding-top: 10px;
+    padding-bottom: 11px;
+    box-shadow: 0px 6px 3px #1f0f0f36;
+    border: 2px solid #0808082b;
+    max-width: 399px;
+}

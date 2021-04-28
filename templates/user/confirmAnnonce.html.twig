@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title 'Annonces-72 - Mes annonces' %}
+{% block title 'Annonces-72 - Confirmation' %}
 
 {% block body %}
 	<link href="http://localhost:8000/css/profil.css" rel="stylesheet">
@@ -20,7 +20,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12 mb30 wow text-center">
-							<h2 class="section-heading">Mes annonces</h2>
+							<h2 class="section-heading">Confirmation</h2>
 						</div>
 					</div>
 				</div>
@@ -71,7 +71,7 @@
 											<a href="{{ path('user.edit') }}">Mes paramètres</a>
 										</li>
 										<li>
-											<a href="{{ path('user.annonces') }}" class="active">Mes annonces</a>
+											<a href="{{ path('user.annonces') }}">Mes annonces</a>
 										</li>
 										<li>
 											<a href="{{ path('user.credit') }}">Mes crédits</a>
@@ -88,62 +88,23 @@
 						</div>
 					</div>
 					<div class="container row m-auto">
-						<div class="col-md-12">
-							<div class="card info-card" style="padding: 3px 34px 10px 34px;">
-								<div class="card-body">
-									<h2 class="text-blue">Mes annonces</h2>
-										{% for annoncesUsers in annoncesUser %}
-											<div class="col-md-4 m-auto card-annonce ml-2 mr-3 mb-5">
-												<h4 class="mb-3">
-													<a href="{{ path('annonce.show', { 'id': annoncesUsers.id }) }}">
-														<strong>{{ annoncesUsers.title }}</strong>
-													</a>
-												</h4>
-												{% if annoncesUsers.pictures is empty %}
-													<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annoncesUsers.title }}">
-														<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" class="img-responsive" alt="{{ annoncesUsers.title }}">
-													</a>
-												{% else %}
-													<a class="lb-link" data-rel="product-gallery" href="{{ vich_uploader_asset(annoncesUsers.pictures[0], 'imageFile') }}" title="{{ annoncesUsers.title }}">
-														<img data-rel="product-gallery" src="{{ vich_uploader_asset(annoncesUsers.pictures[0], 'imageFile') }}" class="img-responsive" alt="{{ annoncesUsers.title }}"/>
-													</a>
-												{% endif %}
-												<p class="mt-3">
-													{% if annoncesUsers.premium == 1 %}
-														<span>
-															<i class="fas fa-hand-sparkles text-success"></i>
-															<strong>Annonce Premium</strong></span>
-													{% endif %}
-													{% if annoncesUsers.premium == 1 %}
-														<p><b><i class="far fa-clock text-success"></i> Du {{ annoncesUsers.createdAtPremium|format_datetime() }} / <i class="far fa-clock text-success"></i> Au {{ annoncesUsers.terminedAtPremium|format_datetime() }}</b></p>
-													{% endif %}	
-												</p>
-                                                <p><b>Crée le {{ annoncesUsers.createdAt|format_datetime() }}</b></p>
-												<p class="mt-3">{{ annoncesUsers.smallContent }}
-												</p>
+						<div class="col-lg-12 mb-5">
 
-												<div class="text-center mb-3">
-													{% if annoncesUsers.premium != 1 %}
-													<a href="{{ path('annonces.premium', { 'id': annoncesUsers.id }) }}" class="btn btn-primary btn-theme mr-5">Passer l'annonce premium
-														<i class="fas fa-hand-sparkles text-success"></i>
-													</a>
-													{% endif %}
+                            <iframe width="100%" height="300" src="http://localhost:8000/html/ship.html" frameborder="0" id="ship-animation" allowtransparency="true"></iframe>
 
-													<a href="{{ path('user.annonce.delete', { 'id': annoncesUsers.id }) }}" class="btn btn-primary btn-theme mr-5">Supprimer l'annonce
-														<i class="fa fa-trash text-danger"></i>
-													</a>
-												</div>
-											</div>
-										{% endfor %}
+							<h4 class="text-center">Nous avons bien reçu votre annonce !</h4>
 
-										<div class="row mt-4">
-											<div class="col-12 col-md-12 col-xl-12" style="display: flex;justify-content: space-around;">
-												{{ knp_pagination_render(annoncesUser) }}
-											</div>
-										</div>
-								</div>
-							</div>
-						</div>
+                            <p class="text-center mt-3 mb-1">Merci de votre confiance. Votre annonce va être contrôlée dans les prochaines minutes.</p>
+
+                            <p class="text-center mt-0">Dès réception du mail confirmant sa mise en ligne, vous pourrez la retrouver dans la section « Annonces » de votre compte.</p>
+						
+                            <div class="text-center">
+                                <a href="{{ path('user.annonces') }}" class="btn btn-primary">
+                                    Retourné aux annonces
+                                </a>
+                            </div>
+                       
+                        </div>
 					</div>
 				</div>
 			</div>

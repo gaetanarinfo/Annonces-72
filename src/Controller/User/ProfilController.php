@@ -204,7 +204,6 @@ class ProfilController extends AbstractController
         $formContact->handleRequest($request);
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
-        $annoncesUser = $repositoryAnnonces->findBy(array('author' => $this->getUser()->getUsername()));
 
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
@@ -219,7 +218,7 @@ class ProfilController extends AbstractController
         return $this->render('user/annonces.html.twig', [
             'formContact' => $formContact->createView(),
             'annonceLatest' => $annoncesPremium,
-            'annoncesUser' => $annoncesUser,
+            'annoncesUser' => $repositoryAnnonces->paginateAllVisibleUser($this->getUser()->getUsername(), $request->query->getInt('page', 1)),
             'countMail' => $countMail
         ]);
     }
