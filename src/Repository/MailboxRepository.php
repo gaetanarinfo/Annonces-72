@@ -50,6 +50,28 @@ class MailboxRepository extends ServiceEntityRepository
         return $mailbox;
     }
 
+    /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisibleArchive(string $username, int $page): PaginationInterface
+    {
+        $query = $this->findVisibleQuery('p');
+
+        $mailbox = $this->paginator->paginate(
+            $query
+            ->where('p.isRead = :read')
+            ->andWhere('p.recipient = :recipient')
+            ->setParameter('recipient', $username)
+            ->setParameter(':read', 1)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery(),
+            $page,
+            25
+        );
+
+        return $mailbox;
+    }
+
     private function findVisibleQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p');

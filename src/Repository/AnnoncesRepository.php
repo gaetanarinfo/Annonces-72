@@ -353,4 +353,27 @@ class AnnoncesRepository extends ServiceEntityRepository
 
         return $annonces;
     }
+
+    /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisibleCategory(string $category, int $page): PaginationInterface
+    {
+        $query = $this->findVisibleQuery('p');
+
+        $annonces = $this->paginator->paginate(
+            $query
+            ->where('p.category = :category')
+            ->setParameter('category', $category)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery(),
+            $page,
+            12
+        );
+
+
+        $this->hydratePicture($annonces);
+
+        return $annonces;
+    }
 }

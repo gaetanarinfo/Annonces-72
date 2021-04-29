@@ -27,6 +27,9 @@
 		<link
 		href="http://localhost:8000/css/style.css" rel="stylesheet">
 
+		<link href="http://localhost:8000/css/mapbox-gl.css" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}"></link>
+
 		<!-- Custom Fonts -->
 		<link href="http://localhost:8000/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 		<link href="http://localhost:8000/css/pe-icons.css" rel="stylesheet"> 
@@ -56,17 +59,18 @@
 			<![endif]-->
 
 				<script type="text/javascript"> $(document).ready(function () {
-'use strict';
-jQuery('#headerwrap').backstretch([
-"http://localhost:8000/img/bg/bg1.jpg", "http://localhost:8000/img/bg/bg2.jpg", "http://localhost:8000/img/bg/bg3.jpg", "http://localhost:8000/img/bg/bg4.jpg", "http://localhost:8000/img/bg/bg5.jpg"
-], {
-duration: 8000,
-fade: 500
-});
-});
+					'use strict';
+				jQuery('#headerwrap').backstretch([
+				"http://localhost:8000/img/bg/bg1.jpg", "http://localhost:8000/img/bg/bg2.jpg", "http://localhost:8000/img/bg/bg3.jpg", "http://localhost:8000/img/bg/bg4.jpg", "http://localhost:8000/img/bg/bg5.jpg"
+				], {
+				duration: 8000,
+				fade: 500
+				});
+				});
 			</script>
-			<link href="http://localhost:8000/css/mapbox-gl.css" rel="stylesheet" />
-        	<link rel="stylesheet" href="{{ asset('build/app.css') }}"></link>
+
+				
+			
 			<script src="{{ asset('build/app.js') }}"></script>
 			{% block javascripts %}{% endblock %}
 

@@ -110,6 +110,34 @@ class AnnoncesController extends AbstractController
     }
 
     /**
+     * @Route("/annonces/categorie/{category}", name="annonce.category")
+     * @return Responce
+    */
+    public function index3 (Annonces $annonces, Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces):Response{
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        return $this->render('pages/annoncesCategory.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $this->repositoryAnnonces->findLatest(),
+            'annoncesCat' => $annonces->getCatType(),
+            'annonces' => $this->repositoryAnnonces->paginateAllVisibleCategory($annonces->getCategory(), $request->query->getInt('page', 1))
+        ]);
+
+    }
+
+    /**
      * @Route("/annonce/{id}", name="annonce.show") requirements={"id": [0-9\-]""}
      * @return Responce
     */
@@ -133,6 +161,14 @@ class AnnoncesController extends AbstractController
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
+        }
+
+        if($annonces->getId() == $request->get('id'))
+        {
+            $annonces->setVisitor($annonces->getVisitor() + 1);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonces);
+            $entityManager->flush();
         }
 
         $comment = new Comment();
@@ -195,6 +231,26 @@ class AnnoncesController extends AbstractController
             'voteuserId' => $voteuserId,
             'voteuserCount' => $voteuserCount,
             'likeId' => $likeId,
+        ]);
+
+    }
+
+    /**
+     * @Route("/annonce/phone/{id}", name="annonce.phone") requirements={"id": [0-9\-]""}
+     * @return Responce
+    */
+    public function phone(Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, LikeAnnoncesRepository $repositoryLike, VoteUserRepository $repositoryVoteUser):Response{
+
+        if($annonces->getId() == $request->get('id'))
+        {
+            $annonces->setPhoneCount($annonces->getPhoneCount() + 1);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonces);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('annonce.show', [
+            'id' => $request->get('id')
         ]);
 
     }

@@ -204,9 +204,19 @@
 										{% endif %}
 									
 
-									<a class="btn btn-annonces">
+									<a class="btn btn-annonces" data-toggle="tooltip" data-placement="top" title="Partager l'annonce" style="margin-left: 3px; margin-right: 3px;">
 										<i class="fas fa-share-alt" aria-hidden="true"></i>
 									</a>
+
+									{% if app.user.username == annonces.author %}
+										<a href="{{ path('user.credit.topList', { 'id': annonces.id }) }}" class="btn btn-annonces" data-toggle="tooltip" data-placement="top" title="Remonter en haut" style="margin-left: 3px;">
+											<i class="fas fa-sort-amount-up-alt"></i>
+										</a>
+									{% else %}
+										<a class="btn btn-annonces disabled" data-toggle="tooltip" data-placement="top" title="Remonter en haut" style="margin-left: 3px;">
+											<i class="fas fa-sort-amount-up-alt"></i>
+										</a>
+									{% endif %}
 								</div>
 
 								<hr/>
@@ -540,3 +550,20 @@ phone.addEventListener('click', () => {
 })
 
 </script>
+
+<script src="http://localhost:8000/js/jquery.js"></script>
+
+<script type="text/javascript">
+
+var $ = jQuery.noConflict();
+
+			$('#phone').click(function() {
+
+				$.get("http://localhost:8000/annonce/phone/" + "{{ id }}", function(data) {
+
+		
+				});
+
+			})
+
+		</script>

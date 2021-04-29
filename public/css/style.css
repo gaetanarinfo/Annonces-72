@@ -3331,3 +3331,11 @@ footer.white-wrapper .social-links li a {
     border: 2px solid #0808082b;
     max-width: 399px;
 }
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}

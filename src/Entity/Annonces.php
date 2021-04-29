@@ -269,6 +269,21 @@ class Annonces
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $visitor;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $phoneCount;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $topList;
+
     public function __construct()
     {
         $this->title = "";
@@ -282,6 +297,7 @@ class Annonces
         $this->price = 0;
         $this->pictures = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->visitor = 0;
     }
 
 
@@ -631,6 +647,42 @@ class Annonces
     public function setCountry(string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getVisitor(): ?int
+    {
+        return $this->visitor;
+    }
+
+    public function setVisitor(?int $visitor): self
+    {
+        $this->visitor = $visitor;
+
+        return $this;
+    }
+
+    public function getPhoneCount(): ?int
+    {
+        return $this->phoneCount;
+    }
+
+    public function setPhoneCount(int $phoneCount): self
+    {
+        $this->phoneCount = $phoneCount;
+
+        return $this;
+    }
+
+    public function getTopList(): ?\DateTimeInterface
+    {
+        return $this->topList;
+    }
+
+    public function setTopList(?\DateTimeInterface $topList): self
+    {
+        $this->topList = $topList;
 
         return $this;
     }

@@ -37,7 +37,7 @@ class CreditsRepository extends ServiceEntityRepository
 
         $credits = $this->paginator->paginate(
             $query
-            ->where('p.id = :user')
+            ->where('p.userId = :user')
             ->setParameter('user', $userId)
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery(),

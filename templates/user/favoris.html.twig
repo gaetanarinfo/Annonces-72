@@ -103,42 +103,44 @@
 										</div>
 										<div class="row">
 											{% for annoncesUsers in annoncesLike %}
-											<div class="col-lg-6 m-auto">
-												<h4 class="mb-3">
-													<a href="{{ path('annonce.show', { 'id': annoncesUsers.id }) }}" style="max-width: 348px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin-top: 1.5rem!important;">
-														<strong>{{ annoncesUsers.title }}</strong>
-													</a>
-												</h4>
-												{% if annoncesUsers.pictures is empty %}
-													<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annoncesUsers.title }}">
-														<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" class="img-responsive" alt="{{ annoncesUsers.title }}">
-													</a>
-												{% else %}
-													<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annoncesUsers.title }}">
-														<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" class="img-responsive" alt="{{ annonces.title }}"/>
-													</a>
-												{% endif %}
-												<p class="mt-3">
-													{% if annoncesUsers.premium == 1 %}
-														<span>
-															<i class="fas fa-hand-sparkles text-success"></i>
-															<strong>Annonce Premium</strong></span>
+											{% if annoncesUsers.isActive != 0 %}
+												<div class="col-lg-6 m-auto">
+													<h4 class="mb-3">
+														<a href="{{ path('annonce.show', { 'id': annoncesUsers.id }) }}" style="max-width: 348px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin-top: 1.5rem!important;">
+															<strong>{{ annoncesUsers.title }}</strong>
+														</a>
+													</h4>
+													{% if annoncesUsers.pictures is empty %}
+														<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annoncesUsers.title }}">
+															<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" class="img-responsive" alt="{{ annoncesUsers.title }}">
+														</a>
+													{% else %}
+														<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annoncesUsers.title }}">
+															<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonces.pictures[0], 'imageFile') }}" class="img-responsive" alt="{{ annonces.title }}"/>
+														</a>
 													{% endif %}
-												</p>
-                                                <p>Crée le {{ annoncesUsers.createdAt|format_datetime() }}</p>
-												<p class="mt-3">{{ annoncesUsers.smallContent }}
-												</p>
-												
-												<div class="text-center mb-3">
-													<a href="#" class="btn btn-primary btn-theme mr-5">Envoyer un message
-														<i class="far fa-comment-dots text-success"></i>
-													</a>
+													<p class="mt-3">
+														{% if annoncesUsers.premium == 1 %}
+															<span>
+																<i class="fas fa-hand-sparkles text-success"></i>
+																<strong>Annonce Premium</strong></span>
+														{% endif %}
+													</p>
+													<p>Crée le {{ annoncesUsers.createdAt|format_datetime() }}</p>
+													<p class="mt-3">{{ annoncesUsers.smallContent }}
+													</p>
+													
+													<div class="text-center mb-3">
+														<a href="#" class="btn btn-primary btn-theme mr-5">Envoyer un message
+															<i class="far fa-comment-dots text-success"></i>
+														</a>
 
-													<a href="{{ path('user.favoris.delete', { 'id': annoncesUsers.id }) }}" class="btn btn-primary btn-theme mr-5">Supprimer l'annonce
-														<i class="fa fa-trash text-danger"></i>
-													</a>
+														<a href="{{ path('user.favoris.delete', { 'id': annoncesUsers.id }) }}" class="btn btn-primary btn-theme mr-5">Supprimer l'annonce
+															<i class="fa fa-trash text-danger"></i>
+														</a>
+													</div>
 												</div>
-											</div>
+											{% endif %}	
 										{% endfor %}
 										</div>
 									</div>

@@ -18,6 +18,7 @@ use App\Repository\CreditsRepository;
 use App\Repository\LikeAnnoncesRepository;
 use App\Repository\MailboxRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -280,29 +281,36 @@ class ProfilController extends AbstractController
 
         }
 
-        $token = new CsrfToken('token_paypal_10', $request->attributes->get('token'));
- 
-        // Action is stopped since token is not allowed!
-        if (!$csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException('CSRF Token est non valide');
+        if($this->getUser->getCredits() > 9)
+        {
+
+            $token = new CsrfToken('token_paypal_10', $request->attributes->get('token'));
+    
+            // Action is stopped since token is not allowed!
+            if (!$csrfTokenManager->isTokenValid($token)) {
+                throw new InvalidCsrfTokenException('CSRF Token est non valide');
+            }else{
+
+                $credit = new Credits;
+                $credit->setAmount(10);
+                $credit->setDescription('Acheter pour 10 euros de crédits');
+                $credit->setStatus('validé');
+                $credit->setUserId($this->getUser()->getId());
+                $credit->setIdTrans(uniqid());
+                $credits = $this->getUser()->getCredits();
+                $this->getUser()->setCredits($credits + 10);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($credit);
+                $entityManager->flush();
+                $this->addFlash('success', 'Achat éffectué avec succès');
+
+            }
+
         }else{
+            return $this->redirectToRoute('user.credit');
+        }    
 
-            $credit = new Credits;
-            $credit->setAmount(10);
-            $credit->setDescription('Acheter pour 10 euros de crédits');
-            $credit->setStatus('validé');
-            $credit->setUserId($this->getUser()->getId());
-            $credit->setIdTrans(uniqid());
-            $credits = $this->getUser()->getCredits();
-            $this->getUser()->setCredits($credits + 10);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($credit);
-            $entityManager->flush();
-            $this->addFlash('success', 'Achat éffectué avec succès');
-
-        }
-
-        return $this->redirectToRoute('profil');
+        return $this->redirectToRoute('user.credit');
     }
 
      /**
@@ -331,26 +339,33 @@ class ProfilController extends AbstractController
 
         }
 
-        $token = new CsrfToken('token_paypal_25', $request->attributes->get('token'));
- 
-        // Action is stopped since token is not allowed!
-        if (!$csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException('CSRF Token est non valide');
+        if($this->getUser->getCredits() > 24)
+        {
+
+            $token = new CsrfToken('token_paypal_25', $request->attributes->get('token'));
+    
+            // Action is stopped since token is not allowed!
+            if (!$csrfTokenManager->isTokenValid($token)) {
+                throw new InvalidCsrfTokenException('CSRF Token est non valide');
+            }else{
+
+                $credit = new Credits;
+                $credit->setAmount(25);
+                $credit->setDescription('Acheter pour 25 euros de crédits');
+                $credit->setStatus('validé');
+                $credit->setUserId($this->getUser()->getId());
+                $credit->setIdTrans(uniqid());
+                $credits = $this->getUser()->getCredits();
+                $this->getUser()->setCredits($credits + 10);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($credit);
+                $entityManager->flush();
+                $this->addFlash('success', 'Achat éffectué avec succès');
+
+            }
+
         }else{
-
-            $credit = new Credits;
-            $credit->setAmount(25);
-            $credit->setDescription('Acheter pour 25 euros de crédits');
-            $credit->setStatus('validé');
-            $credit->setUserId($this->getUser()->getId());
-            $credit->setIdTrans(uniqid());
-            $credits = $this->getUser()->getCredits();
-            $this->getUser()->setCredits($credits + 10);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($credit);
-            $entityManager->flush();
-            $this->addFlash('success', 'Achat éffectué avec succès');
-
+            return $this->redirectToRoute('user.credit');
         }
 
         return $this->redirectToRoute('user.credit');
@@ -382,26 +397,33 @@ class ProfilController extends AbstractController
 
         }
 
-        $token = new CsrfToken('token_paypal_50', $request->attributes->get('token'));
- 
-        // Action is stopped since token is not allowed!
-        if (!$csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException('CSRF Token est non valide');
+        if($this->getUser->getCredits() > 49)
+        {
+
+            $token = new CsrfToken('token_paypal_50', $request->attributes->get('token'));
+    
+            // Action is stopped since token is not allowed!
+            if (!$csrfTokenManager->isTokenValid($token)) {
+                throw new InvalidCsrfTokenException('CSRF Token est non valide');
+            }else{
+
+                $credit = new Credits;
+                $credit->setAmount(50);
+                $credit->setDescription('Acheter pour 50 euros de crédits');
+                $credit->setStatus('validé');
+                $credit->setUserId($this->getUser()->getId());
+                $credit->setIdTrans(uniqid());
+                $credits = $this->getUser()->getCredits();
+                $this->getUser()->setCredits($credits + 50);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($credit);
+                $entityManager->flush();
+                $this->addFlash('success', 'Achat éffectué avec succès');
+
+            }
+
         }else{
-
-            $credit = new Credits;
-            $credit->setAmount(50);
-            $credit->setDescription('Acheter pour 50 euros de crédits');
-            $credit->setStatus('validé');
-            $credit->setUserId($this->getUser()->getId());
-            $credit->setIdTrans(uniqid());
-            $credits = $this->getUser()->getCredits();
-            $this->getUser()->setCredits($credits + 50);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($credit);
-            $entityManager->flush();
-            $this->addFlash('success', 'Achat éffectué avec succès');
-
+            return $this->redirectToRoute('user.credit');
         }
 
         return $this->redirectToRoute('user.credit');
@@ -433,26 +455,33 @@ class ProfilController extends AbstractController
 
         }
 
-        $token = new CsrfToken('token_paypal_150', $request->attributes->get('token'));
- 
-        // Action is stopped since token is not allowed!
-        if (!$csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException('CSRF Token est non valide');
+        if($this->getUser->getCredits() > 149)
+        {
+
+            $token = new CsrfToken('token_paypal_150', $request->attributes->get('token'));
+    
+            // Action is stopped since token is not allowed!
+            if (!$csrfTokenManager->isTokenValid($token)) {
+                throw new InvalidCsrfTokenException('CSRF Token est non valide');
+            }else{
+
+                $credit = new Credits;
+                $credit->setAmount(150);
+                $credit->setDescription('Acheter pour 150 euros de crédits');
+                $credit->setStatus('validé');
+                $credit->setUserId($this->getUser()->getId());
+                $credit->setIdTrans(uniqid());
+                $credits = $this->getUser()->getCredits();
+                $this->getUser()->setCredits($credits + 150);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($credit);
+                $entityManager->flush();
+                $this->addFlash('success', 'Achat éffectué avec succès');
+
+            }
+
         }else{
-
-            $credit = new Credits;
-            $credit->setAmount(150);
-            $credit->setDescription('Acheter pour 150 euros de crédits');
-            $credit->setStatus('validé');
-            $credit->setUserId($this->getUser()->getId());
-            $credit->setIdTrans(uniqid());
-            $credits = $this->getUser()->getCredits();
-            $this->getUser()->setCredits($credits + 150);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($credit);
-            $entityManager->flush();
-            $this->addFlash('success', 'Achat éffectué avec succès');
-
+            return $this->redirectToRoute('user.credit');
         }
 
         return $this->redirectToRoute('user.credit');
@@ -559,7 +588,8 @@ class ProfilController extends AbstractController
             'annonceLatest' => $annoncesPremium,
             'annoncesLike' => $annoncesLike,
             'mailbox' => $repositoryMailbox->paginateAllVisible($this->getUser()->getUsername(), $request->query->getInt('page', 1)),
-            'countMail' => $countMail
+            'countMail' => $countMail,
+            'mailboxArchive' => $repositoryMailbox->paginateAllVisibleArchive($this->getUser()->getUsername(), $request->query->getInt('page', 1))
         ]);
     }
 
@@ -661,6 +691,102 @@ class ProfilController extends AbstractController
             'mailbox' => $mailbox,
             'countMail' => $countMail
         ]);
+    }
+
+     /**
+     * @Route("/profil/topList/{id}", name="user.credit.topList", methods="GET|POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function topList(Annonces $annonces, Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CreditsRepository $creditsRepository, MailboxRepository $repositoryMailbox)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        if($annonces->getAuthor() != $this->getUser()->getUsername())
+        {   
+            return $this->redirectToRoute('home');
+        }   
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('profil');
+
+        }
+
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
+        return $this->render('user/topList.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $annoncesPremium,
+            'countMail' => $countMail,
+            'transaction' => $creditsRepository->paginateAllVisible($this->getUser()->getId(), $request->query->getInt('page', 1))
+        ]);
+    }
+
+    /**
+     * @Route("/profil/profil/toplist/{id}:{token}", name="user.toplist.confirm", methods="GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param DeleteMemberResponder     $responder
+     * @param Request                   $request
+     * 
+     * @return Response
+     *
+     * @throws InvalidCsrfTokenException
+     */
+    public function topListConfirm(Annonces $annonces, Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, CsrfTokenManagerInterface $csrfTokenManager)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('user.credit');
+
+        }
+
+        if($this->getUser->getCredits() > 9)
+        {
+
+            $token = new CsrfToken('token_top_list', $request->attributes->get('token'));
+    
+            // Action is stopped since token is not allowed!
+            if (!$csrfTokenManager->isTokenValid($token)) {
+                throw new InvalidCsrfTokenException('CSRF Token est non valide');
+            }else{
+
+                $credit = new Credits;
+                $annonces->setCreatedAt(new DateTime('now'));
+                $credit->setAmount(10);
+                $credit->setDescription('Remonter en tête de liste');
+                $credit->setStatus('validé');
+                $credit->setUserId($this->getUser()->getId());
+                $credit->setIdTrans(uniqid());
+                $credits = $this->getUser()->getCredits();
+                $this->getUser()->setCredits($credits - 10);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($credit);
+                $entityManager->flush();
+                $this->addFlash('success', 'Achat éffectué avec succès');
+
+            }
+
+        }else{
+            $this->addFlash('error', 'Vous n\'avez pas assez de crédit');
+            return $this->redirectToRoute('user.credit');
+        }
+
+        return $this->redirectToRoute('user.annonces');
     }
 
 }
