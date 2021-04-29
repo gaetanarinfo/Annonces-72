@@ -83,6 +83,8 @@ class SecurityController extends AbstractController
             $this->addFlash('error', 'Le formulaire ne peut pas être vide !');
             return $this->redirectToRoute('register');
         }
+
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
         
         if($form->isSubmitted() && $form->isValid())
         {
@@ -91,7 +93,7 @@ class SecurityController extends AbstractController
             $token = substr(md5(uniqid(rand(80,80))), 0, 55);
             $session->set('token_user', $token);
             $user->setToken($session->get('token_user'));
-            $register->notify($user);
+            $register->notify($user, $annoncesMail);
             $this->em->persist($user);
             $this->em->flush();
             $this->addFlash('success', 'Inscription réussie ! Merci de vérifier votre boite e-mail.');

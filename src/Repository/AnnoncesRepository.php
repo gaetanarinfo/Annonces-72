@@ -376,4 +376,22 @@ class AnnoncesRepository extends ServiceEntityRepository
 
         return $annonces;
     }
+
+        /**
+     * @return Annonces[]
+     */
+    public function findLatestNonPremiumMail(): array
+    {
+        $annonces = $this->findVisibleQuery('p')
+            ->where('p.isValid = :valid')
+            ->andWhere('p.premium = :premium')
+            ->setParameter(':valid', 1)
+            ->setParameter(':premium', 0)
+            ->setMaxResults(3)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+        $this->hydratePicture($annonces);
+        return $annonces;
+    }
 }

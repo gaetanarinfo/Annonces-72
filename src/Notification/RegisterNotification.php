@@ -2,6 +2,7 @@
 namespace App\Notification;
 
 use App\Entity\User;
+use App\Repository\AnnoncesRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Environment;
 
@@ -29,13 +30,15 @@ class RegisterNotification
         $this->session = $session;
     }
 
-    public function notify(User $user)
+    public function notify(User $user, array $annonces)
     {   
+
         $message = (new \Swift_Message('Votre inscription - Annonces-72 '))
             ->setFrom('no-reply@annonces-72.fr')
             ->setTo($user->getEmail())
             ->setBody($this->renderer->render('emails/register.html.twig', [
-                'register' => $user
+                'register' => $user,
+                'annonces' => $annonces
             ]), 'text/html');
         $this->mailer->send($message);
     }

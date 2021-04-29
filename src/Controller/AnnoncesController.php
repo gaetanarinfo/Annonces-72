@@ -177,6 +177,13 @@ class AnnoncesController extends AbstractController
         $comments = $repositoryComment->findLatest($annonces->getId());
         $countComment = $repositoryComment->findCount($annonces->getId());
 
+        if($this->getUser() != null)
+        {
+            $annoncesUsername = $this->getUser()->getUsername();
+        }else{
+            $annoncesUsername = null; 
+        }
+
         if ($formComment->isSubmitted() && $formComment->isValid()) {
             $comment->setAuthor($author);
             $comment->setAnnonceId($annonces->getId());
@@ -193,7 +200,8 @@ class AnnoncesController extends AbstractController
                 'annonceLatest' => $annonceLatest,
                 'countComment' => $countComment,
                 'comment' => $comments,
-                'formComment' => $formComment->createView()
+                'formComment' => $formComment->createView(),
+                'annoncesUsername' => $annoncesUsername
             ]);
 
     
@@ -231,6 +239,7 @@ class AnnoncesController extends AbstractController
             'voteuserId' => $voteuserId,
             'voteuserCount' => $voteuserCount,
             'likeId' => $likeId,
+            'annoncesUsername' => $annoncesUsername
         ]);
 
     }
