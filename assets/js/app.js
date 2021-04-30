@@ -66,9 +66,6 @@ function backToTop() {
 
 let $ = require('jquery')
 require('../css/app.css');
-require('select2');
-
-$('select').select2()
 
 let $contactButton = $('#contactButton')
 $contactButton.click(e => {

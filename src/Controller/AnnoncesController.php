@@ -1126,6 +1126,40 @@ class AnnoncesController extends AbstractController
     }
 
 
+     /**
+     * @Route("/annonces/{author}", name="annoncesUser.show")
+     * @return Responce
+    */
+    public function showUser (Annonces $annonces, Request $request, ContactNotification $notif, UserRepository $repository, AnnoncesRepository $repositoryAnnonces, CommentRepository $repositoryComment, VoteAnnoncesRepository $repositoryVote, LikeAnnoncesRepository $repositoryLike, VoteUserRepository $repositoryVoteUser):Response{
 
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact, $annoncesMail);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        $search = new AnnoncesSearch();
+        $searchForm = $this->createForm(AnnoncesSearchType::class, $search);
+        $searchForm->handleRequest($request);
+
+        $author = $request->get('author');
+
+        return $this->render('pages/annoncesUser.html.twig', [
+            'formContact' => $formContact->createView(),
+            'annonceLatest' => $this->repositoryAnnonces->findLatest(),
+            'annonces' => $this->repositoryAnnonces->paginateUser($annonces->getAuthor(), $search, $request->query->getInt('page', 1)),
+            'searchForm' => $searchForm->createView(),
+            'author' => $author
+        ]);
+
+    }
 
 }

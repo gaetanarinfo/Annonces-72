@@ -257,18 +257,26 @@
 										<div class="media-heading">
 											<strong>{{ annonces.author }}</strong><br>
 											<small>{{ annonces.createdAt|format_datetime() }}</small><br>
+
+											{% if voteuserCount > 99 %}
 											<strong>
 												<i class="fa fa-shield" style="color: rgb(255, 110, 20)"></i>
 												Profil recommandé</strong><br>
+											{% else %}
+												<i class="fa fa-shield" style="color: rgb(41, 117, 15)"></i>
+												Nouveau profil</strong><br>
+											{% endif %}
+
 											{% if user.status != 0 %}
 												<strong>N° SIREN :
 													{{ user.siren }}</strong>
 											{% endif %}
-											<a href="">{{ count }}
-												annonces</a><br>
+
 											<small>
-												<i class="far fa-clock"></i>
-												Répond généralement dans les 6 heures</small>
+											<a href="{{ path('annoncesUser.show', { 'author': annonces.author }) }}">Voir les annonces de {{ annonces.author }} - {{ count }}
+												annonces</a><br>
+											</small>
+
 								{% if is_granted('ROLE_USER') %}
 								<div class="product-rating" style="margin-bottom: -3px;">
 									{% if voteuserId %}
