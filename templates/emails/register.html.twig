@@ -241,11 +241,11 @@
 
 																																	{% if annonce.pictures is empty %}
 																																		<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annonce.title }}">
-																																			<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" border="0" width="131" height="158" alt="{{ annonce.title }}">
+																																			<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" border="0" width="131" alt="{{ annonce.title }}">
 																																		</a>
 																																	{% else %}
-																																		<a class="lb-link" data-rel="product-gallery" href="{{ vich_uploader_asset(annonce.pictures[0], 'imageFile') }}" title="{{ annonce.title }}">
-																																			<img data-rel="product-gallery" src="{{ vich_uploader_asset(annonce.pictures[0], 'imageFile') }}" border="0" width="131" height="158" alt="{{ annonce.title }}"/>
+																																		<a class="lb-link" data-rel="product-gallery" href="http://localhost:8000{{ vich_uploader_asset(annonce.pictures[0], 'imageFile') }}" title="{{ annonce.title }}">
+																																			<img data-rel="product-gallery" src="http://localhost:8000{{ vich_uploader_asset(annonce.pictures[0], 'imageFile') }}" border="0" width="131" alt="{{ annonce.title }}"/>
 																																		</a>
 																																	{% endif %}
 

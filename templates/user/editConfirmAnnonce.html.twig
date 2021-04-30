@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title 'Annonces-72 - Remonter en haut' %}
+{% block title 'Annonces-72 - Modifier une annonce' %}
 
 {% block body %}
 	<link href="http://localhost:8000/css/profil.css" rel="stylesheet">
@@ -20,7 +20,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12 mb30 wow text-center">
-							<h2 class="section-heading">Remonter en haut</h2>
+							<h2 class="section-heading">Modifier une annonce</h2>
 						</div>
 					</div>
 				</div>
@@ -88,7 +88,7 @@
 						<div class="col-lg-6">
 							<div class="card info-card">
 								<div class="card-body">
-									<h2 class="text-blue">Remonter votre annonce en tête de liste</h2>
+									<h2 class="text-blue">Modifier une annonce</h2>
 									<div class="row">
 										<div class="col-md-12">
 
@@ -102,10 +102,10 @@
 											<div id="smart-button-container" class="mb-5" style="display: none;">
 												<div style="text-align: center;">
 													<div style="margin-bottom: 1.25rem;">
-													{% if app.user.credits > 9 %}
-														<a href="{{ path('user.toplist.confirm', {'id': app.request.get('id'), 'token': csrf_token('token_top_list') }) }}" class="btn btn-primary">Remonter votre annonce</a>
+													{% if app.user.credits > 4 %}
+														<a href="{{ path('user.annoncesEdit.confirm', {'id': '15', 'token': csrf_token('token_modify') }) }}" class="btn btn-primary">Modifier une annonce</a>
 													{% else %}
-														<a href="{{ path('user.credit') }}" class="btn btn-primary">Remonter votre annonce</a>
+														<a href="{{ path('user.credit') }}" class="btn btn-primary">Modifier une annonce</a>
 													{% endif %}
 													</div>
 												</div>

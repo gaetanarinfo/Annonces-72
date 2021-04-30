@@ -61,9 +61,10 @@ class AnnoncesPremiumController extends AbstractController
 
         $annonceLatest = $repositoryAnnonces->findLatest();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -114,9 +115,10 @@ class AnnoncesPremiumController extends AbstractController
 
         $annonceLatest = $repositoryAnnonces->findLatest();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -176,9 +178,10 @@ class AnnoncesPremiumController extends AbstractController
 
         $annonceLatest = $repositoryAnnonces->findLatest();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -238,9 +241,10 @@ class AnnoncesPremiumController extends AbstractController
 
         $annonceLatest = $repositoryAnnonces->findLatest();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 

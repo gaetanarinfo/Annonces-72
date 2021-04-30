@@ -16,6 +16,20 @@
 
 		{% include('components/header.html.twig') %}
 
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success text-center" style="width: 29% !important;margin: 20px auto 20px auto;">
+				<i class="fa fa-check text-success" aria-hidden="true"></i>
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-danger text-center" style="width: 29% !important;margin: 20px auto 20px auto;">
+				<i class="fa fa-times text-danger" aria-hidden="true"></i>
+				{{ message }}
+			</div>
+		{% endfor %}
+
 		<section id="welcome">
 			<div class="section-inner nopaddingbottom">
 

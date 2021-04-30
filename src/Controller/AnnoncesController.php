@@ -6,10 +6,12 @@ use App\Entity\Annonces;
 use App\Entity\AnnoncesSearch;
 use App\Entity\Comment;
 use App\Entity\Contact;
+use App\Entity\Credits;
 use App\Entity\LikeAnnonces;
 use App\Entity\User;
 use App\Entity\VoteAnnonces;
 use App\Entity\VoteUser;
+use App\Form\AnnoncesEditType;
 use App\Form\AnnoncesSearchType;
 use App\Form\AnnoncesType;
 use App\Form\CommentType;
@@ -22,6 +24,7 @@ use App\Repository\MailboxRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoteAnnoncesRepository;
 use App\Repository\VoteUserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,9 +59,10 @@ class AnnoncesController extends AbstractController
         $formContact->handleRequest($request);
 
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -88,9 +92,10 @@ class AnnoncesController extends AbstractController
         $formContact->handleRequest($request);
 
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -120,9 +125,10 @@ class AnnoncesController extends AbstractController
         $formContact->handleRequest($request);
 
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -155,9 +161,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -288,9 +295,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -354,9 +362,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -420,9 +429,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -486,9 +496,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -552,9 +563,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -618,9 +630,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -678,9 +691,10 @@ class AnnoncesController extends AbstractController
         $formAnnonces->handleRequest($request);
 
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -735,9 +749,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -802,9 +817,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -869,9 +885,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -936,9 +953,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -1003,9 +1021,10 @@ class AnnoncesController extends AbstractController
 
         $user = $repository->findOneBy(array('username' => $author));
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -1045,6 +1064,67 @@ class AnnoncesController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
+
+    /**
+     * @Route("/annonce/edit/{id}", name="user.annonce.edit")
+     * @return Responce
+    */
+    public function edit(Annonces $annonces, Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, MailboxRepository $repositoryMailbox)
+    {
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $formAnnonces = $this->createForm(AnnoncesEditType::class, $annonces);
+        $formAnnonces->handleRequest($request);
+
+
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact, $annoncesMail);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('home');
+
+        }
+
+        if ($formAnnonces->isSubmitted() && $formAnnonces->isValid()) {
+
+            if($this->getUser()->getCredits() > 4)
+            {
+                $credit = new Credits;
+                $credit->setAmount(5);
+                $credit->setDescription('Modification d\'une annonce');
+                $credit->setStatus('validé');
+                $credit->setUserId($this->getUser()->getId());
+                $credit->setIdTrans(uniqid());
+                $credits = $this->getUser()->getCredits();
+                $this->getUser()->setCredits($credits - 5);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($credit);
+                $entityManager->flush();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($annonces);
+                $entityManager->flush();
+                $this->addFlash('success', 'Votre annonce a été modifiée avec succès');
+                return $this->redirectToRoute('user.annonces');
+
+            }else{
+                $this->addFlash('error', 'Vous n\'avez pas assez de crédit');
+                return $this->redirectToRoute('user.credit');
+            }
+
+        }
+
+        return $this->render('pages/editAnnonce.html.twig', [
+            'formContact' => $formContact->createView(),
+            'formAnnonces' => $formAnnonces->createView(),
+            'annonceLatest' => $this->repositoryAnnonces->findLatest()  
+        ]);
+
+    }
+
 
 
 

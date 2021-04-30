@@ -50,9 +50,10 @@ class SecurityController extends AbstractController
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -106,9 +107,10 @@ class SecurityController extends AbstractController
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -153,6 +155,8 @@ class SecurityController extends AbstractController
         $form = $this->createForm(RecoverType::class, $user);
         $form->handleRequest($request);
 
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+
         if($form->isEmpty())
         {
             $this->addFlash('error', 'Le formulaire ne peut pas être vide !');
@@ -164,7 +168,7 @@ class SecurityController extends AbstractController
             $token = substr(md5(uniqid(rand(80,80))), 0, 55);
             $session->set('token_recover', $token);
             $session->set('user_email', $user->getEmail());
-            $recover->notify($user, $token);
+            $recover->notify($user, $token, $annoncesMail);
             $this->addFlash('success', 'Merci de vérifier votre boite e-mail.');
             return $this->redirectToRoute('password_recover');
         }
@@ -175,9 +179,10 @@ class SecurityController extends AbstractController
 
         $annonces = $repositoryAnnonces->findLatest();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -200,8 +205,10 @@ class SecurityController extends AbstractController
     public function recoverValidate(string $token, SessionInterface $session): Response
     {
 
-        if($session->get('token_recover') === $token){
-            return $this->redirectToRoute('passwordNew');
+        if($session->get('token_recover') == $token){
+            return $this->redirectToRoute('passwordNew', [
+                'token' => $token
+                ]);
         }
 
         return $this->redirectToRoute('home');
@@ -209,62 +216,71 @@ class SecurityController extends AbstractController
 
     /**
      * @Security("not is_granted('ROLE_USER')")
-     * @Route("/passwordNew", name="passwordNew")
+     * @Route("/passwordNew/{token}", name="passwordNew")
     * @var UserPasswordEncoderInterface
      */
-    public function passwordNew(Request $request, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
+    public function passwordNew(string $token, Request $request, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces)
     {
         $user = new User();
         $form = $this->createForm(RecoverNewType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isEmpty())
-        {
-            $this->addFlash('error', 'Le formulaire ne peut pas être vide !');
-            return $this->redirectToRoute('login');
-        }
-        
-        if($form->isSubmitted() && $form->isValid())
+        if($session->get('token_recover') == $token)
         {
 
-            $email = $session->get('user_email');
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $users = $entityManager->getRepository(User::class)
-            ->findOneBy(array('email' => $email));
-    
-            if (!$users) {
+            if($form->isEmpty())
+            {
+                $this->addFlash('error', 'Le formulaire ne peut pas être vide !');
                 return $this->redirectToRoute('login');
             }
-    
-            $password = $passwordEncoder->encodePassword($users, $user->getPassword());
-            $users->setPassword($password);
-            $entityManager->flush();
+            
+            if($form->isSubmitted() && $form->isValid())
+            {
 
-            $this->addFlash('success', 'Mot de passe modifié !');
+                $email = $session->get('user_email');
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $users = $entityManager->getRepository(User::class)
+                ->findOneBy(array('email' => $email));
+        
+                if (!$users) {
+                    return $this->redirectToRoute('login');
+                }
+        
+                $password = $passwordEncoder->encodePassword($users, $user->getPassword());
+                $users->setPassword($password);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Mot de passe modifié !');
+                return $this->redirectToRoute('login');
+            }
+
+            $contact = new Contact();
+            $formContact = $this->createForm(ContactType::class, $contact);
+            $formContact->handleRequest($request);
+
+            $annonces = $repositoryAnnonces->findLatest();
+
+            $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
+            
+                $notif->notify($contact, $annoncesMail);
+                $this->addFlash('success', 'Votre message à bien été transmis');
+                return $this->redirectToRoute('home');
+
+            }
+
+            return $this->render('security/passwordNew.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
+                'formContact' => $formContact->createView(),
+                'annonceLatest' => $annonces
+            ]);
+        
+        }else{
             return $this->redirectToRoute('login');
         }
-
-        $contact = new Contact();
-        $formContact = $this->createForm(ContactType::class, $contact);
-        $formContact->handleRequest($request);
-
-        $annonces = $repositoryAnnonces->findLatest();
-
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
-           
-            $notif->notify($contact);
-            $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('home');
-
-        }
-
-        return $this->render('security/passwordNew.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-            'formContact' => $formContact->createView(),
-            'annonceLatest' => $annonces
-        ]);
 
     }
 

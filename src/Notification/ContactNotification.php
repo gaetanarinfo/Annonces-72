@@ -30,13 +30,14 @@ class ContactNotification
         $this->session = $session;
     }
 
-    public function notify(Contact $contact)
+    public function notify(Contact $contact, array $annonces)
     {   
-        $message = (new \Swift_Message('Formulaire de contact - Annopnces-72'))
+        $message = (new \Swift_Message('Formulaire de contact - Annonces-72'))
             ->setFrom($contact->getEmail())
             ->setTo('contact@annonces-72.fr')
             ->setBody($this->renderer->render('emails/contact.html.twig', [
-                'contact' => $contact
+                'contact' => $contact,
+                'annonces' => $annonces
             ]), 'text/html');
         $this->mailer->send($message);
     }

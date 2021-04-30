@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Annonces;
 use App\Entity\Contact;
 use App\Form\ContactType;
 use App\Notification\ContactNotification;
@@ -14,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class HomeController extends AbstractController
+class CookiesController extends AbstractController
 {
 
 
@@ -28,7 +27,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/", name="home")
+     * @Route("/cookies", name="cookies")
      * @return Responce
     */
 
@@ -38,10 +37,7 @@ class HomeController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        $annonces = $repositoryAnnonces->findLatestNonPremium();
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
-        $annoncesCount = $repositoryAnnonces->findCountAll();
-        $annoncesCountPremium = $repositoryAnnonces->findCountAllPremium();
 
         $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
         if ($formContact->isSubmitted() && $formContact->isValid()) {
@@ -52,34 +48,9 @@ class HomeController extends AbstractController
 
         }
 
-        $annoncesVerif = $repositoryAnnonces->findAll();
-        $dateFinish = new DateTime('now');
-
-        foreach ($annoncesVerif as $value) {
-
-            if( $value->getTerminedAtPremium() != null)
-            {
-                dump($value->getTerminedAtPremium());
-
-                if($dateFinish > $value->getTerminedAtPremium())
-                {
-                    $value->setPremium(0);
-                    $value->setCreatedAtPremium(null);
-                    $value->setTerminedAtPremium(null);
-                    $this->em->persist($repositoryAnnonces->find($value->getId()));
-                    $this->em->flush();
-                }
-            }
-
-        }
-
-        return $this->render('pages/home.html.twig', [
+        return $this->render('pages/cookies.html.twig', [
             'formContact' => $formContact->createView(),
-            'annonces' => $annonces,
-            'annoncesPremium' => $annoncesPremium,
             'annonceLatest' => $annoncesPremium,
-            'annoncesCount' => $annoncesCount,
-            'annoncesCountPremium' => $annoncesCountPremium
         ]);
 
     }

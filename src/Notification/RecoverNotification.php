@@ -23,7 +23,7 @@ class RecoverNotification
         $this->renderer = $renderer;
     }
 
-    public function notify(User $user, string $token)
+    public function notify(User $user, string $token, array $annonces)
     {
         $request = Request::createFromGlobals();
         $nom_jour_fr = array("dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi");
@@ -40,7 +40,8 @@ class RecoverNotification
                 'recover' => $user,
                 'date' => $nom_jour_fr[$nom_jour].' '.$jour.' '.$mois_fr[$mois].' '.$annee.' à '.$heure,
                 'ip' => $request->getClientIp(),
-                'token' => $token
+                'token' => $token,
+                'annonces' => $annonces
             ]), 'text/html');
         $this->mailer->send($message);
     }

@@ -57,9 +57,10 @@ class ProfilController extends AbstractController
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -101,11 +102,12 @@ class ProfilController extends AbstractController
 
         $annonces = $repositoryAnnonces->findLatest();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -206,9 +208,10 @@ class ProfilController extends AbstractController
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -236,9 +239,10 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('profil');
 
@@ -273,9 +277,10 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('user.credit');
 
@@ -331,9 +336,10 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('user.credit');
 
@@ -389,9 +395,10 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('user.credit');
 
@@ -447,9 +454,10 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('user.credit');
 
@@ -499,9 +507,10 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('user.favoris');
 
@@ -564,9 +573,10 @@ class ProfilController extends AbstractController
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('home');
 
@@ -654,9 +664,10 @@ class ProfilController extends AbstractController
 
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('user.mailbox');
 
@@ -710,9 +721,10 @@ class ProfilController extends AbstractController
             return $this->redirectToRoute('home');
         }   
 
-        if ($formContact->isSubmitted() && $formContact->isValid()) {
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+ if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('profil');
 
@@ -730,7 +742,7 @@ class ProfilController extends AbstractController
     }
 
     /**
-     * @Route("/profil/profil/toplist/{id}:{token}", name="user.toplist.confirm", methods="GET")
+     * @Route("/profil/toplist/{id}:{token}", name="user.toplist.confirm", methods="GET")
      * @return \Symfony\Component\HttpFoundation\Response
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param DeleteMemberResponder     $responder
@@ -747,9 +759,10 @@ class ProfilController extends AbstractController
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
 
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
         if ($formContact->isSubmitted() && $formContact->isValid()) {
            
-            $notif->notify($contact);
+            $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
             return $this->redirectToRoute('user.credit');
 
@@ -787,7 +800,7 @@ class ProfilController extends AbstractController
         }
 
         return $this->redirectToRoute('user.annonces');
-    }
+    } 
 
 }
 

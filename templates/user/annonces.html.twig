@@ -135,6 +135,10 @@
 													</a>
 													{% endif %}
 
+													<a href="{{ path('user.annonce.edit', { 'id': annoncesUsers.id }) }}" class="btn btn-primary btn-theme mr-5">Modifier l'annonce
+														<i class="fas fa-edit text-warning"></i>
+													</a>
+
 													<a href="{{ path('user.annonce.delete', { 'id': annoncesUsers.id }) }}" class="btn btn-primary btn-theme mr-5">Supprimer l'annonce
 														<i class="fa fa-trash text-danger"></i>
 													</a>

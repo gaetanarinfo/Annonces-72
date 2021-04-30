@@ -1,0 +1,123 @@
+{% block stylesheets %}
+        <link rel="stylesheet" href="http://localhost:8000/css/input-file.css">
+{% endblock %}
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success text-center" style="width: 29% !important; margin: 27px auto 50px auto">
+        <i class="fa fa-check text-success" aria-hidden="true"></i>
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger text-center" style="width: 29% !important; margin: 27px auto 50px auto">
+        <i class="fa fa-times text-danger" aria-hidden="true"></i>
+        {{ message }}
+    </div>
+{% endfor %}
+
+<div class="container row mt-5 m-auto" style="justify-content: center;display: flex;">
+	<div class="col-md-8">
+		<div class="card">
+			<div class="card-body info-card social-about text-center">
+				<h2 class="text-blue">Éditer une annonce</h2>
+				<hr>
+				{{ form_start(formAnnonces, {'attr' : {'id': 'form'} }) }}
+				<div class="row ml-1">
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.title) }}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.price) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1">
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.phone) }}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.address) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1">
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.postalCode) }}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.city) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1">
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.country) }}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="social-info">
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1">
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.category, { 'attr': { 'onchange': 'Category(this.value)' }}) }}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="social-info">
+							{{ form_row(formAnnonces.sousCategory) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1">
+					<div class="col-md-12">
+						<div class="social-info">
+							{{ form_row(formAnnonces.smallContent, {'attr' : { 'style' : 'height:135px;'}}) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1">
+					<div class="col-md-12">
+						<div class="social-info">
+							{{ form_row(formAnnonces.largeContent, {'attr' : { 'style' : 'height:135px;'}}) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row ml-1 mb-3">
+					<div class="col-md-12">
+						<div class="col-6 text-center mb-3">
+							<button type="submit" class="btn btn-primary">Éditer l'annonce</button>
+						</div>
+					</div>
+					{{ form_end(formAnnonces) }}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
