@@ -47,6 +47,12 @@ class Mailbox
      */
     private $recipient;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->isRead = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

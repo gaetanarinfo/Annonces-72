@@ -574,7 +574,7 @@ class ProfilController extends AbstractController
         $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
         $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
- if ($formContact->isSubmitted() && $formContact->isValid()) {
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
            
             $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');
@@ -617,6 +617,8 @@ class ProfilController extends AbstractController
             $entityManager->persist($mailbox);
             $entityManager->flush();
             $this->addFlash('success', 'Message archivé avec succès');
+        }else{
+            return $this->redirectToRoute('user.mailbox');
         }
 
         return $this->redirectToRoute('user.mailbox');
@@ -634,6 +636,8 @@ class ProfilController extends AbstractController
             $entityManager->remove($mailbox);
             $entityManager->flush();
             $this->addFlash('success', 'Message supprimé avec succès');
+        }else{
+            return $this->redirectToRoute('user.mailbox');
         }
 
         return $this->redirectToRoute('user.mailbox');
@@ -644,64 +648,62 @@ class ProfilController extends AbstractController
     */
     public function mailboxView(Mailbox $mailbox, Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike, MailboxRepository $repositoryMailbox)
     {
+        if($mailbox->getRecipient() == $this->getUser()->getUsername())
+        {
 
-        // if($mailbox->getRecipient() == $this->getUser()->getUsername())
-        // {
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $entityManager->remove($mailbox);
-        //     $entityManager->flush();
-        //     $this->addFlash('success', 'Message supprimé avec succès');
-        // }
+            $mailboX = new Mailbox();
 
-        $mailboX = new Mailbox();
+            $contact = new Contact();
+            $formContact = $this->createForm(ContactType::class, $contact);
+            $formContact->handleRequest($request);
 
-        $contact = new Contact();
-        $formContact = $this->createForm(ContactType::class, $contact);
-        $formContact->handleRequest($request);
+            $formMailbox = $this->createForm(MailboxType::class, $mailboX);
+            $formMailbox->handleRequest($request);
 
-        $formMailbox = $this->createForm(MailboxType::class, $mailboX);
-        $formMailbox->handleRequest($request);
+            $annoncesPremium = $repositoryAnnonces->findLatestPremium();
 
-        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
+            $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+            
+                $notif->notify($contact, $annoncesMail);
+                $this->addFlash('success', 'Votre message à bien été transmis');
+                return $this->redirectToRoute('user.mailbox');
 
-        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
- if ($formContact->isSubmitted() && $formContact->isValid()) {
-           
-            $notif->notify($contact, $annoncesMail);
-            $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('user.mailbox');
+            }
 
-        }
+            if ($formMailbox->isSubmitted() && $formMailbox->isValid()) {
+            
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($mailboX);
+                $entityManager->flush();
+                $this->addFlash('success', 'Votre message à bien été transmis');
+                return $this->redirectToRoute('user.mailbox');
 
-        if ($formMailbox->isSubmitted() && $formMailbox->isValid()) {
-           
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($mailboX);
-            $entityManager->flush();
-            $this->addFlash('success', 'Votre message à bien été transmis');
-            return $this->redirectToRoute('user.mailbox');
+            }
 
-        }
+            $userLike = $repositoryLike->findBy(array('userId' => $this->getUser()->getId()));
 
-        $userLike = $repositoryLike->findBy(array('userId' => $this->getUser()->getId()));
+            if($userLike != null)
+            {   
+                $annoncesLike = $repositoryAnnonces->findBy(array('id' => $userLike));
+            }else{
+                $annoncesLike = 0;
+            }
 
-        if($userLike != null)
-        {   
-            $annoncesLike = $repositoryAnnonces->findBy(array('id' => $userLike));
+            $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
+            return $this->render('user/mailboxView.html.twig', [
+                'formContact' => $formContact->createView(),
+                'formMailbox' => $formMailbox->createView(),
+                'annonceLatest' => $annoncesPremium,
+                'annoncesLike' => $annoncesLike,
+                'mailbox' => $mailbox,
+                'countMail' => $countMail
+            ]);
+
         }else{
-            $annoncesLike = 0;
+            return $this->redirectToRoute('user.mailbox');
         }
-
-        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
-
-        return $this->render('user/mailboxView.html.twig', [
-            'formContact' => $formContact->createView(),
-            'formMailbox' => $formMailbox->createView(),
-            'annonceLatest' => $annoncesPremium,
-            'annoncesLike' => $annoncesLike,
-            'mailbox' => $mailbox,
-            'countMail' => $countMail
-        ]);
     }
 
      /**
@@ -801,6 +803,64 @@ class ProfilController extends AbstractController
 
         return $this->redirectToRoute('user.annonces');
     } 
+
+     /**
+     * @Route("/profil/cree-un-message/{id}:{author}", name="user.mailbox.create", methods="GET|POST")
+    */
+    public function mailboxCreate(Annonces $annonces, Request $request, ContactNotification $notif, AnnoncesRepository $repositoryAnnonces, LikeAnnoncesRepository $repositoryLike, MailboxRepository $repositoryMailbox)
+    {
+
+        $mailbox = new Mailbox;
+
+        $contact = new Contact();
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+
+        $formMailbox = $this->createForm(MailboxType::class, $mailbox);
+        $formMailbox->handleRequest($request);
+
+        $annoncesPremium = $repositoryAnnonces->findLatestPremium();
+
+        $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
+    if ($formContact->isSubmitted() && $formContact->isValid()) {
+           
+            $notif->notify($contact, $annoncesMail);
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('user.mailbox');
+
+        }
+
+        if ($formMailbox->isSubmitted() && $formMailbox->isValid()) {
+           
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($mailbox);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre message à bien été transmis');
+            return $this->redirectToRoute('user.mailbox');
+
+        }
+
+        $userLike = $repositoryLike->findBy(array('userId' => $this->getUser()->getId()));
+
+        if($userLike != null)
+        {   
+            $annoncesLike = $repositoryAnnonces->findBy(array('id' => $userLike));
+        }else{
+            $annoncesLike = 0;
+        }
+
+        $countMail = $repositoryMailbox->findCount($this->getUser()->getUsername());
+
+        return $this->render('user/mailboxCreate.html.twig', [
+            'formContact' => $formContact->createView(),
+            'formMailbox' => $formMailbox->createView(),
+            'annonceLatest' => $annoncesPremium,
+            'annoncesLike' => $annoncesLike,
+            'mailbox' => $mailbox,
+            'countMail' => $countMail,
+            'annonces' => $annonces
+        ]);
+    }
 
 }
 

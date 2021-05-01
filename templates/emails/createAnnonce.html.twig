@@ -1,4 +1,6 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="telephone=no" name="format-detection">
     <title>Email Template</title>
@@ -78,7 +80,7 @@
                     <!-- Hero -->
                     <div>
                         <div class="img-center" style="font-size:0pt; line-height:0pt; text-align:center">
-                            <a href="#" target="_blank"><img src="http://localhost:8000/img/mail/hero2.png" alt="" border="0" width="661" height="414"></a>
+                            <a href="#" target="_blank"><img src="http://localhost:8000/img/mail/hero4.png" alt="" border="0" width="661" height="414"></a>
                         </div>
                         <div style="font-size:0pt; line-height:0pt; height:20px"><img src="http://localhost:8000/img/mail/empty.gif" width="1" height="20" style="height:20px" alt=""></div>
 
@@ -124,22 +126,17 @@
                                                                                                 <tr>
                                                                                                     <td class="img" style="text-align:left" width="15"></td>
                                                                                                     <td class="text" style="color:#70716e; line-height:21px; text-align:left">
-                                                                                                        
-                                                                                                        <div style="font-size: 14px;text-align: left;margin-bottom: 10px;">Pour renouveler le mot de passe
-                                                                                                            <a href="{{ url('security.recoverValidate', {token: token}) }}" style="text-decoration: none !important;">Cliquer ici</a>
+
+
+                                                                                                        <div style="font-size: 14px; text-align: left; margin-bottom: 10px;">
+                                                                                                            Votre annonce est en attente d'approbation par un modérateur, elle sera mise en ligne très vite.
+                                                                                                        </div>
+                                                                                                        <div style="font-size: 14px; text-align: left; margin-bottom: 10px;">
+                                                                                                            Merci de votre patience.
                                                                                                         </div>
                                                                                                         <div style="font-size: 14px;">
-                                                                                                            <b>Votre nom d'utilisateur :</b> {{ recover.username }}</div>
-                                                                                                        <div style="font-size: 14px;">
-                                                                                                            <b>Votre adresse email :</b> {{ recover.email }}</div>
-                                                                                                        <div style="font-size: 14px;">
-                                                                                                            <b>Votre adresse email :</b> {{ recover.email }}</div>
-                                                                                                        <div style="font-size: 14px;">
-                                                                                                            <b>Heure de la demande :</b> {{ date }}</div>
-                                                                                                        <div style="font-size: 14px;">
-                                                                                                            <b>Adresse ip :</b> {{ ip }}</div>
-                                                                                                        <div style="font-size: 14px;">
-                                                                                                            Si vous n'êtes pas à l'origine de cette demande merci de contacter l'administrateur du site internet.</div>
+                                                                                                            Vous pourrez la retrouver à cette adresse dès qu'elle sera validée <a href="http://localhost:8000{{ path('annonce.show', { 'id': id  }) }}"
+                                                                                                                target="_blank">{{ title }}</a></div>
                                                                                                         <div style="font-size:0pt; line-height:0pt; height:15px">
                                                                                                             <img src="http://localhost:8000/img/mail/empty.gif" width="1" height="15" style="height:15px" alt="">
                                                                                                         </div>
@@ -153,9 +150,9 @@
                                                                                         <div style="font-size:0pt; line-height:0pt; height:1px; background:#e1e1e1; ">
                                                                                             <img src="http://localhost:8000/img/mail/empty.gif" width="1" height="1" style="height:1px" alt=""></div>
 
-                                                                                        
 
-                                                                                        
+
+
                                                                                     </td>
                                                                                     <td class="img" style="font-size:0pt; line-height:0pt; text-align:left" width="3" bgcolor="#eaeae6"></td>
                                                                                 </tr>
@@ -205,16 +202,17 @@
                                                                                                                     <td valign="top" class="img" style="font-size:0pt; line-height:0pt; text-align:left" width="140">
                                                                                                                         <a href="http://localhost:8000/annonce/{{ annonce.id }}" target="_blank">
 
-																																	{% if annonce.pictures is empty %}
-																																		</a><a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annonce.title }}">
-																																			<img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" border="0" width="131" alt="{{ annonce.title }}">
-																																		</a> {% else %}
+																														{% if annonce.pictures is empty %}
+																																		</a>
+                                                                                                                        <a class="lb-link" data-rel="product-gallery" href="http://localhost:8000/img/annonces/empty.jpg" title="{{ annonce.title }}">
+                                                                                                                            <img data-rel="product-gallery" src="{{ 'http://localhost:8000/img/annonces/empty.jpg' }}" border="0" width="131" alt="{{ annonce.title }}">
+                                                                                                                        </a> {% else %}
                                                                                                                         <a class="lb-link" data-rel="product-gallery" href="http://localhost:8000{{ vich_uploader_asset(annonce.pictures[0], 'imageFile') }}" title="{{ annonce.title }}">
                                                                                                                             <img data-rel="product-gallery" src="http://localhost:8000{{ vich_uploader_asset(annonce.pictures[0], 'imageFile') }}" border="0" width="131" alt="{{ annonce.title }}">
                                                                                                                         </a>
                                                                                                                         {% endif %}
 
-                                                                                                                        
+
                                                                                                                     </td>
                                                                                                                     <td valign="top" class="text" style="color:#70716e; font-family:'Trebuchet MS'; font-size:12px; line-height:21px; text-align:left">
                                                                                                                         <div>
@@ -244,26 +242,15 @@
                                                                                         <div style="font-size:0pt; line-height:0pt; height:1px; background:#e1e1e1; ">
                                                                                             <img src="http://localhost:8000/img/mail/empty.gif" width="1" height="1" style="height:1px" alt=""></div>
 
-                                                                                        
 
-                                                                                        
+
+
                                                                                     </td>
                                                                                     <td class="img" style="font-size:0pt; line-height:0pt; text-align:left" width="3" bgcolor="#eaeae6"></td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
                                                                         <div class="img" style="font-size:0pt; line-height:0pt; text-align:left"><img src="http://localhost:8000/img/mail/inner_box_bottom.jpg" width="373" height="3" alt="" border="0"></div>
-
-
-                                                                        <div>
-                                                                            <div style="font-size:0pt; line-height:0pt; height:20px"><img src="http://localhost:8000/img/mail/empty.gif" width="1" height="20" style="height:20px" alt=""></div>
-
-                                                                            <div class="img" style="font-size:0pt; line-height:0pt; text-align:left">
-                                                                                <a href="#" target="_blank"><img src="http://localhost:8000/img/mail/separator1.jpg" alt="" border="0" width="373" height="5"></a>
-                                                                            </div>
-                                                                            <div style="font-size:0pt; line-height:0pt; height:20px"><img src="http://localhost:8000/img/mail/empty.gif" width="1" height="20" style="height:20px" alt=""></div>
-
-                                                                        </div>
 
                                                                         {% endfor %}
 
@@ -574,4 +561,6 @@
 
 
 
-</body></html>
+</body>
+
+</html>

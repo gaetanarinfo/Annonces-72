@@ -180,7 +180,7 @@ class SecurityController extends AbstractController
         $annonces = $repositoryAnnonces->findLatest();
 
         $annoncesMail = $repositoryAnnonces->findLatestNonPremiumMail();
- if ($formContact->isSubmitted() && $formContact->isValid()) {
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
            
             $notif->notify($contact, $annoncesMail);
             $this->addFlash('success', 'Votre message à bien été transmis');

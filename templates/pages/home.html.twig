@@ -31,7 +31,7 @@
 		{% endfor %}
 
 		<section id="welcome">
-			<div class="section-inner nopaddingbottom">
+			<div class="{% if app.flashes('success') == null %}section-inner{% endif %} nopaddingbottom">
 
 				<div class="container">
 					<div class="row">

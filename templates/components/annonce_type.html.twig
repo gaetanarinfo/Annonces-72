@@ -223,7 +223,7 @@
 								<hr/>
 
 								<div class="share">
-									<a href="#" class="btn btn-primary btn-theme mr-5">Envoyer un message
+									<a href="{{ path('user.mailbox.create', { 'id': annonces.id, 'author': annonces.author }) }}" class="btn btn-primary btn-theme mr-5">Envoyer un message
 										<i class="far fa-comment-dots"></i>
 									</a>
 									<a id="phone" class="btn btn-primary btn-theme">Voir le numéro
