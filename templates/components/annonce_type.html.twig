@@ -223,9 +223,15 @@
 								<hr/>
 
 								<div class="share">
+								{% if annoncesUsername != annonces.author %}
 									<a href="{{ path('user.mailbox.create', { 'id': annonces.id, 'author': annonces.author }) }}" class="btn btn-primary btn-theme mr-5">Envoyer un message
 										<i class="far fa-comment-dots"></i>
 									</a>
+								{% else %}
+									<a class="btn btn-primary btn-theme mr-5 disabled">Envoyer un message
+										<i class="far fa-comment-dots"></i>
+									</a>
+								{% endif %}
 									<a id="phone" class="btn btn-primary btn-theme">Voir le numéro
 										<i class="fas fa-phone"></i>
 									</a>
