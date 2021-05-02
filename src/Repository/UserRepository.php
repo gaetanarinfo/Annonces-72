@@ -79,4 +79,85 @@ class UserRepository extends ServiceEntityRepository
         return $user;
     }
 
+    /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisibleModerateur(int $page): PaginationInterface
+    {
+        $query = $this->findVisibleQuery('p');
+
+        $annonces = $this->paginator->paginate(
+            $query
+            ->where('p.isActive = :active')
+            ->setParameter(':active', 0)
+            ->orderBy('p.createDate', 'DESC')
+            ->getQuery(),
+            $page,
+            12
+        );
+
+        $this->hydratePicture($annonces);
+
+        return $annonces;
+    }
+
+     /**
+     * @return Users[]
+     */
+    public function findCountUsersModerateur()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+        ->select('count(p.id)')
+        ->where('p.isActive = :active')
+        ->setParameter(':active', 0)
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        $this->hydratePicture($qb);
+
+    }
+
+    /**
+     * @return Users[]
+     */
+    public function findCountUsersModerateur2()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+        ->select('count(p.id)')
+        ->where('p.isActive = :active')
+        ->setParameter(':active', 1)
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        $this->hydratePicture($qb);
+
+    }
+
+    /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisibleModerateur2(int $page): PaginationInterface
+    {
+        $query = $this->findVisibleQuery('p');
+
+        $annonces = $this->paginator->paginate(
+            $query
+            ->where('p.isActive = :active')
+            ->setParameter(':active', 1)
+            ->orderBy('p.createDate', 'DESC')
+            ->getQuery(),
+            $page,
+            12
+        );
+
+        $this->hydratePicture($annonces);
+
+        return $annonces;
+    }
+
+
 }

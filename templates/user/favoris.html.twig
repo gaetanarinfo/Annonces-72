@@ -58,7 +58,15 @@
 								<h3 class="mt-0 mb-3">{{ app.user.lastname }}
 									-
 									{{ app.user.firstname }}</h3>
-								<p>{{ app.user.username }}</p>
+								<p><b>{{ app.user.username }}</b> - <b>{% for role in app.user.roles %}
+                            {% if role == "ROLE_USER" %}
+                                Utilisateur
+                            {% elseif role == "ROLE_MODERATEUR" %}
+                            	Modérateur -
+                            {% elseif role == "ROLE_ADMIN" %}
+                                Administrateur -
+                            {% endif %}
+                        {% endfor %}</b></p>
 								<hr>
 							</div>
 							<div class="row ">

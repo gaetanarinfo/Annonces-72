@@ -43,13 +43,15 @@ security:
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_ADMIN
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_MODERATEUR: ROLE_ADMIN
 
     # Easy way to control access for large sections of your site
     # Note: Onlyf the *irst* access control that matches will be used
     access_control:
         # - { path: ^/admin/utilisateur, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/moderateur/, roles: ROLE_MODERATEUR }
+        - { path: ^/moderateur/annonces/, roles: ROLE_MODERATEUR }
         - { path: ^/profil/edit, roles: ROLE_USER }
         - { path: /premium, roles: ROLE_USER }
         - { path: /deposer-une-annonce, roles: ROLE_USER }

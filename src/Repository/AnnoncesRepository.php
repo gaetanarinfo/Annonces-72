@@ -458,4 +458,84 @@ class AnnoncesRepository extends ServiceEntityRepository
         return $annonces;
     }
 
+     /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisibleModerateur(int $page): PaginationInterface
+    {
+        $query = $this->findVisibleQuery('p');
+
+        $annonces = $this->paginator->paginate(
+            $query
+            ->where('p.isValid = :valid')
+            ->setParameter(':valid', 0)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery(),
+            $page,
+            12
+        );
+
+        $this->hydratePicture($annonces);
+
+        return $annonces;
+    }
+
+     /**
+     * @return Annonces[]
+     */
+    public function findCountAnnoncesModerateur()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+        ->select('count(p.id)')
+        ->where('p.isValid = :valid')
+        ->setParameter(':valid', 0)
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        $this->hydratePicture($qb);
+
+    }
+
+    /**
+     * @return Annonces[]
+     */
+    public function findCountAnnoncesModerateur2()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+        ->select('count(p.id)')
+        ->where('p.isValid = :valid')
+        ->setParameter(':valid', 1)
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        $this->hydratePicture($qb);
+
+    }
+
+    /**
+     * @return PaginationInterface
+     */
+    public function paginateAllVisibleModerateur2(int $page): PaginationInterface
+    {
+        $query = $this->findVisibleQuery('p');
+
+        $annonces = $this->paginator->paginate(
+            $query
+            ->where('p.isValid = :valid')
+            ->setParameter(':valid', 1)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery(),
+            $page,
+            12
+        );
+
+        $this->hydratePicture($annonces);
+
+        return $annonces;
+    }
+
 }
